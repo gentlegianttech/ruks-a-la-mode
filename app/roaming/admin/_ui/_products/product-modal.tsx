@@ -1,0 +1,479 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import {
+  ProductProps,
+  Material,
+  ProductComponent,
+  ColorProps,
+} from "@/helpers/types";
+
+interface ProductModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  product?: ProductProps; // Passed when editing
+  onSave: (product: any) => void;
+}
+
+export default function ProductModal({
+  isOpen,
+  onClose,
+  product,
+  onSave,
+}: ProductModalProps) {
+  const [formData, setFormData] = useState<any>({
+    name: "",
+    description: "",
+    price: "",
+    images: [],
+    category: "",
+    colors: [],
+    quantity: "",
+    materialOptions: [],
+    components: [],
+    weight: "",
+  });
+
+  useEffect(() => {
+    if (product) {
+      setFormData(product);
+    } else {
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        images: [],
+        category: "",
+        colors: [],
+        quantity: "",
+        materialOptions: [],
+        components: [],
+        weight: "",
+      });
+    }
+  }, [product]);
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   onSave({
+  //     ...formData,
+  //     price: parseInt(formData?.price),
+  //     quantity: parseInt(formData?.quantity),
+  //   });
+  //   onClose();
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Identify changed fields
+    if (formData?.id) {
+      const updatedFields: Partial<ProductProps> = {};
+      if (!product) return; // Ensure we have an existing product to update
+
+      for (const key in formData) {
+        if (
+          formData[key as keyof ProductProps] !==
+          product[key as keyof ProductProps]
+        ) {
+          updatedFields[key as keyof ProductProps] =
+            formData[key as keyof ProductProps];
+        }
+      }
+
+      if (Object.keys(updatedFields).length === 0) {
+        console.log("No changes detected.");
+        return;
+      }
+
+      if (Object.keys(updatedFields).length > 0) {
+        onSave({ ...updatedFields, id: formData?.id }); // Send only updated fields
+      }
+    } else {
+      onSave(formData);
+    }
+
+    onClose();
+  };
+
+  // Handle dynamic input updates
+  const handleAddColor = () => {
+    setFormData({
+      ...formData,
+      colors: [...formData.colors, { name: "", hexCode: "" }], // Ensure it matches ColorProps
+    });
+  };
+
+  const handleColorChange = (index: number, key: string, value: string) => {
+    const updatedColors = [...formData.colors];
+    updatedColors[index] = { ...updatedColors[index], [key]: value };
+    setFormData({ ...formData, colors: updatedColors });
+  };
+
+  const handleRemoveColor = (index: number) => {
+    const updatedColors = formData.colors.filter(
+      (_: any, i: number) => i !== index
+    );
+    setFormData({ ...formData, colors: updatedColors });
+  };
+
+  const handleAddImage = () => {
+    setFormData({
+      ...formData,
+      images: [...formData.images, ""],
+    });
+  };
+
+  const handleImageChange = (index: number, value: string) => {
+    const updatedImages = [...formData.images];
+    updatedImages[index] = value;
+    setFormData({ ...formData, images: updatedImages });
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const updatedImages = formData.images.filter(
+      (_: any, i: number) => i !== index
+    );
+    setFormData({ ...formData, images: updatedImages });
+  };
+
+  const handleAddMaterial = () => {
+    setFormData({
+      ...formData,
+      materialOptions: [
+        ...(formData.materialOptions ?? []),
+        { name: "", price: 0, stock: 0 },
+      ],
+    });
+  };
+
+  const handleMaterialChange = (
+    index: number,
+    key: string,
+    value: string | number
+  ) => {
+    const updatedMaterials = [...(formData.materialOptions ?? [])]; // Ensure it's an array
+    if (updatedMaterials[index]) {
+      updatedMaterials[index] = { ...updatedMaterials[index], [key]: value };
+    }
+    setFormData({ ...formData, materialOptions: updatedMaterials });
+  };
+
+  const handleRemoveMaterial = (index: number) => {
+    const updatedMaterials = (formData.materialOptions ?? []).filter(
+      (_: any, i: number) => i !== index
+    );
+    setFormData({ ...formData, materialOptions: updatedMaterials });
+  };
+
+  const handleAddComponent = () => {
+    setFormData({
+      ...formData,
+      components: [
+        ...(formData.components ?? []),
+        { name: "", price: 0, stock: 0, id: "" },
+      ],
+    });
+  };
+
+  const handleComponentChange = (
+    index: number,
+    key: string,
+    value: string | number
+  ) => {
+    const updatedComponents = [...(formData.components ?? [])];
+    updatedComponents[index] = { ...updatedComponents[index], [key]: value };
+    setFormData({ ...formData, components: updatedComponents });
+  };
+
+  const handleRemoveComponent = (index: number) => {
+    const updatedComponents = (formData.components ?? []).filter(
+      (_: any, i: number) => i !== index
+    );
+    setFormData({ ...formData, components: updatedComponents });
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed overflow-y-scroll inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg lg:w-1/2">
+        <h2 className="text-xl font-bold mb-4">
+          {product ? "Edit Product" : "Add New Product"}
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              className="w-full p-2 border rounded"
+              required
+            />
+            <textarea
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              className="w-full p-2 border rounded"
+              required
+            />
+            <input
+              type="text"
+              value={formData.price}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (/^\d*$/.test(inputValue)) {
+                  setFormData({ ...formData, price: inputValue });
+                }
+              }}
+              placeholder="Price"
+              className="w-full p-2 border rounded"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Weight"
+              value={formData.weight}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (/^\d*$/.test(inputValue)) {
+                  setFormData({ ...formData, weight: inputValue });
+                }
+              }}
+              className="w-full p-2 border rounded"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Category"
+              value={formData.category}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+              className="w-full p-2 border rounded"
+              required
+            />
+            <input
+              type="text"
+              value={formData.quantity}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (/^\d*$/.test(inputValue)) {
+                  setFormData({ ...formData, quantity: inputValue });
+                }
+              }}
+              placeholder="Quantity"
+              className="w-full p-2 border rounded"
+              required
+            />
+
+            {/* Images Input */}
+            <div>
+              <p className="font-medium">Images</p>
+              {formData?.images?.map((image: any, index: number) => (
+                <div key={index} className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    placeholder="Image URL"
+                    value={image}
+                    onChange={(e) => handleImageChange(index, e.target.value)}
+                    className="p-2 border rounded w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    ❌
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddImage}
+                className="mt-2 text-blue-500"
+              >
+                + Add Image
+              </button>
+            </div>
+
+            {/* Colors */}
+            <div>
+              <p className="font-medium">Colors</p>
+              {formData.colors.map((color: any, index: number) => (
+                <div key={index} className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    placeholder="Color"
+                    value={color.name}
+                    onChange={(e) =>
+                      handleColorChange(index, "name", e.target.value)
+                    }
+                    className="p-2 border rounded w-full"
+                  />
+                  <input
+                    type="text"
+                    placeholder="HexCode"
+                    value={color.hexCode}
+                    onChange={(e) =>
+                      handleColorChange(index, "hexCode", e.target.value)
+                    }
+                    className="p-2 border rounded w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveColor(index)}
+                  >
+                    ❌
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddColor}
+                className="mt-2 text-blue-500"
+              >
+                + Add Color
+              </button>
+            </div>
+
+            {/* Material Options */}
+            <div>
+              <p className="font-medium">Material Options</p>
+              {formData?.materialOptions?.map(
+                (material: any, index: number) => (
+                  <div key={index} className="flex gap-2 mt-2">
+                    <input
+                      type="text"
+                      placeholder="Material Name"
+                      value={material.name}
+                      onChange={(e) =>
+                        handleMaterialChange(index, "name", e.target.value)
+                      }
+                      className="p-2 border rounded w-full"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Price"
+                      value={material.price}
+                      onChange={(e) =>
+                        handleMaterialChange(
+                          index,
+                          "price",
+                          parseFloat(e.target.value)
+                        )
+                      }
+                      className="p-2 border rounded w-full"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Stock"
+                      value={material.stock}
+                      onChange={(e) =>
+                        handleMaterialChange(
+                          index,
+                          "stock",
+                          parseInt(e.target.value)
+                        )
+                      }
+                      className="p-2 border rounded w-full"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveMaterial(index)}
+                    >
+                      ❌
+                    </button>
+                  </div>
+                )
+              )}
+              <button
+                type="button"
+                onClick={handleAddMaterial}
+                className="mt-2 text-blue-500"
+              >
+                + Add Material
+              </button>
+            </div>
+
+            {/* Components */}
+            <div>
+              <p className="font-medium">Components</p>
+              {formData?.components?.map((component: any, index: number) => (
+                <div key={index} className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    placeholder="Component Name"
+                    value={component.name}
+                    onChange={(e) =>
+                      handleComponentChange(index, "name", e.target.value)
+                    }
+                    className="p-2 border rounded w-full"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    value={component.price}
+                    onChange={(e) =>
+                      handleComponentChange(
+                        index,
+                        "price",
+                        parseFloat(e.target.value)
+                      )
+                    }
+                    className="p-2 border rounded w-full"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Stock"
+                    value={component.stock}
+                    onChange={(e) =>
+                      handleComponentChange(
+                        index,
+                        "stock",
+                        parseInt(e.target.value)
+                      )
+                    }
+                    className="p-2 border rounded w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveComponent(index)}
+                  >
+                    ❌
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddComponent}
+                className="mt-2 text-blue-500"
+              >
+                + Add component
+              </button>
+            </div>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              {product ? "Save Changes" : "Add Product"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
