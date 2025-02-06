@@ -52,7 +52,10 @@ export default function Header() {
                 ))}
               </select>
             </div>
-            {paths.includes(pathname) && (
+            {paths.some(
+              (path) =>
+                pathname.startsWith(path) && !pathname.startsWith("/roaming")
+            ) && (
               <div className="lg:hidden flex flex-col items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

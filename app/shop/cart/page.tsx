@@ -81,7 +81,9 @@ export default function Page() {
                       <td className="px-4 py-2">
                         {formatPrice(
                           currency,
-                          c.item?.price * exchangeRates[currency] * c.quantity
+                          c.item?.price *
+                            exchangeRates[currency.toLowerCase()] *
+                            c.quantity
                         )}
                       </td>
                     </tr>
@@ -102,7 +104,7 @@ export default function Page() {
                     cart?.reduce(
                       (sum, item) => item.item?.price * item.quantity + sum,
                       0
-                    ) * exchangeRates[currency]
+                    ) * exchangeRates[currency.toLowerCase()]
                   )}
                 </p>
               </span>

@@ -167,7 +167,7 @@ export default function Page(props: { params: Params }) {
 
   return (
     <div
-      className={`flex lg:max-h-screen flex-col w-full lg:px-24 px-6 ${inter.className} text-black/80`}
+      className={`flex lg:max-h-screen flex-col w-full lg:px-24 px-6 ${inter.className} text-black/80  pb-10`}
     >
       <div className="flex lg:flex-row  flex-col lg:items-center lg:justify-center items-center lg:space-x-16 w-full lg:mt-10">
         <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] relative">
@@ -259,7 +259,7 @@ export default function Page(props: { params: Params }) {
               value={cart[itemIndex].quantity}
             />
           ) : (
-            <div className="mt-8">
+            <div className="mt-8 pb-10">
               <Button
                 icon={
                   <svg
