@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const context = useAppContext();
-  const { cart, currency } = context;
+  const { cart, currency, exchangeRates } = context;
   const router = useRouter();
 
   const handleCheckout = async (shippingInfo: any) => {
@@ -31,7 +31,7 @@ export default function Page() {
         (sum, item) => item.item?.price * item.quantity + sum,
         0
       ),
-      callbackUrl: `http://localhost:3000/shop/confirmation/?email=${
+      callbackUrl: `https://ruks-a-la-mode.vercel.app/shop/confirmation/?email=${
         shippingInfo?.email
       }&quantity=${cart?.reduce(
         (sum, item) => item.quantity + sum,
@@ -55,7 +55,11 @@ export default function Page() {
           </h2>
           <CheckoutForm checkoutCart={handleCheckout} />
         </div>
-        <CheckoutBox cart={cart} />
+        <CheckoutBox
+          cart={cart}
+          currency={currency}
+          rate={exchangeRates[currency.toLowerCase()]}
+        />
       </div>
     </div>
   );
