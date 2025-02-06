@@ -25,7 +25,7 @@ export default function Header() {
           <div className="w-full flex items-center justify-between pb-8 pt-16 lg:px-28">
             <div className="w-2/5 items-center justify-start flex lg:ml-0 ml-2">
               <Link href="/" className="">
-                <p className="uppercase font-bold text-coffee text-lg lg:text-2xl tracking-wider">
+                <p className="uppercase lg:font-bold font-black text-coffee text-lg lg:text-2xl tracking-wider">
                   RUKS Á LA MODE
                 </p>
               </Link>

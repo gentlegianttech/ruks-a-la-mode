@@ -3,15 +3,15 @@
 import Incrementer from "@/app/ui/incrementer";
 import SimilarProducts from "@/app/ui/similar-products";
 import SizeGuide from "@/app/ui/size-guide";
-import { formatter } from "@/helpers/functions";
 import { useAppContext } from "@/helpers/store";
 import { bungee, inter } from "@/styles/fonts";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import PartSelector from "../_ui/part-selector";
 import MaterialSelector from "../_ui/material-selector";
 import Button from "@/app/ui/button";
+import { formatPrice } from "@/helpers/functions";
 
 type Params = Promise<{ slug: string }>;
 
@@ -20,7 +20,14 @@ export default function Page(props: { params: Params }) {
   const { slug } = params;
   const router = useRouter();
   const context = useAppContext();
-  const { selectedProduct, cart, setcart, all_products } = context;
+  const {
+    selectedProduct,
+    cart,
+    setcart,
+    all_products,
+    currency,
+    exchangeRates,
+  } = context;
 
   const [measurement, setMeasurement] = useState<{
     size: number | null;
@@ -175,7 +182,12 @@ export default function Page(props: { params: Params }) {
             {selectedProduct?.data?.name}
           </p>
           <p className={`mt-6 lg:text-lg tracking-wide ${bungee.className}`}>
-            {formatter.format(getPrice() * orderDetails.quantity)}
+            {formatPrice(
+              currency,
+              getPrice() *
+                exchangeRates[currency.toLowerCase()] *
+                orderDetails.quantity
+            )}
           </p>
           <p className="mt-6 tracking-wider lg:text-base text-sm">
             {selectedProduct?.data?.description}

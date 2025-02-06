@@ -2,7 +2,7 @@
 
 import Button from "@/app/ui/button";
 import Incrementer from "@/app/ui/incrementer";
-import { formatter } from "@/helpers/functions";
+import { formatPrice } from "@/helpers/functions";
 import { useAppContext } from "@/helpers/store";
 import { ProductProps } from "@/helpers/types";
 import Image from "next/image";
@@ -23,7 +23,7 @@ export default function Product({
   // const [numInCart, setNumInCart] = useState(0);
   const context = useAppContext();
 
-  const { cart, setcart } = context;
+  const { cart, setcart, exchangeRates, currency } = context;
 
   const itemIndex = cart?.findIndex((c) => c.item.id === product.id);
 
@@ -60,7 +60,10 @@ export default function Product({
           {product?.data?.name}
         </p>
         <p className="text-base font-semibold text-center text-black/80">
-          {formatter.format(product?.data?.price)}
+          {formatPrice(
+            currency,
+            product?.data?.price * exchangeRates[currency.toLowerCase()]
+          )}
         </p>
       </div>
       <div className="mt-4">

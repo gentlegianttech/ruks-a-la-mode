@@ -12,6 +12,17 @@ export async function makePayment(data: any) {
   }
 }
 
+export const getExchangeRates = async () => {
+  try {
+    const rates = await axios.get(
+      "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/ngn.json"
+    );
+    return rates.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export async function verifyTransaction(txref: string) {
   try {
     const transaction = await axios.get(`/api/verify-payment?txref=${txref}`);

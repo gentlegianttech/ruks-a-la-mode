@@ -10,6 +10,8 @@ export interface SharedState {
   currencies: string[];
   user: any;
   setuser: (value: any) => void;
+  exchangeRates: { [key: string]: number };
+  setExchangeRates: (value: { [key: string]: number }) => void;
 }
 export interface CartItemProps {
   item: ProductProps;

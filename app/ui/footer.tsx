@@ -22,7 +22,7 @@ export default function Footer() {
   return (
     <>
       {paths.includes(pathname) && (
-        <footer className="w-full bg-[#0e0e0e] text-white rounded-t-[60px] lg:px-16 px-8 py-12 mt-28">
+        <footer className="w-full bg-[#0e0e0e] text-white rounded-t-[60px] lg:px-16 px-8 py-12 mt-4">
           <div className="w-full">
             <div className="w-full lg:flex-row flex flex-col items-start py-16 border-b border-b-[#5b5b5b]">
               <div className="lg:w-[30%] w-full lg:mr-16">

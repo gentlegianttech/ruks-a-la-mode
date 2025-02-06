@@ -10,10 +10,14 @@ export const slugify = (text: string) => {
   );
 };
 
-export const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "NGN",
-});
+export const formatPrice = (currency: string, price: number) => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+  });
+  const formattedPrice = formatter.format(price);
+  return formattedPrice;
+};
 
 // These options are needed to round to whole numbers if that's what you want.
 //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)

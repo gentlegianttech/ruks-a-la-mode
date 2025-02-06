@@ -4,13 +4,13 @@ import { useAppContext } from "@/helpers/store";
 import Image from "next/image";
 import Incrementer from "@/app/ui/incrementer";
 import { useRouter } from "next/navigation";
-import { formatter } from "@/helpers/functions";
+import { formatPrice } from "@/helpers/functions";
 
 export default function Page() {
   const context = useAppContext();
   const router = useRouter();
 
-  const { cart, setcart } = context;
+  const { cart, setcart, currency, exchangeRates } = context;
   console.log(cart);
   return (
     <div className="flex min-h-screen flex-col w-full lg:px-24 px-6">
@@ -79,7 +79,10 @@ export default function Page() {
                         </div>
                       </td>
                       <td className="px-4 py-2">
-                        {formatter.format(c.item?.price * c.quantity)}
+                        {formatPrice(
+                          currency,
+                          c.item?.price * exchangeRates[currency] * c.quantity
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -94,11 +97,12 @@ export default function Page() {
                   Estimated Total
                 </p>
                 <p className="font-light text-[#f5f5f5]">
-                  {formatter.format(
+                  {formatPrice(
+                    currency,
                     cart?.reduce(
                       (sum, item) => item.item?.price * item.quantity + sum,
                       0
-                    )
+                    ) * exchangeRates[currency]
                   )}
                 </p>
               </span>

@@ -1,9 +1,17 @@
-import { formatter } from "@/helpers/functions";
+import { formatPrice } from "@/helpers/functions";
 import { CartItemProps } from "@/helpers/types";
 import Image from "next/image";
 
-export default function CheckoutBox({ cart }: { cart: any[] }) {
-  const shippingFee = 6000;
+export default function CheckoutBox({
+  cart,
+  currency,
+  rate,
+}: {
+  cart: any[];
+  currency: string;
+  rate: number;
+}) {
+  const shippingFee = 6000 * rate;
 
   return (
     <div className="p-3 border border-dark lg:w-[46%] w-full lg:mb-0 mb-16 lg:mt-0 mt-10">
@@ -40,7 +48,7 @@ export default function CheckoutBox({ cart }: { cart: any[] }) {
                 </div>
               </div>
               <p className="lg:text-base text-sm">
-                ₦{formatter.format(c?.item?.price * c?.quantity)}
+                ₦{formatPrice(currency, c?.item?.price * c?.quantity * rate)}
               </p>
             </div>
           );
@@ -62,11 +70,12 @@ export default function CheckoutBox({ cart }: { cart: any[] }) {
             Subtotal
           </p>
           <p className="font-light tracking-wide lg:text-base text-sm">
-            {formatter.format(
+            {formatPrice(
+              currency,
               cart?.reduce(
                 (sum, item) => item.item.price * item.quantity + sum,
                 0
-              )
+              ) * rate
             )}
           </p>
         </div>
@@ -75,7 +84,7 @@ export default function CheckoutBox({ cart }: { cart: any[] }) {
             Shipping Fee
           </p>
           <p className="font-light tracking-wide lg:text-base text-sm">
-            {formatter.format(shippingFee)}
+            {formatPrice(currency, shippingFee)}
           </p>
         </div>
         <div className="flex items-center justify-between w-full mt-3">
@@ -83,11 +92,14 @@ export default function CheckoutBox({ cart }: { cart: any[] }) {
             Total
           </p>
           <p className="font-medium tracking-wide lg:text-lg text-base">
-            {formatter.format(
+            {formatPrice(
+              currency,
               cart?.reduce(
                 (sum, item) => item.item.price * item.quantity + sum,
                 0
-              ) + shippingFee
+              ) *
+                rate +
+                shippingFee
             )}
           </p>
         </div>

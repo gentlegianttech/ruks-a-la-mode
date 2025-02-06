@@ -1,13 +1,18 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ProductProps, SharedState } from "./types";
+import { getExchangeRates } from "./api-controller";
 
 const AppContext = createContext<SharedState>({} as SharedState);
 
 export const AppWrapper = ({ children }: { children: React.ReactNode }) => {
   const [cart, setcart] = useState<any>([]);
   const [user, setuser] = useState<any>(undefined);
+
+  const [exchangeRates, setExchangeRates] = useState<{ [key: string]: number }>(
+    {}
+  );
 
   const currencies = ["NGN", "USD", "EUR", "GBP"];
 
@@ -154,6 +159,20 @@ export const AppWrapper = ({ children }: { children: React.ReactNode }) => {
     },
   ]);
 
+  const fetchRates = async () => {
+    const rates = await getExchangeRates();
+    return rates;
+  };
+
+  useEffect(() => {
+    const rates = fetchRates().then((data) => {
+      console.log(data.ngn);
+      const { usd, eur, gbp } = data?.ngn;
+
+      setExchangeRates({ usd, eur, gbp, ngn: 1 });
+    });
+  }, []);
+
   const [selectedProduct, setSelectedProduct] = useState<any>();
   const sharedState: SharedState = {
     cart,
@@ -167,6 +186,8 @@ export const AppWrapper = ({ children }: { children: React.ReactNode }) => {
     currencies,
     user,
     setuser,
+    exchangeRates,
+    setExchangeRates,
   };
 
   return (

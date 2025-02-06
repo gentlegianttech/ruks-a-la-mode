@@ -6,7 +6,7 @@ import { ProductProps } from "@/helpers/types";
 import ExtraInfoAccordion from "./extra-info-accordion";
 import EditProductModal from "./product-modal";
 import DeleteProductModal from "./delete-product-modal";
-import { formatter } from "@/helpers/functions";
+import { formatPrice } from "@/helpers/functions";
 
 interface ProductTableProps {
   products: ProductProps[];
@@ -37,7 +37,7 @@ export default function ProductTable({
             <tr className="border-b">
               <td className="p-2">{product.id}</td>
               <td className="p-2">{product.name}</td>
-              <td className="p-2">{formatter.format(product.price)}</td>
+              <td className="p-2">{formatPrice("NGN", product.price)}</td>
               <td className="p-2">{product.category}</td>
               <td className="p-2">
                 <button

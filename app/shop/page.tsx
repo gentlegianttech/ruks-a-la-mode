@@ -7,6 +7,7 @@ import CategoryGrid from "./_ui/category-grid";
 import FilterBox from "./_ui/filter-box";
 import { useQuery } from "@tanstack/react-query";
 import { getAllActiveProducts } from "@/helpers/api-controller";
+import { Blocks } from "react-loader-spinner";
 
 export default function Page() {
   const router = useRouter();
@@ -76,6 +77,13 @@ export default function Page() {
   useEffect(() => {
     set_all_products(products);
   }, [products]);
+
+  if (isLoading)
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <Blocks />
+      </div>
+    );
 
   return (
     <div className="w-screen flex flex-col items-center justify-start">
