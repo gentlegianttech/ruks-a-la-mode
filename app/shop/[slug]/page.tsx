@@ -4,7 +4,7 @@ import Incrementer from "@/app/ui/incrementer";
 import SimilarProducts from "@/app/ui/similar-products";
 import SizeGuide from "@/app/ui/size-guide";
 import { useAppContext } from "@/helpers/store";
-import { bungee, inter } from "@/styles/fonts";
+// import { bungee, inter } from "@/styles/fonts";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import PartSelector from "../_ui/part-selector";
 import MaterialSelector from "../_ui/material-selector";
 import Button from "@/app/ui/button";
 import { formatPrice } from "@/helpers/functions";
+import Link from "next/link";
 
 type Params = Promise<{ slug: string }>;
 
@@ -29,20 +30,21 @@ export default function Page(props: { params: Params }) {
     exchangeRates,
   } = context;
 
-  const [measurement, setMeasurement] = useState<{
-    size: number | null;
-    bust: number | null;
-    waist: number | null;
-    hips: number | null;
-    heightCategory: string | null;
-    length: number | null;
-  }>({
-    size: null,
-    bust: null,
-    waist: null,
-    hips: null,
-    heightCategory: null,
-    length: null,
+  const sizes = [6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+
+  const lengths = [
+    "Petite",
+    "Petite+",
+    "Average",
+    "Average+",
+    "Tall",
+    "Very Tall",
+  ];
+
+  const [measurement, setMeasurement] = useState({
+    size: "",
+    custom: "",
+    length: "",
   });
 
   const [selectedPart, setSelectedPart] = useState({
@@ -122,14 +124,14 @@ export default function Page(props: { params: Params }) {
 
   const addToBag = () => {
     if (selectedProduct) {
-      const { size, bust, waist, hips, heightCategory, length } = measurement;
+      const { size, custom, length } = measurement;
 
-      if (!size && !bust && !waist && !length) {
+      if (!size && !custom && !length) {
         return alert("Incomplete Measurement Parameters");
       }
 
       const filteredMeasurement = Object.fromEntries(
-        Object.entries(measurement).filter(([_, value]) => value !== null)
+        Object.entries(measurement).filter(([_, value]) => value !== "")
       );
 
       const itemData: any = {
@@ -167,21 +169,21 @@ export default function Page(props: { params: Params }) {
 
   return (
     <div
-      className={`flex lg:max-h-screen flex-col w-full lg:px-24 px-6 ${inter.className} text-black/80  pb-10`}
+      className={`flex lg:max-h-screen flex-col w-full lg:px-24 px-6  text-black/80  pb-10`}
     >
       <div className="flex lg:flex-row  flex-col lg:items-center lg:justify-center items-center lg:space-x-16 w-full lg:mt-10">
-        <div className="lg:w-[500px] lg:h-[500px] w-[300px] h-[300px] relative">
+        <div className="lg:w-[500px] lg:h-[500px] w-[250px] h-[250px] relative mt-8">
           <Image
             alt="merch"
             src={selectedProduct?.data?.images[0] ?? ""}
             fill={true}
           />
         </div>
-        <div className="flex flex-col lg:items-start items-center">
-          <p className="lg:text-4xl text-2xl font-medium tracking-wider text-center">
+        <div className="flex flex-col lg:items-start items-center mt-10">
+          <p className="lg:text-4xl text-2xl font-bold tracking-wider text-center">
             {selectedProduct?.data?.name}
           </p>
-          <p className={`mt-6 lg:text-lg tracking-wide ${bungee.className}`}>
+          <p className={`mt-4 lg:text-lg font-medium tracking-wide`}>
             {formatPrice(
               currency,
               getPrice() *
@@ -189,7 +191,7 @@ export default function Page(props: { params: Params }) {
                 orderDetails.quantity
             )}
           </p>
-          <p className="mt-6 tracking-wider lg:text-base text-sm">
+          <p className="mt-6 tracking-wider lg:text-base font-medium text-sm">
             {selectedProduct?.data?.description}
           </p>
           <div className="mt-4">
@@ -202,28 +204,73 @@ export default function Page(props: { params: Params }) {
               ></span>
             ))}
           </div>
-          {selectedProduct?.data?.hasOwnProperty("components") && (
+          {selectedProduct?.data?.components?.length > 0 && (
             <PartSelector
               components={selectedProduct?.data?.components}
               onSelectPart={(selected: any) => setSelectedPart(selected)}
               selectedPart={selectedPart?.name}
             />
           )}
-          {selectedProduct?.hasOwnProperty("materialOptions") && (
+          {selectedProduct?.data?.materialOptions?.length > 0 && (
             <MaterialSelector
-              materials={selectedProduct?.materialOptions}
+              materials={selectedProduct?.data?.materialOptions}
               onSelectPart={(selected) => setSelectedMaterial(selected)}
               selectedPart={selectedMaterial?.name}
             />
           )}
-          <SizeGuide
+          <div className="mt-12 flex flex-col items-center justify-start">
+            <div>
+              <label className="text-sm">
+                Size
+                <select
+                  className="border ml-2 mr-4 border-dark outline-none"
+                  onChange={(e) =>
+                    setMeasurement({ ...measurement, size: e.target.value })
+                  }
+                >
+                  {sizes?.map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-sm">
+                Length
+                <select
+                  className="border ml-2 border-dark outline-none"
+                  onChange={(e) =>
+                    setMeasurement({ ...measurement, length: e.target.value })
+                  }
+                >
+                  {lengths?.map((l) => (
+                    <option key={l}>{l}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <Link href="">
+              <p className="mt-8 text-xs tracking-wide leading-loose">
+                *Click here to check our size guide for help in picking the best
+                sizing, or if you're still not sure, you can input your
+                measurements below
+              </p>
+            </Link>
+            <input
+              className="border border-dark bg-transparent text-sm p-2 mt-4 outline-none"
+              placeholder="Measurement (inches)"
+              value={measurement?.custom}
+              onChange={(e) =>
+                setMeasurement({ ...measurement, custom: e.target.value })
+              }
+            />
+          </div>
+          {/* <SizeGuide
             measurement={measurement}
             setMeasurement={setMeasurement}
-          />
+          /> */}
           {isProductInCart ? (
             <></>
           ) : (
-            <div className="mt-6 flex flex-col lg:items-start items-center">
+            <div className="mt-10 flex flex-col lg:items-start items-center">
               <p>Quantity</p>
               <div className="mt-4 w-64 p-3 border-dark border ">
                 <Incrementer

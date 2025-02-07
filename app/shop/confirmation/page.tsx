@@ -99,14 +99,10 @@ function Confirmation() {
 
   return (
     <div className="flex flex-col items-center">
-      <p
-        className={`${bungee.className} text-center lg:text-6xl text-4xl mt-28`}
-      >
+      <p className={` text-center lg:text-6xl text-4xl mt-28`}>
         WE'LL BE IN TOUCH!
       </p>
-      <p
-        className={`${inter.className} text-center text-2xl font-bold mt-8 lg:w-2/3`}
-      >
+      <p className={` text-center text-2xl font-bold mt-8 lg:w-2/3`}>
         Product Details & Shipping Info Have Been Forwarded to {email}
       </p>
     </div>

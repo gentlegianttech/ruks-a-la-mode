@@ -45,21 +45,22 @@ export default function Product({
       className={`${""} transition-transform duration-300 ease-out cursor-pointer hover:scale-105 flex flex-col items-center`}
     >
       <div onClick={viewProduct} className="">
-        <div className="relative h-72">
+        <div className="relative lg:h-72 h-40">
           <Image
             fill={true}
             src={product?.data?.images[0]}
             alt={product?.data?.name}
             className="object-contain"
+            sizes="33vw"
           />
         </div>
         {/* <div className=" absolute lg:top-5 lg:left-5 top-2 left-2 py-2 px-4 flex items-center justify-center rounded-full bg-white shadow-dark/20 shadow-md">
           <p className="text-xs uppercase opacity-60">{category}</p>
         </div> */}
-        <p className="text-lg font-bold uppercase mb-2 text-center text-black/70">
+        <p className="lg:text-lg text-sm font-bold uppercase mb-2 text-center text-black/70">
           {product?.data?.name}
         </p>
-        <p className="text-base font-semibold text-center text-black/80">
+        <p className="lg:text-base text-xs font-semibold text-center text-black/80">
           {formatPrice(
             currency,
             product?.data?.price * exchangeRates[currency.toLowerCase()]

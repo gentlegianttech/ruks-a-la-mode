@@ -12,7 +12,7 @@ export default function HomeBanners() {
     { id: 3, image: "/images/banners/banner1.jpg", alt: "banner 3" },
   ];
   return (
-    <div className="w-full h-screen">
+    <div className="w-full lg:h-screen">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         // navigation
@@ -23,7 +23,7 @@ export default function HomeBanners() {
         {banners.map((banner) => (
           <SwiperSlide key={banner.id}>
             <div
-              className="w-full h-full lg:bg-cover bg-center"
+              className="w-full lg:h-full h-80 bg-cover lg:bg-cover bg-center"
               style={{ backgroundImage: `url(${banner.image})` }}
             />
           </SwiperSlide>

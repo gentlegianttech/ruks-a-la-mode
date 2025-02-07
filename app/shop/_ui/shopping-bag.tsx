@@ -21,7 +21,7 @@ export default function ShoppingBag() {
             viewBox="0 0 24 24"
             strokeWidth="2.5"
             stroke="#1B1B1B"
-            className="size-8"
+            className="lg:size-8 size-6"
           >
             <path
               strokeLinecap="round"

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "./ui/header";
 import { AppWrapper } from "@/helpers/store";
@@ -10,6 +10,8 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -28,9 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f5f5f5]`}
-      >
+      <body className={`${montserrat.className} antialiased bg-[#f5f5f5]`}>
         <AppWrapper>
           <div className="">
             <Header />

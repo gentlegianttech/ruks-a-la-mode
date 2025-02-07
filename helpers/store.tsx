@@ -166,7 +166,6 @@ export const AppWrapper = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const rates = fetchRates().then((data) => {
-      console.log(data.ngn);
       const { usd, eur, gbp } = data?.ngn;
 
       setExchangeRates({ usd, eur, gbp, ngn: 1 });

@@ -22,10 +22,10 @@ export default function Header() {
         (path) => pathname.startsWith(path) && !pathname.startsWith("/roaming")
       ) && (
         <div className="relative ">
-          <div className="w-full flex items-center justify-between pb-8 pt-16 lg:px-28">
-            <div className="w-2/5 items-center justify-start flex lg:ml-0 ml-2">
+          <div className="w-full flex items-center justify-between pb-8 lg:pt-16 pt-6 px-3 lg:px-28">
+            <div className="lg:w-2/5 items-center justify-start flex lg:ml-0 ml-2">
               <Link href="/" className="">
-                <p className="uppercase lg:font-bold font-black text-coffee text-lg lg:text-2xl tracking-wider">
+                <p className="uppercase lg:font-bold font-black text-coffee text-xs lg:text-2xl tracking-wider">
                   RUKS Á LA MODE
                 </p>
               </Link>
@@ -44,7 +44,7 @@ export default function Header() {
             <div className="w-1/3 flex items-center justify-center lg:justify-end">
               <ShoppingBag />
               <select
-                className="bg-transparent ml-4 border-2 border-dark p-1 outline-none"
+                className="bg-transparent lg:text-base text-xs ml-4 border-2 border-dark p-1 outline-none"
                 onChange={(e) => setCurrency(e.target.value)}
               >
                 {currencies?.map((c) => (
@@ -63,7 +63,7 @@ export default function Header() {
                   viewBox="0 0 24 24"
                   strokeWidth={3.5}
                   stroke="#0e0e0e"
-                  className="size-8"
+                  className="size-6"
                   onClick={() => setopen(!open)}
                 >
                   <path

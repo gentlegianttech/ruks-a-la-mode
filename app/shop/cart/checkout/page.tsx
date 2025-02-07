@@ -33,13 +33,10 @@ export default function Page() {
       ),
       callbackUrl: `https://ruks-a-la-mode.vercel.app/shop/confirmation/?email=${
         shippingInfo?.email
-      }&quantity=${cart?.reduce(
-        (sum, item) => item.quantity + sum,
-        0
-      )}&price=${cart?.reduce(
-        (sum, item) => item.item?.price * item.quantity + sum,
-        0
-      )}&currency=${currency}`,
+      }&quantity=${cart?.reduce((sum, item) => item.quantity + sum, 0)}&price=${
+        cart?.reduce((sum, item) => item.item?.price * item.quantity + sum, 0) *
+        exchangeRates[currency.toLowerCase()]
+      }&currency=${currency}`,
       currency,
     });
     if (response["status"]) {

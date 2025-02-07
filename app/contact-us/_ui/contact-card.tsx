@@ -3,21 +3,21 @@ import { SocialIcon } from "react-social-icons";
 
 export default function ContactCard() {
   const socials = [
-    "https://www.instagram.com/rift",
-    "https://www.twitter.com/rift",
-    "https://www.linkedin.com/in/rift",
-    "https://www.facebook.com/rift",
+    "https://www.instagram.com/ruksalamode",
+    "https://www.x.com/ruksalamode",
+    "https://www.tiktok/ruksalamode",
+    "http://wa.me/2349012101539",
   ];
   return (
-    <div className="lg:w-[45%] w-full bg-lightgrey lg:p-14 p-10 rounded-[40px] lg:mt-0 mt-8">
+    <div className="lg:w-[45%] w-full bg-lightgrey lg:p-14 rounded-[40px] lg:mt-0 mt-12">
       <Tab label="Location">
-        <p className="lg:w-3/5 lg:text-2xl text-lg font-light">
-          Deo Gracie Mall, Utako.
+        <p className="lg:w-3/5 lg:text-2xl text-sm font-light">
+          Penthouse, Wing C, Deo Gracia Plaza, Utako, Abuja.
         </p>
       </Tab>
       <Tab label="Working Hours">
         <div>
-          <p className="lg:w-1/2 lg:text-2xl text-lg font-light">
+          <p className="lg:w-1/2 lg:text-2xl text-sm font-light">
             Monday To Friday 9:00 AM to 6:00 PM
           </p>
           <p className="mt-1 opacity-60">Our Support Team is available 24Hrs</p>
@@ -25,14 +25,14 @@ export default function ContactCard() {
       </Tab>
       <Tab label="Contact us">
         <div>
-          <p className="lg:w-1/2 lg:text-2xl text-lg font-light">
-            +234 809 383 0421
+          <p className="lg:w-1/2 lg:text-2xl text-sm font-light">
+            +234 901 210 1539
           </p>
-          <p className="mt-1 opacity-60">talktous@ruksalamode.com</p>
+          <p className="mt-1 opacity-60">ruksalamode@gmail.com</p>
         </div>
       </Tab>
 
-      <div className="flex space-x-4 lg:pb-6 lg:mb-6">
+      <div className="flex space-x-4 pb-6 mb-6">
         {socials.map((s) => (
           <SocialIcon
             key={s}

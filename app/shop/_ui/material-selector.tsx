@@ -20,7 +20,9 @@ export default function MaterialSelector({
 
   return (
     <div className="mt-6 w-full">
-      <p className="mb-2 font-semibold">Select Material</p>
+      <p className="mb-2 lg:font-semibold font-medium lg:text-base text-sm">
+        Select Material
+      </p>
       <div className="flex lg:flex-row flex-col gap-3">
         {materials?.map((material) => (
           <label
@@ -37,7 +39,7 @@ export default function MaterialSelector({
               value={material?.name}
               checked={selectedPart === material?.name}
               onChange={() => handleSelect(material)}
-              className="hidden"
+              className="hidden lg:text-base text-sm"
             />
             {material?.name}
           </label>
