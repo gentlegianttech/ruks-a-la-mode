@@ -22,8 +22,8 @@ export default function Header() {
         (path) => pathname.startsWith(path) && !pathname.startsWith("/roaming")
       ) && (
         <div className="relative ">
-          <div className="w-full flex items-center justify-between pb-8 lg:pt-16 pt-6 px-3 lg:px-28">
-            <div className="lg:w-2/5 items-center justify-start flex lg:ml-0 ml-2">
+          <div className="w-full flex items-center justify-between pb-8 lg:pt-8 pt-6 px-3 lg:px-10">
+            <div className="lg:w-2/5 items-center justify-start flex lg:ml-0">
               <Link href="/" className="">
                 <p className="uppercase lg:font-bold font-black text-coffee text-xs lg:text-2xl tracking-wider">
                   RUKS Á LA MODE
@@ -34,7 +34,7 @@ export default function Header() {
               {routes.map((r) => (
                 <Link key={r} href={r === "home" ? "/" : `/${r}`}>
                   <div className="cursor-pointer hover:bg-[#fea203] hover:bg-opacity-30">
-                    <p className="uppercase font-bold text-coffee text-lg tracking-wider cursor-pointer">
+                    <p className="uppercase text-dark text-xs lg:text-sm tracking-wider cursor-pointer">
                       {r.replace("-", " ")}
                     </p>
                   </div>
@@ -42,9 +42,24 @@ export default function Header() {
               ))}
             </div>
             <div className="w-1/3 flex items-center justify-center lg:justify-end">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-3 lg:size-6 mr-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+
               <ShoppingBag />
               <select
-                className="bg-transparent lg:text-base text-xs ml-4 border-2 border-dark p-1 outline-none"
+                className="bg-transparent lg:text-sm text-xs ml-4 border border-dark outline-none"
                 onChange={(e) => setCurrency(e.target.value)}
               >
                 {currencies?.map((c) => (

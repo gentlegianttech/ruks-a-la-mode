@@ -42,32 +42,32 @@ export default function Product({
 
   return (
     <div
-      className={`${""} transition-transform duration-300 ease-out cursor-pointer hover:scale-105 flex flex-col items-center`}
+      className={`${""} transition-transform duration-300 ease-out cursor-pointer hover:scale-105 flex flex-col items-center mb-8`}
     >
       <div onClick={viewProduct} className="">
-        <div className="relative lg:h-72 h-40">
+        <div className="relative lg:h-80 w-32 h-40 lg:w-56">
           <Image
             fill={true}
             src={product?.data?.images[0]}
             alt={product?.data?.name}
-            className="object-contain"
+            className="object-cover"
             sizes="33vw"
           />
         </div>
         {/* <div className=" absolute lg:top-5 lg:left-5 top-2 left-2 py-2 px-4 flex items-center justify-center rounded-full bg-white shadow-dark/20 shadow-md">
           <p className="text-xs uppercase opacity-60">{category}</p>
         </div> */}
-        <p className="lg:text-lg text-sm font-bold uppercase mb-2 text-center text-black/70">
+        <p className="lg:text-base mt-6 text-xs font-medium uppercase mb-2 text-center text-dark">
           {product?.data?.name}
         </p>
-        <p className="lg:text-base text-xs font-semibold text-center text-black/80">
+        <p className="lg:text-base text-xs font-light text-center text-dark">
           {formatPrice(
             currency,
             product?.data?.price * exchangeRates[currency.toLowerCase()]
           )}
         </p>
       </div>
-      <div className="mt-4">
+      {/* <div className="mt-4">
         {product?.data?.colors.map((color: any, i: number) => (
           <span
             key={i}
@@ -76,7 +76,7 @@ export default function Product({
             title={color.name}
           ></span>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

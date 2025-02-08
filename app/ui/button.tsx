@@ -12,12 +12,12 @@ export default function Button({ label, onClick, icon, loading }: ButtonProps) {
   return (
     <div
       onClick={onClick}
-      className="flex items-center justify-center space-x-4 border-[3px] border-coffee rounded-lg w-fit px-2.5 py-1.5 cursor-pointer hover:bg-[#fea203] hover:bg-opacity-20"
+      className="flex items-center justify-center space-x-4 border border-coffee rounded-lg w-fit px-2.5 py-1.5 cursor-pointer hover:bg-[#fea203] hover:bg-opacity-20"
     >
       {loading ? (
         <Audio />
       ) : (
-        <p className={`${inter.className} text-base font-bold text-coffee`}>
+        <p className={`${inter.className} text-base font-medium text-coffee`}>
           {label}
         </p>
       )}

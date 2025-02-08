@@ -17,6 +17,7 @@ import Link from "next/link";
 type Params = Promise<{ slug: string }>;
 
 export default function Page(props: { params: Params }) {
+  const [openCustom, setOpenCustom] = useState(false);
   const params = use(props.params);
   const { slug } = params;
   const router = useRouter();
@@ -43,8 +44,14 @@ export default function Page(props: { params: Params }) {
 
   const [measurement, setMeasurement] = useState({
     size: "",
-    custom: "",
     length: "",
+    custom: {
+      bust: "",
+      waist: "",
+      hips: "",
+      "dress/pants length": "",
+      height: "",
+    },
   });
 
   const [selectedPart, setSelectedPart] = useState({
@@ -163,23 +170,24 @@ export default function Page(props: { params: Params }) {
     }
   };
 
+  useEffect(() => {
+    if (!selectedProduct) router.push("/shop");
+  }, []);
   // if (isLoading) {
   //   return <Blocks />;
   // }
 
   return (
-    <div
-      className={`flex lg:max-h-screen flex-col w-full lg:px-24 px-6  text-black/80  pb-10`}
-    >
-      <div className="flex lg:flex-row  flex-col lg:items-center lg:justify-center items-center lg:space-x-16 w-full lg:mt-10">
-        <div className="lg:w-[500px] lg:h-[500px] w-[250px] h-[250px] relative mt-8">
+    <div className={`flex flex-col w-full lg:px-24 px-8  text-black/80  pb-10`}>
+      <div className="flex lg:flex-row  flex-col lg:items-start lg:justify-center items-center lg:space-x-16 w-full lg:mt-10">
+        <div className="lg:w-[480px] lg:h-[600px] w-[250px] h-[350px] relative lg:mt-0 mt-8">
           <Image
             alt="merch"
-            src={selectedProduct?.data?.images[0] ?? ""}
+            src={selectedProduct?.data?.images[0] ?? null}
             fill={true}
           />
         </div>
-        <div className="flex flex-col lg:items-start items-center mt-10">
+        <div className="flex flex-col lg:items-start items-center lg:w-2/5 w-full lg:mt-0 mt-10">
           <p className="lg:text-4xl text-2xl font-bold tracking-wider text-center">
             {selectedProduct?.data?.name}
           </p>
@@ -218,12 +226,12 @@ export default function Page(props: { params: Params }) {
               selectedPart={selectedMaterial?.name}
             />
           )}
-          <div className="mt-12 flex flex-col items-center justify-start">
+          <div className="mt-6 w-full flex flex-col lg:items-start items-center justify-start">
             <div>
               <label className="text-sm">
                 Size
                 <select
-                  className="border ml-2 mr-4 border-dark outline-none"
+                  className="border ml-2 mr-4 border-dark outline-none rounded-lg bg-transparent"
                   onChange={(e) =>
                     setMeasurement({ ...measurement, size: e.target.value })
                   }
@@ -236,7 +244,7 @@ export default function Page(props: { params: Params }) {
               <label className="text-sm">
                 Length
                 <select
-                  className="border ml-2 border-dark outline-none"
+                  className="border ml-2 border-dark outline-none rounded-lg bg-transparent"
                   onChange={(e) =>
                     setMeasurement({ ...measurement, length: e.target.value })
                   }
@@ -247,21 +255,29 @@ export default function Page(props: { params: Params }) {
                 </select>
               </label>
             </div>
-            <Link href="">
-              <p className="mt-8 text-xs tracking-wide leading-loose">
-                *Click here to check our size guide for help in picking the best
-                sizing, or if you're still not sure, you can input your
-                measurements below
-              </p>
-            </Link>
-            <input
+            <div className="mt-10 w-full flex flex-col lg:items-start items-center">
+              {openCustom ? (
+                <CustomMeasurement
+                  measurement={measurement}
+                  setMeasurement={setMeasurement}
+                  setOpenCustom={setOpenCustom}
+                />
+              ) : (
+                <Button
+                  label="Custom Size"
+                  onClick={() => setOpenCustom(true)}
+                />
+              )}
+            </div>
+            <Link href=""></Link>
+            {/* <input
               className="border border-dark bg-transparent text-sm p-2 mt-4 outline-none"
               placeholder="Measurement (inches)"
               value={measurement?.custom}
               onChange={(e) =>
                 setMeasurement({ ...measurement, custom: e.target.value })
               }
-            />
+            /> */}
           </div>
           {/* <SizeGuide
             measurement={measurement}
@@ -272,7 +288,7 @@ export default function Page(props: { params: Params }) {
           ) : (
             <div className="mt-10 flex flex-col lg:items-start items-center">
               <p>Quantity</p>
-              <div className="mt-4 w-64 p-3 border-dark border ">
+              <div className="mt-4 w-40 py-2 px-3 rounded-lg border-dark border ">
                 <Incrementer
                   leftClick={() =>
                     setOrderDetails({
@@ -333,7 +349,9 @@ export default function Page(props: { params: Params }) {
       </div>
       <SimilarProducts
         items={all_products
-          ?.filter((p: any) => p.category === selectedProduct?.data?.category)
+          ?.filter(
+            (p: any) => p?.data?.category === selectedProduct?.data?.category
+          )
           .filter((p: any) => p.id !== selectedProduct?.id)
           .slice(0, 4)}
         viewProduct={viewProduct}
@@ -341,3 +359,43 @@ export default function Page(props: { params: Params }) {
     </div>
   );
 }
+
+const CustomMeasurement = ({
+  measurement,
+  setMeasurement,
+  setOpenCustom,
+}: {
+  measurement: any;
+  setMeasurement: any;
+  setOpenCustom: any;
+}) => (
+  <div className="flex flex-col lg:items-start items-center w-full">
+    <p
+      className="font-bold underline cursor-pointer mb-3"
+      onClick={() => setOpenCustom(false)}
+    >
+      ✕
+    </p>
+    {Object.keys(measurement?.custom)?.map((m) => (
+      <div
+        key={m}
+        className="flex items-center justify-between mb-4 lg:w-[60%] w-full"
+      >
+        <p className="capitalize lg:text-sm text-xs">{m}</p>
+        <div className="flex items-center justify-start">
+          <input
+            className="bg-transparent lg:text-sm text-xs border-dark border rounded-lg mr-3 px-3 outline-none"
+            value={measurement[m]}
+            onChange={(e) =>
+              setMeasurement({
+                ...measurement,
+                custom: { ...measurement?.custom, [m]: e.target.value },
+              })
+            }
+          />
+          <p className="text-xs">in</p>
+        </div>
+      </div>
+    ))}
+  </div>
+);

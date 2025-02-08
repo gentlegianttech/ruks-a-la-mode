@@ -61,7 +61,7 @@ const SizeGuide = ({
   };
 
   return (
-    <div className="py-4 space-y-8 w-full">
+    <div className="py-4 space-y-8 w-full overflow-scroll">
       {/* Size Guide Table */}
       <div>
         <h2 className="text-xl font-bold mb-4">Size Guide</h2>

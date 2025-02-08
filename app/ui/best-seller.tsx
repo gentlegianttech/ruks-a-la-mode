@@ -29,13 +29,7 @@ export default function BestSeller() {
 
   return (
     <div className="w-full flex flex-col items-center justify-start mt-10 lg:mt-20">
-      <p className="uppercase text-lg lg:text-4xl font-black tracking-wide">
-        BEST SELLERs
-      </p>
-      <p className="text-xs lg:text-sm lg:w-2/3 text-center mt-4">
-        Our Customers Can't Seem To Get Enough Of These
-      </p>
-      <CategoryGrid items={products} viewProduct={viewProduct} />
+      <CategoryGrid items={products?.slice(0, 4)} viewProduct={viewProduct} />
     </div>
   );
 }

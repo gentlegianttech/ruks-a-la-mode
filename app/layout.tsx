@@ -5,6 +5,7 @@ import Header from "./ui/header";
 import { AppWrapper } from "@/helpers/store";
 import Footer from "./ui/footer";
 import Providers from "./providers";
+import Preheader from "./ui/preheader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className={`${montserrat.className} antialiased bg-[#f5f5f5]`}>
         <AppWrapper>
           <div className="">
+            <Preheader />
             <Header />
             <Providers>{children}</Providers>
             <Footer />

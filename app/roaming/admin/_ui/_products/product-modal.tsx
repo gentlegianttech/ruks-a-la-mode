@@ -68,7 +68,7 @@ export default function ProductModal({
 
     // Identify changed fields
     if (formData?.id) {
-      const updatedFields: Partial<ProductProps> = {};
+      const updatedFields: any = {};
       if (!product) return; // Ensure we have an existing product to update
 
       for (const key in formData) {
@@ -87,10 +87,23 @@ export default function ProductModal({
       }
 
       if (Object.keys(updatedFields).length > 0) {
+        if (updatedFields?.hasOwnProperty("price")) {
+          updatedFields["price"] = parseInt(updatedFields?.price);
+        }
+        if (updatedFields?.hasOwnProperty("quantity")) {
+          updatedFields["quantity"] = parseInt(updatedFields?.quantity);
+        }
+        if (updatedFields?.hasOwnProperty("weight")) {
+          updatedFields["weight"] = parseInt(updatedFields?.weight);
+        }
         onSave({ ...updatedFields, id: formData?.id }); // Send only updated fields
       }
     } else {
-      onSave(formData);
+      let product = { ...formData };
+      product.price = parseInt(product.price);
+      product.quantity = parseInt(product.quantity);
+      product.weight = parseInt(product.weight);
+      onSave(product);
     }
 
     onClose();

@@ -19,9 +19,9 @@ export default function ShoppingBag() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth="2.5"
+            strokeWidth="1"
             stroke="#1B1B1B"
-            className="lg:size-8 size-6"
+            className="lg:size-6 size-4"
           >
             <path
               strokeLinecap="round"

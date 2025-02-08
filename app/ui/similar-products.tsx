@@ -18,7 +18,7 @@ export default function SimilarProducts({
     <>
       {items?.length > 0 && (
         <div className="w-full flex flex-col items-center justify-center py-6 mt-16">
-          <p className="tracking-wide font-semibold text-3xl mb-10">
+          <p className="tracking-wide font-semibold lg:text-3xl text-xl mb-10">
             MORE YOU MAY LIKE
           </p>
           <div className="lg:w-[94%] grid lg:grid-cols-4 grid-cols-2 lg:gap-6 gap-5">

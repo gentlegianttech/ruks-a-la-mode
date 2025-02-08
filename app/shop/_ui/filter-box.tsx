@@ -76,16 +76,16 @@ export default function FilterBox({
   };
 
   return (
-    <div className="relative">
+    <div className="relative mb-7">
       {/* Filter Menu */}
-      <div className="lg:w-auto border-2 border-coffee py-1 px-3 items-center flex justify-center space-x-8 lg:mt-12 mt-5">
+      <div className="lg:w-auto border border-coffee py-1 px-3 items-center flex justify-center space-x-8 mt-5">
         {filterMenu.map((m) => (
           <div
             className="flex space-x-1 items-end cursor-pointer hover:scale-95 hover:opacity-85 transform ease-in-out duration-200"
             key={m}
             onClick={() => toggleSwitch(m)}
           >
-            <p className="text-coffee lg:text-base text-xs font-semibold uppercase">
+            <p className="text-coffee text-xs uppercase">
               {m.replace("-", " ")}
             </p>
             <svg
@@ -110,7 +110,7 @@ export default function FilterBox({
       <div
         className={`${
           isAnySwitchOn
-            ? "bg-[#ededed] border-coffee border-2 rounded shadow-md"
+            ? "bg-[#ededed] border-coffee border rounded shadow-md"
             : ""
         } absolute w-full mt-1 z-50`}
       >
@@ -130,8 +130,8 @@ export default function FilterBox({
                         selectedSortOrder === "high-to-low") &&
                       SORT_ORDER_LABELS[selectedSortOrder] === option)
                       ? "text-coffee font-bold"
-                      : "text-black"
-                  } hover:text-coffee`}
+                      : "text-dark"
+                  } hover:text-coffee text-xs uppercase`}
                   onClick={() =>
                     m === "category"
                       ? handleCategoryClick(option)

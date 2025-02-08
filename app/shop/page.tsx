@@ -21,6 +21,8 @@ export default function Page() {
     isError,
     refetch: refetchProducts,
   } = useQuery({
+    staleTime: 0, // Forces re-fetch every time
+    refetchOnWindowFocus: true, // Refetch when tab is focused
     queryKey: ["products"],
     queryFn: () => getAllActiveProducts(),
   });

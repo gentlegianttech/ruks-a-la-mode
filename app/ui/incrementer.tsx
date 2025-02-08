@@ -11,7 +11,7 @@ function Incrementer({ leftClick, rightClick, value }: IncrementerProps) {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="#1B1B1B"
-        className="md:w-8 md:h-8 h-3 w-3"
+        className="md:w-5 md:h-5 h-3 w-3"
       >
         <path
           strokeLinecap="round"
@@ -20,7 +20,7 @@ function Incrementer({ leftClick, rightClick, value }: IncrementerProps) {
         />
       </svg>
       <p
-        className={`lg:text-2xl text-coffee text-sm outline-none select-none ${bungee.className}`}
+        className={`lg:text-sm text-coffee text-sm outline-none font-bold select-none`}
       >
         {value}
       </p>
@@ -30,7 +30,7 @@ function Incrementer({ leftClick, rightClick, value }: IncrementerProps) {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="#1B1B1B"
-        className="md:w-8 md:h-8 h-3 w-3"
+        className="md:w-5 md:h-5 h-3 w-3"
         onClick={rightClick}
       >
         <path
