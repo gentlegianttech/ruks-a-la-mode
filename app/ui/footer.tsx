@@ -8,10 +8,25 @@ import { SocialIcon } from "react-social-icons";
 
 export default function Footer() {
   const socials = [
-    "https://www.instagram.com/ruksalamode",
-    "https://www.x.com/ruksalamode",
-    "https://www.tiktok/ruksalamode",
-    "http://wa.me/2349012101539",
+    { url: "https://www.instagram.com/ruksalamode", network: "instagram" },
+    { url: "https://www.x.com/ruksalamode", network: "twitter" },
+    { url: "https://www.tiktok/ruksalamode", network: "tiktok" },
+    { url: "http://wa.me/2349012101539", network: "whatsapp" },
+  ];
+
+  const more = [
+    {
+      text: "Policies",
+      url: "https://docs.google.com/document/d/1NDZ68Je333K2B1joCYcinJxoIK21xIEKTIsntr5ibKE/edit?usp=drivesdk",
+    },
+    {
+      text: "Care Instructions",
+      url: "https://docs.google.com/document/d/1RbjeDvKZkd51FbglQLEJGLMgp10OU_W__BelQ0gFSHM/edit?usp=drivesdk",
+    },
+    {
+      text: "Join Our Community",
+      url: "https://www.instagram.com/channel/AbZLhIPkflwG7Rsc/?igsh=aGVvbnNrcndqd2Fy",
+    },
   ];
   const menu = ["home", "shop", "contact-us"];
   const paths = ["/", "/shop", "/contact-us"];
@@ -34,12 +49,13 @@ export default function Footer() {
                   <div className="flex space-x-4 pb-6 my-6 border-b border-b-[#5b5b5b]">
                     {socials.map((s) => (
                       <SocialIcon
-                        key={s}
-                        url={s}
+                        network={s.network}
+                        key={s.url}
+                        url={s.url}
                         className="w-6 h-6"
                         style={{ width: 40, height: 40 }}
-                        bgColor="#212121"
-                        fgColor="#5b5b5b"
+                        bgColor="transparent"
+                        fgColor="#0e0e0e"
                       />
                     ))}
                   </div>
@@ -59,13 +75,13 @@ export default function Footer() {
                   ))}
                 </div>
                 <div className="lg:w-1/2">
-                  <Link
-                    href={`https://docs.google.com/document/d/1NDZ68Je333K2B1joCYcinJxoIK21xIEKTIsntr5ibKE/edit?usp=drivesdk`}
-                  >
-                    <p className="capitalize mb-3 opacity-90 lg:text-base text-sm">
-                      Policies
-                    </p>
-                  </Link>
+                  {more.map((m) => (
+                    <Link key={m.text} href={`${m.url}`}>
+                      <p className="capitalize mb-3 opacity-90 lg:text-base text-sm">
+                        {m.text.replace("-", " ")}
+                      </p>
+                    </Link>
+                  ))}
                 </div>
               </div>
               <div className="">

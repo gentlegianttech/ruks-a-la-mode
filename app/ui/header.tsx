@@ -30,25 +30,25 @@ export default function Header() {
                 </p>
               </Link>
             </div>
-            <div className="lg:flex items-center justify-center space-x-16 hidden w-1/3">
-              {routes.map((r) => (
-                <Link key={r} href={r === "home" ? "/" : `/${r}`}>
-                  <div className="cursor-pointer hover:bg-[#fea203] hover:bg-opacity-30">
-                    <p className="uppercase text-dark text-xs lg:text-sm tracking-wider cursor-pointer">
-                      {r.replace("-", " ")}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="w-1/3 flex items-center justify-center lg:justify-end">
+            <div className=" flex items-center justify-center lg:justify-end">
+              <div className="md:flex items-center justify-center space-x-10 hidden mr-12">
+                {routes.map((r) => (
+                  <Link key={r} href={r === "home" ? "/" : `/${r}`}>
+                    <div className="cursor-pointer hover:bg-[#fea203] hover:bg-opacity-30">
+                      <p className="uppercase text-dark text-xs lg:text-sm tracking-wider cursor-pointer">
+                        {r.replace("-", " ")}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={1.5}
+                strokeWidth={1}
                 stroke="currentColor"
-                className="size-3 lg:size-6 mr-4"
+                className="size-4 lg:size-6 lg:mr-4 mr-2"
               >
                 <path
                   strokeLinecap="round"
@@ -59,7 +59,7 @@ export default function Header() {
 
               <ShoppingBag />
               <select
-                className="bg-transparent lg:text-sm text-xs ml-4 border border-dark outline-none"
+                className="bg-transparent lg:text-sm text-xs lg:ml-4 ml-2 lg:border border lg:border-dark border-dark/60 outline-none"
                 onChange={(e) => setCurrency(e.target.value)}
               >
                 {currencies?.map((c) => (
@@ -71,12 +71,12 @@ export default function Header() {
               (path) =>
                 pathname.startsWith(path) && !pathname.startsWith("/roaming")
             ) && (
-              <div className="lg:hidden flex flex-col items-center">
+              <div className="md:hidden flex flex-col items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth={3.5}
+                  strokeWidth={1.5}
                   stroke="#0e0e0e"
                   className="size-6"
                   onClick={() => setopen(!open)}

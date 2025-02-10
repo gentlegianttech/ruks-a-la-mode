@@ -14,12 +14,14 @@ type FilterBoxProps = {
   categories?: string[];
   onCategorySelect?: (category: string | null) => void;
   onSortOrderSelect?: (order: "low-to-high" | "high-to-low" | null) => void;
+  clearFilter: () => void;
 };
 
 export default function FilterBox({
   categories = [],
   onCategorySelect = () => {},
   onSortOrderSelect = () => {},
+  clearFilter,
 }: FilterBoxProps) {
   const SORT_ORDER_LABELS = {
     "low-to-high": "Price: Lowest to Highest",
@@ -114,6 +116,17 @@ export default function FilterBox({
             : ""
         } absolute w-full mt-1 z-50`}
       >
+        <p
+          className={`${
+            isAnySwitchOn ? "block" : "hidden"
+          } py-2 px-4 font-bold underline lg:text-sm text-xs cursor-pointer`}
+          onClick={() => {
+            clearFilter();
+            setSwitches({ category: false, "sort-by": false });
+          }}
+        >
+          ✕
+        </p>
         {filterMenu.map((m) => (
           <div
             key={m}

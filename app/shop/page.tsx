@@ -91,6 +91,10 @@ export default function Page() {
     <div className="w-screen flex flex-col items-center justify-start">
       {/* FilterBox: Pass callbacks to update filters */}
       <FilterBox
+        clearFilter={() => {
+          setSelectedCategory(null);
+          setSortOrder(null);
+        }}
         categories={categories ?? [""]}
         onCategorySelect={(category) => setSelectedCategory(category)}
         onSortOrderSelect={(order) => setSortOrder(order)}

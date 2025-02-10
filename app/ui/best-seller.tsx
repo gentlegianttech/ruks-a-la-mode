@@ -23,7 +23,7 @@ export default function BestSeller() {
   if (isLoading)
     return (
       <div className="w-full mt-6 flex flex-col items-center justify-center">
-        <TailSpin />
+        <TailSpin color="#0e0e0e" />
       </div>
     );
 

@@ -112,3 +112,48 @@ export async function deleteProduct(id: any) {
 }
 
 //admins
+
+//content
+export async function createBanner(data: any) {
+  try {
+    return await axios.post(`/api/banners/create-banner`, data);
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function updateBanner(data: any) {
+  try {
+    return await axios.post(`/api/banners/update-banner`, data);
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getBanners() {
+  try {
+    const banners = await axios.get(`/api/banners/get-banners`);
+    return banners.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+export async function getPretext() {
+  try {
+    const pretext = await axios.get(`/api/content/get-pretext`);
+    return pretext.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+export async function updatePretext(text: string) {
+  try {
+    return await axios.post(`/api/content/update-pretext`, { text });
+  } catch (error) {
+    return error;
+  }
+}

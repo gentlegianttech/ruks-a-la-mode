@@ -23,7 +23,7 @@ const CheckoutForm = ({
           <div className="w-1/2">
             <label
               htmlFor="firstName"
-              className="block text-sm font-medium text-coffee"
+              className="block text-xs lg:text-sm font-medium text-coffee"
             >
               Name
             </label>
@@ -36,13 +36,13 @@ const CheckoutForm = ({
               onChange={(e) =>
                 setShippingInfo({ ...shippingInfo, name: e.target.value })
               }
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none bg-transparent text-sm"
             />
           </div>
           <div className="w-1/2">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-coffee"
+              className="block text-xs lg:text-sm font-medium text-coffee"
             >
               Email
             </label>
@@ -55,7 +55,7 @@ const CheckoutForm = ({
               onChange={(e) =>
                 setShippingInfo({ ...shippingInfo, email: e.target.value })
               }
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none bg-transparent text-sm"
             />
           </div>
         </div>
@@ -63,7 +63,7 @@ const CheckoutForm = ({
           <div className="w-1/2">
             <label
               htmlFor="phonenumber"
-              className="block text-sm font-medium text-coffee"
+              className="block text-xs lg:text-sm font-medium text-coffee"
             >
               Phone Number
             </label>
@@ -79,7 +79,7 @@ const CheckoutForm = ({
                   phonenumber: e.target.value,
                 })
               }
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none bg-transparent text-sm"
             />
           </div>
         </div>
@@ -89,7 +89,7 @@ const CheckoutForm = ({
         <div>
           <label
             htmlFor="address"
-            className="block text-sm font-medium text-coffee"
+            className="block text-xs lg:text-sm font-medium text-coffee"
           >
             Address
           </label>
@@ -102,7 +102,7 @@ const CheckoutForm = ({
             onChange={(e) =>
               setShippingInfo({ ...shippingInfo, address: e.target.value })
             }
-            className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none bg-transparent text-sm"
           />
         </div>
 
@@ -110,7 +110,7 @@ const CheckoutForm = ({
           <div className="w-1/2">
             <label
               htmlFor="state"
-              className="block text-sm font-medium text-coffee"
+              className="block text-xs lg:text-sm font-medium text-coffee"
             >
               State
             </label>
@@ -123,13 +123,13 @@ const CheckoutForm = ({
               onChange={(e) =>
                 setShippingInfo({ ...shippingInfo, state: e.target.value })
               }
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none bg-transparent text-sm"
             />
           </div>
           <div className="w-1/2">
             <label
               htmlFor="city"
-              className="block text-sm font-medium text-coffee"
+              className="block text-xs lg:text-sm font-medium text-coffee"
             >
               City
             </label>
@@ -142,40 +142,35 @@ const CheckoutForm = ({
               onChange={(e) =>
                 setShippingInfo({ ...shippingInfo, city: e.target.value })
               }
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-sm shadow-sm focus:outline-none bg-transparent text-sm"
             />
           </div>
         </div>
       </div>
-
-      <div>
-        <div
-          onClick={() => {
-            if (
-              shippingInfo.email === "" ||
-              shippingInfo.address === "" ||
-              shippingInfo.city === "" ||
-              shippingInfo.name === "" ||
-              shippingInfo.state === "" ||
-              shippingInfo.phonenumber === ""
-            ) {
-              return alert(
-                "We need some information to process your delivery."
-              );
-            }
-            checkoutCart({
-              email: shippingInfo.email,
-              name: shippingInfo.name,
-              address: shippingInfo.address,
-              city: shippingInfo.city,
-              state: shippingInfo.state,
-              phonenumber: shippingInfo.phonenumber,
-            });
-          }}
-          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Checkout
-        </div>
+      <div
+        onClick={() => {
+          if (
+            shippingInfo.email === "" ||
+            shippingInfo.address === "" ||
+            shippingInfo.city === "" ||
+            shippingInfo.name === "" ||
+            shippingInfo.state === "" ||
+            shippingInfo.phonenumber === ""
+          ) {
+            return alert("We need some information to process your delivery.");
+          }
+          checkoutCart({
+            email: shippingInfo.email,
+            name: shippingInfo.name,
+            address: shippingInfo.address,
+            city: shippingInfo.city,
+            state: shippingInfo.state,
+            phonenumber: shippingInfo.phonenumber,
+          });
+        }}
+        className={`mt-2 lg:w-96 w-40 p-3 bg-black/85 flex items-center font-medium justify-center hover:opacity-70 ${"cursor-pointer"}`}
+      >
+        <p className="text-[#f5f5f5] lg:text-sm text-xs">Check out</p>
       </div>
     </form>
   );

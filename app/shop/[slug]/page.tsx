@@ -13,6 +13,11 @@ import MaterialSelector from "../_ui/material-selector";
 import Button from "@/app/ui/button";
 import { formatPrice } from "@/helpers/functions";
 import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 type Params = Promise<{ slug: string }>;
 
@@ -53,6 +58,69 @@ export default function Page(props: { params: Params }) {
       height: "",
     },
   });
+
+  const more = [
+    {
+      text: "Size Guide",
+      url: "https://docs.google.com/document/d/1NDZ68Je333K2B1joCYcinJxoIK21xIEKTIsntr5ibKE/edit?usp=drivesdk",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-4"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
+          />
+        </svg>
+      ),
+    },
+    {
+      text: "Length Guide",
+      url: "https://drive.google.com/file/d/1rtkcLWXlncIHvlp5SpMZSQzelrN56H4h/view?usp=drivesdk",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-4"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m7.848 8.25 1.536.887M7.848 8.25a3 3 0 1 1-5.196-3 3 3 0 0 1 5.196 3Zm1.536.887a2.165 2.165 0 0 1 1.083 1.839c.005.351.054.695.14 1.024M9.384 9.137l2.077 1.199M7.848 15.75l1.536-.887m-1.536.887a3 3 0 1 1-5.196 3 3 3 0 0 1 5.196-3Zm1.536-.887a2.165 2.165 0 0 0 1.083-1.838c.005-.352.054-.695.14-1.025m-1.223 2.863 2.077-1.199m0-3.328a4.323 4.323 0 0 1 2.068-1.379l5.325-1.628a4.5 4.5 0 0 1 2.48-.044l.803.215-7.794 4.5m-2.882-1.664A4.33 4.33 0 0 0 10.607 12m3.736 0 7.794 4.5-.802.215a4.5 4.5 0 0 1-2.48-.043l-5.326-1.629a4.324 4.324 0 0 1-2.068-1.379M14.343 12l-2.882 1.664"
+          />
+        </svg>
+      ),
+    },
+    {
+      text: "Share Your Experience With Us",
+      url: "https://ig.me/m/ruksalamode",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-4"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+          />
+        </svg>
+      ),
+    },
+  ];
 
   const [selectedPart, setSelectedPart] = useState({
     id: "",
@@ -180,15 +248,23 @@ export default function Page(props: { params: Params }) {
   return (
     <div className={`flex flex-col w-full lg:px-24 px-8  text-black/80  pb-10`}>
       <div className="flex lg:flex-row  flex-col lg:items-start lg:justify-center items-center lg:space-x-16 w-full lg:mt-10">
-        <div className="lg:w-[480px] lg:h-[600px] w-[250px] h-[350px] relative lg:mt-0 mt-8">
-          <Image
-            alt="merch"
-            src={selectedProduct?.data?.images[0] ?? null}
-            fill={true}
-          />
-        </div>
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          // navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          className="h-full lg:w-1/3 w-full flex items-center justify-center"
+        >
+          {selectedProduct?.data?.images?.map((image: any) => (
+            <SwiperSlide key={image}>
+              <div className="lg:h-[750px] w-full h-[380px] relative lg:mt-0 mt-8">
+                <Image alt="merch" src={image ?? null} fill={true} />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
         <div className="flex flex-col lg:items-start items-center lg:w-2/5 w-full lg:mt-0 mt-10">
-          <p className="lg:text-4xl text-2xl font-bold tracking-wider text-center">
+          <p className="lg:text-4xl text-2xl font-medium tracking-wider text-center">
             {selectedProduct?.data?.name}
           </p>
           <p className={`mt-4 lg:text-lg font-medium tracking-wide`}>
@@ -227,11 +303,12 @@ export default function Page(props: { params: Params }) {
             />
           )}
           <div className="mt-6 w-full flex flex-col lg:items-start items-center justify-start">
-            <div>
-              <label className="text-sm">
-                Size
+            <div className="w-full flex flex-col lg:items-start items-center">
+              <div className="mb-4 text-sm w-full flex flex-col lg:items-start items-center">
+                <p className="mb-2 ">Size</p>
+
                 <select
-                  className="border ml-2 mr-4 border-dark outline-none rounded-lg bg-transparent"
+                  className="border text-sm border-dark outline-none bg-transparent p-2 lg:w-3/4 w-2/3"
                   onChange={(e) =>
                     setMeasurement({ ...measurement, size: e.target.value })
                   }
@@ -240,11 +317,12 @@ export default function Page(props: { params: Params }) {
                     <option key={s}>{s}</option>
                   ))}
                 </select>
-              </label>
-              <label className="text-sm">
-                Length
+              </div>
+              <div className="text-sm w-full flex flex-col lg:items-start items-center">
+                <p className="mb-2 ">Length</p>
+
                 <select
-                  className="border ml-2 border-dark outline-none rounded-lg bg-transparent"
+                  className="border text-sm border-dark outline-none bg-transparent p-2 lg:w-3/4 w-2/3"
                   onChange={(e) =>
                     setMeasurement({ ...measurement, length: e.target.value })
                   }
@@ -253,9 +331,9 @@ export default function Page(props: { params: Params }) {
                     <option key={l}>{l}</option>
                   ))}
                 </select>
-              </label>
+              </div>
             </div>
-            <div className="mt-10 w-full flex flex-col lg:items-start items-center">
+            <div className="mt-6 w-full flex flex-col lg:items-start items-center">
               {openCustom ? (
                 <CustomMeasurement
                   measurement={measurement}
@@ -269,7 +347,6 @@ export default function Page(props: { params: Params }) {
                 />
               )}
             </div>
-            <Link href=""></Link>
             {/* <input
               className="border border-dark bg-transparent text-sm p-2 mt-4 outline-none"
               placeholder="Measurement (inches)"
@@ -283,68 +360,77 @@ export default function Page(props: { params: Params }) {
             measurement={measurement}
             setMeasurement={setMeasurement}
           /> */}
-          {isProductInCart ? (
-            <></>
-          ) : (
-            <div className="mt-10 flex flex-col lg:items-start items-center">
-              <p>Quantity</p>
-              <div className="mt-4 w-40 py-2 px-3 rounded-lg border-dark border ">
-                <Incrementer
-                  leftClick={() =>
-                    setOrderDetails({
-                      ...orderDetails,
-                      quantity:
-                        orderDetails.quantity > 0
-                          ? orderDetails.quantity - 1
-                          : orderDetails.quantity,
-                    })
-                  }
-                  rightClick={() =>
-                    setOrderDetails({
-                      ...orderDetails,
-                      quantity:
-                        selectedProduct?.quantity &&
-                        orderDetails.quantity < selectedProduct?.quantity
-                          ? orderDetails.quantity + 1
-                          : orderDetails.quantity,
-                    })
-                  }
-                  value={orderDetails?.quantity}
-                />
+          <div className="flex lg:flex-row flex-col items-center lg:mt-10 mt-6 lg:space-x-3 w-full">
+            {isProductInCart ? (
+              <></>
+            ) : (
+              <div className="flex flex-col lg:items-start items-center">
+                <div className="w-40 py-2 px-3 border-dark border ">
+                  <Incrementer
+                    leftClick={() =>
+                      setOrderDetails({
+                        ...orderDetails,
+                        quantity:
+                          orderDetails.quantity > 0
+                            ? orderDetails.quantity - 1
+                            : orderDetails.quantity,
+                      })
+                    }
+                    rightClick={() =>
+                      setOrderDetails({
+                        ...orderDetails,
+                        quantity:
+                          selectedProduct?.quantity &&
+                          orderDetails.quantity < selectedProduct?.quantity
+                            ? orderDetails.quantity + 1
+                            : orderDetails.quantity,
+                      })
+                    }
+                    value={orderDetails?.quantity}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {isProductInCart ? (
-            <Incrementer
-              leftClick={handleLeftClick}
-              rightClick={handleRightClick}
-              value={cart[itemIndex].quantity}
-            />
-          ) : (
-            <div className="mt-8 pb-10">
-              <Button
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="#1B1B1B"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                    />
-                  </svg>
-                }
-                label="Add To Bag"
-                onClick={addToBag}
+            {isProductInCart ? (
+              <Incrementer
+                leftClick={handleLeftClick}
+                rightClick={handleRightClick}
+                value={cart[itemIndex].quantity}
               />
-            </div>
-          )}
+            ) : (
+              <div
+                className="flex items-center justify-center lg:w-1/2 border lg:mt-0 mt-5 border-dark p-2 cursor-pointer"
+                onClick={addToBag}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="#1B1B1B"
+                  className="size-5 mr-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+                <p className="text-xs">Add To Bag</p>
+              </div>
+            )}
+          </div>
+          <div className="flex items-center lg:flex-row flex-col lg:space-y-0 space-y-3 lg:space-x-6 mt-6 lg:mt-8">
+            {more?.map((m) => (
+              <Link key={m.text} href={m.url}>
+                <div className="flex items-center space-x-2">
+                  {m.icon}
+                  <p className="capitalize md:text-xs text-[10px]">{m.text}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
       <SimilarProducts
@@ -371,7 +457,7 @@ const CustomMeasurement = ({
 }) => (
   <div className="flex flex-col lg:items-start items-center w-full">
     <p
-      className="font-bold underline cursor-pointer mb-3"
+      className="font-bold underline lg:text-sm text-xs cursor-pointer mb-3"
       onClick={() => setOpenCustom(false)}
     >
       ✕
@@ -384,7 +470,7 @@ const CustomMeasurement = ({
         <p className="capitalize lg:text-sm text-xs">{m}</p>
         <div className="flex items-center justify-start">
           <input
-            className="bg-transparent lg:text-sm text-xs border-dark border rounded-lg mr-3 px-3 outline-none"
+            className="bg-transparent lg:text-sm text-xs border-dark border mr-3 px-3 outline-none"
             value={measurement[m]}
             onChange={(e) =>
               setMeasurement({

@@ -20,7 +20,7 @@ function Incrementer({ leftClick, rightClick, value }: IncrementerProps) {
         />
       </svg>
       <p
-        className={`lg:text-sm text-coffee text-sm outline-none font-bold select-none`}
+        className={`lg:text-sm text-coffee text-xs outline-none font-medium select-none`}
       >
         {value}
       </p>

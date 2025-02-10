@@ -20,14 +20,12 @@ export default function MaterialSelector({
 
   return (
     <div className="mt-6 w-full">
-      <p className="mb-2 lg:font-semibold font-medium lg:text-base text-sm">
-        Select Material
-      </p>
+      <p className="mb-2 font-medium lg:text-base text-sm">Select Material</p>
       <div className="flex lg:flex-row flex-col gap-3">
         {materials?.map((material) => (
           <label
             key={material?.name}
-            className={`p-2 border rounded-md cursor-pointer ${
+            className={`p-2 border uppercase text-xs rounded-md cursor-pointer ${
               selectedPart === material?.name
                 ? "bg-black text-white"
                 : "bg-white"

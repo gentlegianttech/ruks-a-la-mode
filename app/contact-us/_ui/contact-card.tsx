@@ -3,10 +3,10 @@ import { SocialIcon } from "react-social-icons";
 
 export default function ContactCard() {
   const socials = [
-    "https://www.instagram.com/ruksalamode",
-    "https://www.x.com/ruksalamode",
-    "https://www.tiktok/ruksalamode",
-    "http://wa.me/2349012101539",
+    { url: "https://www.instagram.com/ruksalamode", network: "instagram" },
+    { url: "https://www.x.com/ruksalamode", network: "twitter" },
+    { url: "https://www.tiktok/ruksalamode", network: "tiktok" },
+    { url: "http://wa.me/2349012101539", network: "whatsapp" },
   ];
   return (
     <div className="lg:w-[45%] w-full bg-lightgrey lg:p-14 rounded-[40px] lg:mt-0 mt-12">
@@ -35,12 +35,13 @@ export default function ContactCard() {
       <div className="flex space-x-4 pb-6 mb-6">
         {socials.map((s) => (
           <SocialIcon
-            key={s}
-            url={s}
+            network={s.network}
+            key={s.url}
+            url={s.url}
             className="w-6 h-6"
             style={{ width: 40, height: 40 }}
-            bgColor="white"
-            fgColor="#5b5b5b"
+            bgColor="transparent"
+            fgColor="#0e0e0e"
           />
         ))}
       </div>

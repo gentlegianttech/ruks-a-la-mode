@@ -24,7 +24,7 @@ export default function PartSelector({
       <div className="flex lg:flex-row flex-col gap-3">
         <label
           key={"Full Set"}
-          className={`p-2 border rounded-md cursor-pointer ${
+          className={`p-2 border rounded-md uppercase text-xs cursor-pointer ${
             selectedPart === "" ? "bg-black text-white" : "bg-white"
           }`}
         >

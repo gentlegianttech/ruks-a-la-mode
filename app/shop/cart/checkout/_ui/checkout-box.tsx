@@ -27,19 +27,19 @@ export default function CheckoutBox({
             .join(", ");
           return (
             <div
-              className="flex items-center justify-between w-full lg:mb-2 mb-1"
+              className="flex lg:flex-row flex-col lg:items-center items-start lg:justify-between w-full lg:mb-2 mb-3"
               key={c?.item?.id}
             >
               <div className="flex items-center w-full justify-start">
                 <Image
-                  width={150}
+                  width={100}
                   height={150}
                   src={c?.item.image}
                   alt="Product Image"
-                  className="lg:w-20 lg:h-20 w-16 h-16 rounded-full mr-4"
+                  className=" mr-4"
                 />
                 <div>
-                  <p className="tracking-wide lg:text-base font-bold uppercase">
+                  <p className="tracking-wide lg:text-base text-sm font-medium lg:font-bold uppercase">
                     {c?.item?.name}
                   </p>
                   <p className="font-extralight tracking-wide text-[9px]">
@@ -47,29 +47,29 @@ export default function CheckoutBox({
                   </p>
                 </div>
               </div>
-              <p className="lg:text-base text-sm">
-                ₦{formatPrice(currency, c?.item?.price * c?.quantity * rate)}
+              <p className="lg:text-base text-sm lg:mt-0 mt-4">
+                {formatPrice(currency, c?.item?.price * c?.quantity * rate)}
               </p>
             </div>
           );
         })}
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between mt-8">
           <input
-            className="w-3/4 border border-dark bg-transparent outline-none p-1 lg:h-11 h-9"
+            className="w-3/4 border border-dark bg-transparent text-xs outline-none p-1 lg:h-11 h-9"
             type="text"
             placeholder="Coupon or Discount Code"
             id="discountCode"
             name="discountCode"
           />
           <div className="p-2 lg:h-11 h-9 bg-dark border border-dark w-28 flex items-center justify-center cursor-pointer hover:opacity-80">
-            <p className="text-[#FFFF00] uppercase text-xs">Apply</p>
+            <p className="text-[#F05e1b] uppercase text-xs">Apply</p>
           </div>
         </div>
         <div className="flex items-center justify-between w-full mt-8">
-          <p className="font-medium tracking-wide lg:text-base text-sm">
+          <p className="font-medium tracking-wide lg:text-base text-xs">
             Subtotal
           </p>
-          <p className="font-light tracking-wide lg:text-base text-sm">
+          <p className="font-light tracking-wide lg:text-base text-xs">
             {formatPrice(
               currency,
               cart?.reduce(
@@ -80,18 +80,18 @@ export default function CheckoutBox({
           </p>
         </div>
         <div className="flex items-center justify-between w-full">
-          <p className="font-medium tracking-wide lg:text-base text-sm">
+          <p className="font-medium tracking-wide lg:text-base text-xs">
             Shipping Fee
           </p>
-          <p className="font-light tracking-wide lg:text-base text-sm">
+          <p className="font-light tracking-wide lg:text-base text-xs">
             {formatPrice(currency, shippingFee)}
           </p>
         </div>
         <div className="flex items-center justify-between w-full mt-3">
-          <p className="font-semibold tracking-wide lg:text-lg text-base">
+          <p className="font-semibold tracking-wide lg:text-lg text-sm">
             Total
           </p>
-          <p className="font-medium tracking-wide lg:text-lg text-base">
+          <p className="font-medium tracking-wide lg:text-lg text-sm">
             {formatPrice(
               currency,
               cart?.reduce(

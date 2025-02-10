@@ -7,6 +7,9 @@ import {
   ProductComponent,
   ColorProps,
 } from "@/helpers/types";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/helpers/utils/auth";
+import { TailSpin } from "react-loader-spinner";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -34,6 +37,8 @@ export default function ProductModal({
     weight: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (product) {
       setFormData(product);
@@ -53,17 +58,30 @@ export default function ProductModal({
     }
   }, [product]);
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   onSave({
-  //     ...formData,
-  //     price: parseInt(formData?.price),
-  //     quantity: parseInt(formData?.quantity),
-  //   });
-  //   onClose();
-  // };
+  const uploadImage = async (file: File) => {
+    if (!file) return;
+
+    const storageRef = ref(storage, `products/${file.name}`);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Optional: Handle progress
+        },
+        (error) => reject(error),
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     // Identify changed fields
@@ -99,13 +117,22 @@ export default function ProductModal({
         onSave({ ...updatedFields, id: formData?.id }); // Send only updated fields
       }
     } else {
+      let imageUrls = [];
+      //Upload Images
+      const uploadPromises = formData?.images?.map((file: File) =>
+        uploadImage(file)
+      );
+
+      imageUrls = await Promise.all(uploadPromises);
+
       let product = { ...formData };
       product.price = parseInt(product.price);
       product.quantity = parseInt(product.quantity);
       product.weight = parseInt(product.weight);
+      product.images = imageUrls;
       onSave(product);
     }
-
+    setLoading(false);
     onClose();
   };
 
@@ -137,7 +164,7 @@ export default function ProductModal({
     });
   };
 
-  const handleImageChange = (index: number, value: string) => {
+  const handleImageChange = (index: number, value: File | string) => {
     const updatedImages = [...formData.images];
     updatedImages[index] = value;
     setFormData({ ...formData, images: updatedImages });
@@ -290,13 +317,27 @@ export default function ProductModal({
               <p className="font-medium">Images</p>
               {formData?.images?.map((image: any, index: number) => (
                 <div key={index} className="flex gap-2 mt-2">
-                  <input
-                    type="text"
-                    placeholder="Image URL"
-                    value={image}
-                    onChange={(e) => handleImageChange(index, e.target.value)}
-                    className="p-2 border rounded w-full"
-                  />
+                  {formData?.id ? (
+                    <input
+                      type="text"
+                      placeholder="Image Url"
+                      value={image}
+                      onChange={(e) => handleImageChange(index, e.target.value)}
+                      className="p-2 border rounded w-full"
+                    />
+                  ) : (
+                    <input
+                      type="file"
+                      placeholder="Choose Image(s)"
+                      onChange={(e) =>
+                        e.target.files
+                          ? handleImageChange(index, e.target.files[0])
+                          : null
+                      }
+                      className="p-2 border rounded w-full"
+                    />
+                  )}
+
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
@@ -482,7 +523,13 @@ export default function ProductModal({
               type="submit"
               className="bg-green-500 text-white px-4 py-2 rounded"
             >
-              {product ? "Save Changes" : "Add Product"}
+              {loading ? (
+                <TailSpin width={20} height={20} />
+              ) : product ? (
+                "Save Changes"
+              ) : (
+                "Add Product"
+              )}
             </button>
           </div>
         </form>
