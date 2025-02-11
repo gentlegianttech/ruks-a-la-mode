@@ -18,9 +18,11 @@ export default function ContactCard() {
       <Tab label="Working Hours">
         <div>
           <p className="lg:w-1/2 lg:text-2xl text-sm font-light">
-            Monday To Friday 9:00 AM to 6:00 PM
+            Monday To Friday 11:00 AM to 5:00 PM
           </p>
-          <p className="mt-1 opacity-60">Our Support Team is available 24Hrs</p>
+          <p className="mt-1 opacity-60">
+            Our Support Team is available 9am - 9pm, everyday but Sunday.
+          </p>
         </div>
       </Tab>
       <Tab label="Contact us">

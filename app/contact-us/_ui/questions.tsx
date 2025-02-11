@@ -105,7 +105,10 @@ function Questions() {
     },
   ];
   return (
-    <div className="lg:w-3/4 my-16 flex flex-col items-center space-y-5">
+    <div
+      className="lg:w-3/4 my-16 flex flex-col items-center space-y-5"
+      id="faqs"
+    >
       {questions.map((q, i) => (
         <Question key={i} question={q.question} answer={q.answer} />
       ))}

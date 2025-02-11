@@ -17,7 +17,7 @@ export default function Footer() {
   const more = [
     {
       text: "Policies",
-      url: "https://docs.google.com/document/d/1NDZ68Je333K2B1joCYcinJxoIK21xIEKTIsntr5ibKE/edit?usp=drivesdk",
+      url: "https://docs.google.com/document/d/1PmALWFEbB8emQyMLKd2EFfUbeFz0ngPDzGPXuncMJiY/edit?usp=drivesdk",
     },
     {
       text: "Care Instructions",
@@ -28,7 +28,7 @@ export default function Footer() {
       url: "https://www.instagram.com/channel/AbZLhIPkflwG7Rsc/?igsh=aGVvbnNrcndqd2Fy",
     },
   ];
-  const menu = ["home", "shop", "contact-us"];
+  const menu = ["home", "shop", "faqs"];
   const paths = ["/", "/shop", "/contact-us"];
   const pathname = usePathname();
 
@@ -67,7 +67,10 @@ export default function Footer() {
               <div className="lg:w-[36%] w-3/4 flex items-start justify-between mr-10 text-lg lg:mb-0 mb-8">
                 <div className="lg:w-1/2 ">
                   {menu.map((m) => (
-                    <Link key={m} href={`/${m}`}>
+                    <Link
+                      key={m}
+                      href={m === "faqs" ? "/contact-us#faqs" : `/${m}`}
+                    >
                       <p className="capitalize mb-3 opacity-90 lg:text-base text-sm">
                         {m.replace("-", " ")}
                       </p>

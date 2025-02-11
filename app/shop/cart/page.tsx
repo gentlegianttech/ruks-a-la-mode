@@ -12,12 +12,31 @@ export default function Page() {
   const router = useRouter();
 
   const { cart, setcart, currency, exchangeRates } = context;
-  console.log(cart);
+
+  const getMeasurementString = (measurement: any) => {
+    if (measurement?.size) {
+      return Object.entries(measurement)
+        .filter(([key, value]) => key !== "custom")
+        .map(
+          ([key, value]) =>
+            `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
+        )
+        .join(", ");
+    } else {
+      return Object.entries(measurement?.custom)
+        .map(
+          ([key, value]) =>
+            `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
+        )
+        .join(", ");
+    }
+  };
+
   return (
-    <div className="flex min-h-screen flex-col w-full lg:px-24 px-6">
+    <div className="flex min-h-screen flex-col items-center w-full px-6">
       {cart?.length > 0 ? (
-        <div className="w-full">
-          <div className="w-full flex lg:flex-row flex-col items-end lg:justify-between lg:pr-36">
+        <div className="w-full items-center flex flex-col">
+          <div className="w-full lg:w-[89.2%] flex lg:flex-row flex-col items-end lg:justify-between">
             <p className="mt-12 lg:text-4xl text-2xl font-medium tracking-widest">
               Shopping Bag
             </p>
@@ -25,15 +44,15 @@ export default function Page() {
               Continue Shopping
             </Link>
           </div>
-          <div className="container lg:mx-20 lg:mt-16 mt-8">
+          <div className="container  lg:mt-16 mt-8">
             <div className="overflow-x-auto">
               <table className="min-w-full">
-                <thead className="border-b-[0.5px] border-dark/40">
-                  <tr>
-                    <th className="px-4 py-2 text-left text-xs font-extralight w-1/2 lg:w-2/3">
+                <thead className="border-b-[0.5px] border-dark/20">
+                  <tr className="items-start flex w-full justify-between">
+                    <th className="px-4 py-2 text-left text-xs font-extralight">
                       Product
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-extralight">
+                    <th className="px-4 py-2 text-left ml-16 text-xs font-extralight">
                       Quantity
                     </th>
                     <th className="px-4 py-2 text-left text-xs font-extralight">
@@ -43,8 +62,11 @@ export default function Page() {
                 </thead>
                 <tbody className="">
                   {cart?.map((c, i) => (
-                    <tr className="border-b" key={c?.item?.id}>
-                      <td className="px-4 my-5 lg:my-12 flex lg:flex-row flex-col items-start lg:items-center">
+                    <tr
+                      className="border-b items-start flex w-full justify-between"
+                      key={c?.item?.id}
+                    >
+                      <td className="px-4 my-5 flex lg:flex-row flex-col items-start ">
                         <Image
                           width={120}
                           height={280}
@@ -52,12 +74,20 @@ export default function Page() {
                           alt="Product Image"
                           className=" mr-4"
                         />
-                        <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3">
-                          {c?.item?.name}
-                        </span>
+                        <div className="flex flex-col items-start lg:space-y-2 space-y-1">
+                          <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
+                            {c?.item?.name}
+                          </span>
+                          <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
+                            {c?.item?.color?.name}
+                          </span>
+                          <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
+                            {getMeasurementString(c?.item?.measurement)}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-4">
-                        <div className="flex items-center">
+                        <div className="flex items-start">
                           <div className="mt-4 lg:w-40 w-16 p-1 lg:p-2 border-dark/70 border ">
                             <Incrementer
                               leftClick={() => {
@@ -104,7 +134,7 @@ export default function Page() {
               </table>
             </div>
           </div>
-          <div className="flex flex-col items-end mt-10 lg:mx-28">
+          <div className="self-end flex flex-col items-end mt-10 lg:mr-10">
             <div className=" p-5 rounded-sm">
               <span className="flex items-center justify-end lg:space-x-3 space-x-1">
                 <p className="font-medium lg:text-xs text-[10px] text-dark">
@@ -128,7 +158,9 @@ export default function Page() {
               onClick={() => router.push("cart/checkout")}
               className={`mt-2 lg:w-96 w-40 p-3 bg-black/85 flex items-center font-medium justify-center hover:opacity-70 ${"cursor-pointer"}`}
             >
-              <p className="text-[#f5f5f5] lg:text-sm text-xs">Check out</p>
+              <p className="text-[#f5f5f5] lg:text-sm text-xs uppercase">
+                Check out
+              </p>
             </div>
           </div>
         </div>

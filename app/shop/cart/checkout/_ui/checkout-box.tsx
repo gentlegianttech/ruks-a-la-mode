@@ -14,7 +14,7 @@ export default function CheckoutBox({
   const shippingFee = 6000 * rate;
 
   return (
-    <div className="p-3 border border-dark lg:w-[46%] w-full lg:mb-0 mb-16 lg:mt-0 mt-10">
+    <div className="p-3 border border-dark lg:w-[46%] w-full lg:mb-0 mb-16">
       <div className="w-full lg:p-8 p-2">
         {cart?.map((c) => {
           const formattedMeasurementString = Object.entries(
@@ -62,7 +62,7 @@ export default function CheckoutBox({
             name="discountCode"
           />
           <div className="p-2 lg:h-11 h-9 bg-dark border border-dark w-28 flex items-center justify-center cursor-pointer hover:opacity-80">
-            <p className="text-[#F05e1b] uppercase text-xs">Apply</p>
+            <p className="text-[#F5f5f5] uppercase text-xs">Apply</p>
           </div>
         </div>
         <div className="flex items-center justify-between w-full mt-8">

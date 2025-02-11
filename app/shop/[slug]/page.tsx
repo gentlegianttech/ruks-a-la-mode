@@ -140,6 +140,11 @@ export default function Page(props: { params: Params }) {
     stock: 0,
   });
 
+  const [selectedColor, setSelectedColor] = useState({
+    name: "",
+    hexColor: "",
+  });
+
   const [orderDetails, setOrderDetails] = useState({
     quantity: 1,
   });
@@ -209,6 +214,14 @@ export default function Page(props: { params: Params }) {
         Object.entries(measurement).filter(([_, value]) => value !== "")
       );
 
+      let color = { ...selectedProduct?.data?.colors[0] };
+
+      if (selectedProduct?.data?.colors?.length > 1) {
+        if (selectedColor?.name === "") return alert("Please choose a color");
+
+        color = { ...selectedColor };
+      }
+
       const itemData: any = {
         item: {
           name: selectedProduct?.data?.name,
@@ -223,6 +236,7 @@ export default function Page(props: { params: Params }) {
             ? selectedMaterial?.stock
             : selectedProduct?.data?.quantity,
           measurement: filteredMeasurement,
+          color,
         },
         quantity: orderDetails?.quantity,
       };
@@ -257,7 +271,7 @@ export default function Page(props: { params: Params }) {
         >
           {selectedProduct?.data?.images?.map((image: any) => (
             <SwiperSlide key={image}>
-              <div className="lg:h-[750px] w-full h-[380px] relative lg:mt-0 mt-8">
+              <div className="lg:h-[600px] w-full h-[380px] relative lg:mt-0 mt-8">
                 <Image alt="merch" src={image ?? null} fill={true} />
               </div>
             </SwiperSlide>
@@ -282,9 +296,14 @@ export default function Page(props: { params: Params }) {
             {selectedProduct?.data?.colors.map((color: any, i: number) => (
               <span
                 key={i}
-                className="inline-block mr-2 w-5 h-5 rounded-full"
+                className={`${
+                  color?.name === selectedColor?.name
+                    ? "border border-blue-950"
+                    : ""
+                } inline-block mr-2 w-5 h-5 rounded-full cursor-pointer`}
                 style={{ backgroundColor: color.hexCode }}
                 title={color.name}
+                onClick={() => setSelectedColor(color)}
               ></span>
             ))}
           </div>

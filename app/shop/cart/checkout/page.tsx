@@ -44,8 +44,8 @@ export default function Page() {
     }
   };
   return (
-    <div className="flex min-h-screen flex-col w-full lg:px-24 px-6">
-      <div className="my-10 w-full flex lg:flex-row flex-col-reverse lg:items-start items-center lg:justify-center lg:space-y-0 lg:space-x-10">
+    <div className="flex flex-col w-full lg:px-20 px-6">
+      <div className="lg:mb-20 mt-3 lg:mt-10 w-full flex lg:flex-row flex-col-reverse lg:items-start items-center lg:justify-center lg:space-y-0 lg:space-x-10">
         <div className="w-full lg:w-1/2">
           <h2 className="lg:text-4xl text-xl font-medium tracking-wide">
             Delivery Information
