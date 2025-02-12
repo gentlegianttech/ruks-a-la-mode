@@ -47,7 +47,7 @@ export default function Products() {
       product.data.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.id.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory
-      ? product.data.category === selectedCategory
+      ? product.data.category.toLowerCase() === selectedCategory
       : true;
     return matchesSearch && matchesCategory;
   });
@@ -76,7 +76,7 @@ export default function Products() {
               ? Array.from(
                   new Set(
                     allProducts?.products
-                      .map((p: any) => p.data.category) // Extract categories
+                      .map((p: any) => p.data.category?.toLowerCase()) // Extract categories
                       .filter(
                         (category: string): category is string => !!category
                       ) // Filter out undefined
@@ -90,9 +90,9 @@ export default function Products() {
             setSelectedProduct(undefined);
             setIsModalOpen(true);
           }}
-          className="bg-blue-500 text-white px-4 lg:py-2 rounded"
+          className="bg-blue-500 text-xs text-white px-4 ml-2 lg:py-2 rounded"
         >
-          Add New Product
+          Add
         </button>
       </div>
       {isLoading ? (

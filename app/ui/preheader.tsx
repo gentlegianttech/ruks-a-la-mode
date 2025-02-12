@@ -1,5 +1,7 @@
 export default async function Preheader() {
-  const data = await fetch("http://localhost:3000/api/content/get-pretext");
+  const data = await fetch(
+    "https://ruks-a-la-mode.vercel.app/api/content/get-pretext"
+  );
   const text = await data.json();
 
   return (

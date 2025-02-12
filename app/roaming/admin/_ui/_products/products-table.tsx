@@ -24,21 +24,23 @@ export default function ProductTable({
     <table className="w-full border-collapse">
       <thead>
         <tr className="bg-gray-100">
-          <th className="p-2 text-left">ID</th>
-          <th className="p-2 text-left">Name</th>
-          <th className="p-2 text-left">Price</th>
-          <th className="p-2 text-left">Category</th>
-          <th className="p-2 text-left">Actions</th>
+          <th className="p-2 text-left text-sm">ID</th>
+          <th className="p-2 text-left text-sm">Name</th>
+          <th className="p-2 text-left text-sm">Price</th>
+          <th className="p-2 text-left text-sm">Category</th>
+          <th className="p-2 text-left text-sm">Actions</th>
         </tr>
       </thead>
       <tbody>
         {products?.map((product) => (
           <React.Fragment key={product.id}>
             <tr className="border-b">
-              <td className="p-2">{product.id}</td>
-              <td className="p-2">{product.name}</td>
-              <td className="p-2">{formatPrice("NGN", product.price)}</td>
-              <td className="p-2">{product.category}</td>
+              <td className="p-2 text-xs">{product.id}</td>
+              <td className="p-2 text-xs uppercase">{product.name}</td>
+              <td className="p-2 text-xs">
+                {formatPrice("NGN", product.price)}
+              </td>
+              <td className="p-2 text-xs uppercase">{product.category}</td>
               <td className="p-2">
                 <button
                   onClick={() =>
@@ -46,13 +48,13 @@ export default function ProductTable({
                       expandedRow === product.id ? null : product.id
                     )
                   }
-                  className="text-blue-500 hover:underline"
+                  className="text-blue-500 text-xs hover:underline"
                 >
                   {expandedRow === product.id ? "Hide" : "View"}
                 </button>
                 <button
                   onClick={() => onEdit(product)}
-                  className="text-yellow-500 hover:underline mx-2"
+                  className="text-yellow-500 text-xs hover:underline mx-2"
                 >
                   Edit
                 </button>

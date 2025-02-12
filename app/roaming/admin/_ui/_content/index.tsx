@@ -13,29 +13,11 @@ import { Audio, TailSpin } from "react-loader-spinner";
 
 type Banner = {
   id: string;
-  // title: string;
-  // description: string;
   imageUrl: string;
   status: "active" | "inactive";
 };
 
 const Content = () => {
-  // const [banners, setBanners] = useState<Banner[]>([
-  //   {
-  //     id: "B001",
-  //     // title: "Spring Sale",
-  //     // description: "Up to 50% off on all items!",
-  //     imageUrl: "https://via.placeholder.com/300",
-  //     status: "active",
-  //   },
-  //   {
-  //     id: "B002",
-  //     // title: "New Arrivals",
-  //     // description: "Check out our latest collection.",
-  //     imageUrl: "https://via.placeholder.com/300",
-  //     status: "inactive",
-  //   },
-  // ]);
   const [loading, setLoading] = useState(false);
 
   const [preText, setPreText] = useState("");
@@ -43,7 +25,6 @@ const Content = () => {
   const {
     data: bannersData,
     isLoading,
-    isError,
     refetch,
   } = useQuery({
     queryKey: ["banners"],
@@ -154,7 +135,7 @@ const Content = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Banner Management</h2>
+      <h2 className="text-lg font-bold mb-4">Banner Management</h2>
       {/* Filters and Search */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-2">
@@ -162,7 +143,7 @@ const Content = () => {
             <button
               key={status}
               onClick={() => setFilter(status)}
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-2 rounded text-xs ${
                 filter === status
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-700"
@@ -179,7 +160,7 @@ const Content = () => {
                 status: "active",
               })
             }
-            className="bg-green-500 text-white px-4 py-2 rounded"
+            className="bg-green-500 text-white px-4 py-2 rounded text-xs"
           >
             Add New Banner
           </button>
@@ -199,9 +180,9 @@ const Content = () => {
           <tr>
             {/* <th className="px-4 py-2 border">Title</th>
             <th className="px-4 py-2 border">Description</th> */}
-            <th className="px-4 py-2 border">Image</th>
-            <th className="px-4 py-2 border">Status</th>
-            <th className="px-4 py-2 border">Actions</th>
+            <th className="px-4 py-2 border text-sm">Image</th>
+            <th className="px-4 py-2 border text-sm">Status</th>
+            <th className="px-4 py-2 border text-sm">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -209,14 +190,14 @@ const Content = () => {
             <tr key={banner?.id}>
               {/* <td className="px-4 py-2 border">{banner.title}</td>
               <td className="px-4 py-2 border">{banner.description}</td> */}
-              <td className="px-4 py-2 border">
+              <td className="px-4 py-2 border text-xs">
                 <img
                   src={banner?.data?.imageUrl}
                   alt={banner?.id}
                   className="w-28 h-16 object-cover rounded"
                 />
               </td>
-              <td className="px-4 py-2 border">
+              <td className="px-4 py-2 border text-xs">
                 <span
                   className={`px-2 py-1 rounded text-white ${
                     banner?.data?.status === "active"
@@ -227,7 +208,7 @@ const Content = () => {
                   {banner?.data?.status}
                 </span>
               </td>
-              <td className="px-4 py-2 border">
+              <td className="px-4 py-2 border text-xs">
                 <button
                   onClick={() =>
                     setEditingBanner({
@@ -236,13 +217,13 @@ const Content = () => {
                       status: banner?.data?.status,
                     })
                   }
-                  className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
+                  className="bg-blue-500 text-white px-3 py-1 rounded text-xs mr-2 lg:mb-0 mb-2"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => deleteBanner(banner?.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded"
+                  className="bg-red-500 text-white px-3 py-1 rounded text-xs"
                 >
                   Delete
                 </button>
@@ -256,11 +237,11 @@ const Content = () => {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+          className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 text-xs"
         >
           Previous
         </button>
-        <span>
+        <span className="text-xs">
           Page {currentPage} of {totalPages}
         </span>
         <button
@@ -268,7 +249,7 @@ const Content = () => {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+          className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 text-xs"
         >
           Next
         </button>
@@ -298,7 +279,7 @@ const Content = () => {
                     onChange={(e) =>
                       e.target.files ? setFile(e?.target?.files[0]) : null
                     }
-                    className="border px-4 py-2 rounded w-full"
+                    className="border text-xs px-4 py-2 rounded w-full"
                   />
                 </div>
               ) : (
@@ -308,7 +289,7 @@ const Content = () => {
                     onChange={(e) =>
                       e.target.files ? setFile(e?.target?.files[0]) : null
                     }
-                    className="border px-4 py-2 rounded w-full"
+                    className="border text-xs px-4 py-2 rounded w-full"
                     required
                   />
                 </div>
@@ -327,7 +308,7 @@ const Content = () => {
                         : null
                     )
                   }
-                  className="border px-4 py-2 rounded w-full"
+                  className="border text-xs px-4 py-2 rounded w-full"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -364,11 +345,11 @@ const Content = () => {
           <input
             onChange={(e) => setPreText(e.target.value)}
             value={preText ? preText : ""}
-            className="w-full p-2 outline-none border border-dark bg-transparent"
+            className="w-full p-2 outline-none border text-xs border-dark bg-transparent"
           />
           <button
             onClick={() => (preText ? updatePretextMutation.mutate() : null)}
-            className="bg-blue-500 text-white px-3 py-1 rounded mt-4"
+            className="bg-blue-500 text-white px-3 py-1 rounded mt-4 text-xs"
           >
             SAVE
           </button>

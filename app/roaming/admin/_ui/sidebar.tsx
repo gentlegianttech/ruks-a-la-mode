@@ -16,7 +16,7 @@ const Sidebar = ({
 
   return (
     <div className="w-64 bg-gray-800 text-white h-screen fixed lg:block hidden">
-      <div className="p-4 text-lg font-bold border-b border-gray-700">
+      <div className="p-4 font-bold border-b border-gray-700">
         <Link href="/">
           <p>RUKS Á LA MODE</p>
         </Link>
@@ -27,11 +27,11 @@ const Sidebar = ({
             <li key={item.key}>
               <button
                 onClick={() => setActiveView(item.key)}
-                className={`w-full text-left flex items-center px-4 py-2 ${
+                className={`w-full text-left flex items-center px-4 py-2 text-xs ${
                   activeView === item.key ? "bg-gray-900" : "hover:bg-gray-700"
                 }`}
               >
-                <span className="mr-2 text-lg">{item.icon}</span>
+                <span className="mr-2">{item.icon}</span>
                 {item.label}
               </button>
             </li>

@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  ProductProps,
-  Material,
-  ProductComponent,
-  ColorProps,
-} from "@/helpers/types";
+import { ProductProps } from "@/helpers/types";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/helpers/utils/auth";
 import { TailSpin } from "react-loader-spinner";
@@ -238,7 +233,7 @@ export default function ProductModal({
   return (
     <div className="fixed overflow-y-scroll inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg lg:w-1/2">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-lg lg:text-sm font-bold mb-4">
           {product ? "Edit Product" : "Add New Product"}
         </h2>
         <form onSubmit={handleSubmit}>
@@ -250,7 +245,7 @@ export default function ProductModal({
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-xs"
               required
             />
             <textarea
@@ -259,7 +254,7 @@ export default function ProductModal({
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-xs"
               required
             />
             <input
@@ -272,7 +267,7 @@ export default function ProductModal({
                 }
               }}
               placeholder="Price"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border text-xs rounded"
               required
             />
             <input
@@ -285,7 +280,7 @@ export default function ProductModal({
                   setFormData({ ...formData, weight: inputValue });
                 }
               }}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 text-xs border rounded"
               required
             />
             <input
@@ -295,7 +290,7 @@ export default function ProductModal({
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              className="w-full p-2 border rounded"
+              className="w-full p-2 text-xs border rounded"
               required
             />
             <input
@@ -308,7 +303,7 @@ export default function ProductModal({
                 }
               }}
               placeholder="Quantity"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 text-xs border rounded"
               required
             />
 
@@ -323,7 +318,7 @@ export default function ProductModal({
                       placeholder="Image Url"
                       value={image}
                       onChange={(e) => handleImageChange(index, e.target.value)}
-                      className="p-2 border rounded w-full"
+                      className="p-2 border text-xs rounded w-full"
                     />
                   ) : (
                     <input
@@ -334,13 +329,14 @@ export default function ProductModal({
                           ? handleImageChange(index, e.target.files[0])
                           : null
                       }
-                      className="p-2 border rounded w-full"
+                      className="p-2 border text-xs rounded w-full"
                     />
                   )}
 
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
+                    className="text-xs"
                   >
                     ❌
                   </button>
@@ -349,7 +345,7 @@ export default function ProductModal({
               <button
                 type="button"
                 onClick={handleAddImage}
-                className="mt-2 text-blue-500"
+                className="mt-2 text-blue-500 text-xs"
               >
                 + Add Image
               </button>
@@ -357,7 +353,7 @@ export default function ProductModal({
 
             {/* Colors */}
             <div>
-              <p className="font-medium">Colors</p>
+              <p className="font-medium text-xs">Colors</p>
               {formData.colors.map((color: any, index: number) => (
                 <div key={index} className="flex gap-2 mt-2">
                   <input
@@ -367,7 +363,7 @@ export default function ProductModal({
                     onChange={(e) =>
                       handleColorChange(index, "name", e.target.value)
                     }
-                    className="p-2 border rounded w-full"
+                    className="p-2 border text-xs rounded w-full"
                   />
                   <input
                     type="text"
@@ -376,11 +372,12 @@ export default function ProductModal({
                     onChange={(e) =>
                       handleColorChange(index, "hexCode", e.target.value)
                     }
-                    className="p-2 border rounded w-full"
+                    className="p-2 border text-xs rounded w-full"
                   />
                   <button
                     type="button"
                     onClick={() => handleRemoveColor(index)}
+                    className="text-xs"
                   >
                     ❌
                   </button>
@@ -389,7 +386,7 @@ export default function ProductModal({
               <button
                 type="button"
                 onClick={handleAddColor}
-                className="mt-2 text-blue-500"
+                className="mt-2 text-blue-500 text-xs"
               >
                 + Add Color
               </button>
@@ -408,7 +405,7 @@ export default function ProductModal({
                       onChange={(e) =>
                         handleMaterialChange(index, "name", e.target.value)
                       }
-                      className="p-2 border rounded w-full"
+                      className="p-2 border text-xs rounded w-full"
                     />
                     <input
                       type="number"
@@ -421,7 +418,7 @@ export default function ProductModal({
                           parseFloat(e.target.value)
                         )
                       }
-                      className="p-2 border rounded w-full"
+                      className="p-2 border text-xs rounded w-full"
                     />
                     <input
                       type="number"
@@ -434,11 +431,12 @@ export default function ProductModal({
                           parseInt(e.target.value)
                         )
                       }
-                      className="p-2 border rounded w-full"
+                      className="p-2 border text-xs rounded w-full"
                     />
                     <button
                       type="button"
                       onClick={() => handleRemoveMaterial(index)}
+                      className="text-xs"
                     >
                       ❌
                     </button>
@@ -448,7 +446,7 @@ export default function ProductModal({
               <button
                 type="button"
                 onClick={handleAddMaterial}
-                className="mt-2 text-blue-500"
+                className="mt-2 text-blue-500 text-xs"
               >
                 + Add Material
               </button>
@@ -466,7 +464,7 @@ export default function ProductModal({
                     onChange={(e) =>
                       handleComponentChange(index, "name", e.target.value)
                     }
-                    className="p-2 border rounded w-full"
+                    className="p-2 border text-xs rounded w-full"
                   />
                   <input
                     type="number"
@@ -479,7 +477,7 @@ export default function ProductModal({
                         parseFloat(e.target.value)
                       )
                     }
-                    className="p-2 border rounded w-full"
+                    className="p-2 border text-xs rounded w-full"
                   />
                   <input
                     type="number"
@@ -492,11 +490,12 @@ export default function ProductModal({
                         parseInt(e.target.value)
                       )
                     }
-                    className="p-2 border rounded w-full"
+                    className="p-2 border text-xs rounded w-full"
                   />
                   <button
                     type="button"
                     onClick={() => handleRemoveComponent(index)}
+                    className="text-xs"
                   >
                     ❌
                   </button>
@@ -505,7 +504,7 @@ export default function ProductModal({
               <button
                 type="button"
                 onClick={handleAddComponent}
-                className="mt-2 text-blue-500"
+                className="mt-2 text-blue-500 text-xs"
               >
                 + Add component
               </button>
@@ -515,13 +514,13 @@ export default function ProductModal({
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+              className="bg-gray-500 text-white px-4 py-2 rounded mr-2 text-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-green-500 text-white px-4 py-2 rounded text-xs"
             >
               {loading ? (
                 <TailSpin width={20} height={20} />

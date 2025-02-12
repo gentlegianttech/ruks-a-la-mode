@@ -78,9 +78,9 @@ export default function Page() {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth={3.5}
+          strokeWidth={1.5}
           stroke="#0e0e0e"
-          className="w-10 h-10 lg:hidden block"
+          className="size-6 lg:hidden block"
           onClick={() => setopen(!open)}
         >
           <path

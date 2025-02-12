@@ -29,25 +29,27 @@ export default function DeleteProductModal({
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="text-red-500 hover:underline"
+        className="text-red-500 hover:underline text-xs"
       >
         Delete
       </button>
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-xl font-bold mb-4">Delete Product</h2>
-            <p>Are you sure you want to delete this product?</p>
+            <h2 className="textlg font-bold mb-4">Delete Product</h2>
+            <p className=" text-xs">
+              Are you sure you want to delete this product?
+            </p>
             <div className="mt-4">
               <button
                 onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 text-xs text-white px-4 py-2 rounded"
               >
                 Delete
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                className="bg-gray-500 text-xs text-white px-4 py-2 rounded ml-2"
               >
                 Cancel
               </button>

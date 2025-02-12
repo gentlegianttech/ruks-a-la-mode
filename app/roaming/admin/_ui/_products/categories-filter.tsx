@@ -11,7 +11,7 @@ export default function CategoryFilter({
   return (
     <select
       onChange={(e) => onSelectCategory(e.target.value)}
-      className="border lg:p-2 rounded"
+      className="border lg:p-2 p-1 ml-1 rounded text-xs"
     >
       <option value="">All Categories</option>
       {categories?.map((category) => (

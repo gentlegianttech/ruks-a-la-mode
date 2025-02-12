@@ -137,7 +137,9 @@ export default function FilterBox({
                 <li
                   key={option}
                   className={`cursor-pointer ${
-                    (m === "category" && option === selectedCategory) ||
+                    (m === "category" &&
+                      option?.toLowerCase() ===
+                        selectedCategory?.toLowerCase()) ||
                     (m === "sort-by" &&
                       (selectedSortOrder === "low-to-high" ||
                         selectedSortOrder === "high-to-low") &&
@@ -145,11 +147,12 @@ export default function FilterBox({
                       ? "text-coffee font-bold"
                       : "text-dark"
                   } hover:text-coffee text-xs uppercase`}
-                  onClick={() =>
+                  onClick={() => {
                     m === "category"
-                      ? handleCategoryClick(option)
-                      : handleSortOrderClick(option)
-                  }
+                      ? handleCategoryClick(option?.toLowerCase())
+                      : handleSortOrderClick(option);
+                    setSwitches({ category: false, "sort-by": false });
+                  }}
                 >
                   {option}
                 </li>

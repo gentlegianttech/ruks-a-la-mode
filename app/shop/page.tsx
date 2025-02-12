@@ -34,7 +34,7 @@ export default function Page() {
     ? Array.from(
         new Set(
           products
-            .map((p: any) => p?.data?.category) // Extract categories
+            .map((p: any) => p?.data?.category?.toLowerCase()) // Extract categories
             .filter((category: string): category is string => !!category) // Filter out undefined
         )
       )
@@ -53,7 +53,9 @@ export default function Page() {
     // Filter by category
     if (selectedCategory) {
       filtered = filtered.filter(
-        (product: any) => product?.data?.category === selectedCategory
+        (product: any) =>
+          product?.data?.category?.toLowerCase() ===
+          selectedCategory?.toLowerCase()
       );
     }
 
