@@ -210,9 +210,23 @@ export default function Page(props: { params: Params }) {
         return alert("Incomplete Measurement Parameters");
       }
 
-      const filteredMeasurement = Object.fromEntries(
-        Object.entries(measurement).filter(([_, value]) => value !== "")
-      );
+      let filteredMeasurement;
+
+      if (
+        Object.entries(measurement?.custom).some(([_, value]) => value !== "")
+      ) {
+        filteredMeasurement = Object.fromEntries(
+          Object.entries(measurement?.custom).filter(
+            ([_, value]) => value !== ""
+          )
+        );
+      } else {
+        filteredMeasurement = Object.fromEntries(
+          Object.entries(measurement).filter(
+            ([_, value]) => typeof value !== "object"
+          )
+        );
+      }
 
       let color = { ...selectedProduct?.data?.colors[0] };
 
@@ -399,8 +413,9 @@ export default function Page(props: { params: Params }) {
                       setOrderDetails({
                         ...orderDetails,
                         quantity:
-                          selectedProduct?.quantity &&
-                          orderDetails.quantity < selectedProduct?.quantity
+                          selectedProduct?.data?.quantity &&
+                          orderDetails.quantity <
+                            selectedProduct?.data?.quantity
                             ? orderDetails.quantity + 1
                             : orderDetails.quantity,
                       })

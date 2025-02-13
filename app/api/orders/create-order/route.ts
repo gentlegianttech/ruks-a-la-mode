@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     const newOrder = {
       txref: body?.txref,
       items: body?.items,
+      price: body?.price,
       shippingInfo: body?.shippingInfo,
       createdAt: body?.createdAt,
       status: "processing",

@@ -31,7 +31,7 @@ export default function Page() {
         (sum, item) => item.item?.price * item.quantity + sum,
         0
       ),
-      callbackUrl: `https://ruks-a-la-mode.vercel.app/shop/confirmation/?email=${
+      callbackUrl: `https://ruksalamode.com/shop/confirmation/?email=${
         shippingInfo?.email
       }&quantity=${cart?.reduce((sum, item) => item.quantity + sum, 0)}&price=${
         cart?.reduce((sum, item) => item.item?.price * item.quantity + sum, 0) *

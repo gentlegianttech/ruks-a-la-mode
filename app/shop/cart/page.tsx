@@ -14,22 +14,24 @@ export default function Page() {
   const { cart, setcart, currency, exchangeRates } = context;
 
   const getMeasurementString = (measurement: any) => {
-    if (measurement?.size) {
-      return Object.entries(measurement)
-        .filter(([key, value]) => key !== "custom")
-        .map(
-          ([key, value]) =>
-            `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
-        )
-        .join(", ");
-    } else {
-      return Object.entries(measurement?.custom)
-        .map(
-          ([key, value]) =>
-            `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
-        )
-        .join(", ");
-    }
+    console.log(measurement);
+    // if (measurement?.size) {
+    //   return Object?.entries(measurement)
+    //     .filter(([key, value]) => key !== "custom")
+    //     .map(
+    //       ([key, value]) =>
+    //         `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
+    //     )
+    //     .join(", ");
+    // } else {
+    //   return Object?.entries(measurement?.custom)
+    //     .map(
+    //       ([key, value]) =>
+    //         `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
+    //     )
+    //     .join(", ");
+    // }
+    return "";
   };
 
   return (
