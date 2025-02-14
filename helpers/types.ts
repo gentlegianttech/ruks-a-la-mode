@@ -57,7 +57,7 @@ export type Delivery = {
   id: string;
   customerName: string;
   address: string;
-  status: "Pending" | "In Transit" | "Delivered" | "Canceled";
+  status: string;
   expectedDate: string;
   assignedTo: string | null;
 };

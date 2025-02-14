@@ -59,6 +59,17 @@ export async function updateOrder(data: any) {
   }
 }
 
+//deliveries
+export async function getDeliveries() {
+  try {
+    const deliveries = await axios.get(`/api/orders/get-deliveries`);
+    return deliveries.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
 //products
 export async function updateProduct(data: any) {
   try {

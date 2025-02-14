@@ -38,7 +38,7 @@ export default function Page() {
     { key: "orders", label: "Orders", icon: <FaShoppingCart /> },
     { key: "products", label: "Products", icon: <FaTshirt /> },
     // { key: "payments", label: "Payments", icon: <FaMoneyBill /> },
-    // { key: "deliveries", label: "Deliveries", icon: <FaTruck /> },
+    { key: "deliveries", label: "Deliveries", icon: <FaTruck /> },
     // { key: "administrators", label: "Administrators", icon: <FaCogs /> },
     { key: "content", label: "Content", icon: <FaImages /> },
     // { key: "analytics", label: "Analytics", icon: <FaSquarePollVertical /> },

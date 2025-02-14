@@ -236,9 +236,7 @@ export default function Orders() {
                 <th className="px-4 py-2 border lg:text-sm text-xs">
                   Customer
                 </th>
-                <th className="px-4 py-2 border lg:text-sm text-xs">
-                  Created At
-                </th>
+                <th className="px-4 py-2 border lg:text-sm text-xs">Date</th>
                 <th className="px-4 py-2 border lg:text-sm text-xs">Total</th>
                 <th className="px-4 py-2 border lg:text-sm text-xs">Status</th>
                 <th className="px-4 py-2 border lg:text-sm text-xs">Actions</th>
@@ -251,7 +249,9 @@ export default function Orders() {
                   <td className="px-4 py-2 border text-xs">
                     <div className="flex flex-col items-start justify-center">
                       <p className="text-xs">
-                        {order?.data?.shippingInfo?.name}
+                        {order?.data?.shippingInfo?.firstname +
+                          " " +
+                          order?.data?.shippingInfo?.surname}
                       </p>
                       <p className="text-xs opacity-60">
                         {order?.data?.shippingInfo?.email}
@@ -269,30 +269,30 @@ export default function Orders() {
                   </td>
                   <td className="px-4 py-2 text-xs border">
                     <span
-                      className={`px-2 py-1 rounded text-white ${
-                        order?.data?.status === "processing"
-                          ? "bg-yellow-500"
-                          : order?.data?.status === "delivered"
-                          ? "bg-green-500"
-                          : "bg-red-500"
+                      className={`px-2 py-1 rounded capitalize ${
+                        order?.data?.status === "producing"
+                          ? "text-yellow-500"
+                          : order?.data?.status === "ready"
+                          ? "text-green-500"
+                          : order?.data?.status === "completed"
+                          ? "text-blue-500"
+                          : "text-red-500"
                       }`}
                     >
                       {order?.data?.status}
                     </span>
                   </td>
                   <td>
-                    {order?.data?.status === "processing" && (
+                    {order?.data?.status === "producing" && (
                       <>
                         <button
                           className="bg-green-500 text-white px-2 py-1 rounded mr-2 text-xs"
-                          onClick={() =>
-                            handleStatusChange(order.id, "delivered")
-                          }
+                          onClick={() => handleStatusChange(order.id, "ready")}
                         >
-                          Deliver
+                          Ready
                         </button>
                         <button
-                          className="bg-red-500 text-white px-2 py-1 rounded text-xs"
+                          className="bg-red-500 text-white px-2 py-1 rounded text-xs mr-2"
                           onClick={() =>
                             handleStatusChange(order.id, "canceled")
                           }
@@ -345,7 +345,7 @@ export default function Orders() {
           )}
 
           {/* No Results Message */}
-          {filteredOrders.length === 0 && (
+          {filteredOrders?.length === 0 && (
             <p className="mt-4 text-gray-500 text-xs">
               No orders match your filter and search.
             </p>
