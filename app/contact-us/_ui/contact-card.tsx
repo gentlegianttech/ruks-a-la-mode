@@ -17,10 +17,10 @@ export default function ContactCard() {
       </Tab>
       <Tab label="Working Hours">
         <div>
-          <p className="lg:w-1/2 lg:text-sm text-sm font-light text-dark">
+          <p className="lg:text-sm text-sm font-light text-dark">
             Monday To Friday 11:00 AM to 5:00 PM
           </p>
-          <p className="mt-1 opacity-60">
+          <p className="lg:text-sm text-sm mt-1 opacity-60">
             Our Support Team is available 9am - 9pm, everyday but Sunday.
           </p>
         </div>
@@ -30,7 +30,7 @@ export default function ContactCard() {
           <p className="lg:w-1/2 lg:text-sm text-sm font-light text-dark">
             +234 901 210 1539
           </p>
-          <p className="mt-1 opacity-60">ruksalamode@gmail.com</p>
+          <p className="mt-1 opacity-60">support@ruksalamode.com</p>
         </div>
       </Tab>
 

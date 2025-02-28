@@ -275,7 +275,7 @@ export default function Page(props: { params: Params }) {
   // }
 
   return (
-    <div className={`flex flex-col w-full lg:px-24 px-8  text-black/80  pb-10`}>
+    <div className={`flex flex-col w-full lg:px-24 px-8  text-black/80 `}>
       <div className="flex lg:flex-row  flex-col lg:items-start lg:justify-center items-center lg:space-x-4 w-full lg:mt-10">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
@@ -308,20 +308,23 @@ export default function Page(props: { params: Params }) {
             {selectedProduct?.data?.description}
           </p>
           {/* COLORS */}
-          <div className="mt-4">
+          <div className="mt-4 flex items-center justify-start space-x-3">
             {selectedProduct?.data?.colors.map((color: any, i: number) => (
-              <div className="flex flex-col items-center" key={color.hexCode}>
+              <div
+                className="flex flex-col items-center h-16"
+                key={color.hexCode}
+              >
                 <span
                   className={`${
                     color?.name === selectedColor?.name
                       ? "border border-blue-950"
                       : ""
-                  } inline-block mr-2 w-5 h-5 rounded-full cursor-pointer`}
+                  } inline-block w-5 h-5 rounded-full cursor-pointer`}
                   style={{ backgroundColor: color.hexCode }}
                   title={color.name}
                   onClick={() => setSelectedColor(color)}
                 ></span>
-                <p className="mt-2 lg:text-[10px] text-[8px] tracking-wide capitalize">
+                <p className="mt-2 lg:text-[10px] text-[8px] text-center w-16 tracking-wide capitalize">
                   {color?.name}
                 </p>
               </div>
@@ -449,7 +452,7 @@ export default function Page(props: { params: Params }) {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="#f5f5f5"
-                  className="size-5 mr-3"
+                  className="size-5 mr-2"
                 >
                   <path
                     strokeLinecap="round"

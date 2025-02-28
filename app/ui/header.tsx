@@ -61,7 +61,7 @@ export default function Header() {
                 viewBox="0 0 24 24"
                 strokeWidth={1}
                 stroke="currentColor"
-                className="size-4 lg:size-6 lg:mr-4 mr-2"
+                className="size-4 lg:size-6 lg:mr-4 mr-2 cursor-pointer"
                 onClick={() => setsearch({ ...search, isOpen: !search.isOpen })}
               >
                 <path
@@ -73,7 +73,7 @@ export default function Header() {
 
               <ShoppingBag />
               <select
-                className="bg-transparent lg:text-sm text-xs lg:ml-4 ml-2 lg:border border lg:border-dark border-dark/60 outline-none"
+                className="bg-transparent cursor-pointer lg:text-sm text-xs lg:ml-4 ml-2 lg:border border lg:border-dark border-dark/60 outline-none"
                 onChange={(e) => setCurrency(e.target.value)}
               >
                 {currencies?.map((c) => (

@@ -36,7 +36,7 @@ export default function Product({
             <p className="text-xs uppercase opacity-60">NEW</p>
           </div> */}
         </div>
-        <p className="lg:text-base mt-6 text-xs font-medium uppercase mb-2 text-center text-dark">
+        <p className="lg:text-base mt-6 text-xs lg:w-auto w-32 font-medium uppercase mb-2 text-center text-dark">
           {product?.data?.name}
         </p>
         <p className="lg:text-base text-xs font-light text-center text-dark">
@@ -50,7 +50,7 @@ export default function Product({
         {product?.data?.colors.map((color: any, i: number) => (
           <span
             key={i}
-            className="inline-block mr-2 w-5 h-5 rounded-full"
+            className="inline-block -2 w-5 h-5 rounded-full"
             style={{ backgroundColor: color.hexCode }}
             title={color.name}
           ></span>

@@ -28,7 +28,7 @@ export default function Footer() {
       url: "https://www.instagram.com/channel/AbZLhIPkflwG7Rsc/?igsh=aGVvbnNrcndqd2Fy",
     },
   ];
-  const menu = ["home", "shop", "faqs"];
+  const menu = ["Home", "Shop", "FAQs"];
   const paths = ["/", "/shop", "/contact-us"];
   const pathname = usePathname();
 
@@ -77,7 +77,7 @@ export default function Footer() {
                           : `/${m}`
                       }
                     >
-                      <p className="capitalize mb-3 opacity-90 lg:text-base text-sm">
+                      <p className="mb-3 opacity-90 lg:text-base text-sm">
                         {m.replace("-", " ")}
                       </p>
                     </Link>
@@ -97,7 +97,7 @@ export default function Footer() {
                 <p className="opacity-90 mb-4 lg:text-lg tracking-wider">
                   CONTACT US
                 </p>
-                <div className="flex items-center justify-start space-x-3 mb-4">
+                <div className="flex items-center justify-start space-x-2 mb-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -113,13 +113,12 @@ export default function Footer() {
                     />
                   </svg>
                   <div className="">
-                    <p className="opacity-95 lg:text-base text-sm">Email</p>
                     <p className="opacity-90 lg:text-base text-sm">
-                      ruksalamode@gmail.com
+                      support@ruksalamode.com
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-start space-x-3">
+                <div className="flex items-center justify-start space-x-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -135,7 +134,6 @@ export default function Footer() {
                     />
                   </svg>
                   <div className="">
-                    <p className="opacity-95 lg:text-base text-sm">Phone</p>
                     <p className="opacity-90 lg:text-base text-sm">
                       +2349012101539
                     </p>

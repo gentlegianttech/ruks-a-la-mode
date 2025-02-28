@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AboutUs() {
   return (
-    <div className="w-full py-16 bg-[#D8B283] bg-opacity-40 flex items-center justify-center lg:mt-10 mt-14 mb-28 px-10">
+    <div className="w-full py-16 bg-[#D8B283] bg-opacity-40 flex items-center justify-center lg:mt-10 mt-7 mb-16 px-10">
       <div className="lg:w-2/3 items-center flex flex-col justify-center">
         <p className="lg:text-base text-xs text-center font-medium leading-loose tracking-widest mb-8 uppercase">
           Attainable, Comfortable & Chic.

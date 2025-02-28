@@ -46,17 +46,17 @@ export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <p className="text-3xl font-bold mb-20">RUKS Á LA MODE</p>
-      <p className="text-2xl font-semibold mb-12">LOGIN TO CONTINUE</p>
+      <p className="text-lg font-semibold mb-12">LOGIN TO CONTINUE</p>
       <input
         placeholder="Email"
-        className="px-3 py-1.5 text-[#0e0e0e] lg:w-60 w-44 bg-transparent border border-dark"
+        className="px-3 py-1.5 text-[#0e0e0e] lg:w-60 w-60 bg-transparent border border-dark outline-none"
         value={loginInfo.email}
         onChange={(e) => setLoginInfo({ ...loginInfo, email: e.target.value })}
         type="email"
       />
-      <div className="flex mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12 items-center justify-center space-x-2 lg:w-60 w-44 bg-transparent border border-dark">
+      <div className="flex mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12 items-center justify-center space-x-2 lg:w-60 w-60 bg-transparent border border-dark">
         <input
-          className="bg-transparent"
+          className="bg-transparent outline-none"
           placeholder="Password"
           value={loginInfo.password}
           onChange={(e) =>

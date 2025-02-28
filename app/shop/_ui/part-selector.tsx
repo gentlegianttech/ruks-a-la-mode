@@ -43,7 +43,7 @@ export default function PartSelector({
         {components?.map((component) => (
           <label
             key={component?.id}
-            className={`p-2 border rounded-md cursor-pointer ${
+            className={`p-2 border rounded-md uppercase text-xs cursor-pointer ${
               selectedPart === component?.name
                 ? "bg-black text-white"
                 : "bg-white"
