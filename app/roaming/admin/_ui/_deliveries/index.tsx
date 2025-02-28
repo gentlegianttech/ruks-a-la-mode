@@ -113,7 +113,7 @@ const Deliveries = () => {
       );
   };
 
-  const [filter, setFilter] = useState<string>("All");
+  const [filter, setFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
@@ -121,7 +121,7 @@ const Deliveries = () => {
   // Filtered and searched deliveries
   const filteredDeliveries = deliveries?.filter((delivery: any) => {
     const matchesFilter =
-      filter === "all" ||
+      filter === "" ||
       delivery?.data?.status.toLowerCase() === filter.toLowerCase();
     let fullname =
       delivery?.data?.shippingInfo?.firstname +
@@ -155,21 +155,23 @@ const Deliveries = () => {
       {/* Filters and Search */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-2">
-          {["All", "Ready", "Transit", "Delivered", "Canceled"].map(
-            (status) => (
-              <button
-                key={status.toLowerCase()}
-                onClick={() => setFilter(status?.toLowerCase())}
-                className={`px-4 py-2 rounded text-xs ${
-                  filter.toLowerCase() === status.toLowerCase()
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {status}
-              </button>
-            )
-          )}
+          {["Ready", "Transit", "Delivered", "Canceled"].map((status) => (
+            <button
+              key={status.toLowerCase()}
+              onClick={() =>
+                setFilter(
+                  status?.toLowerCase() === filter ? "" : status?.toLowerCase()
+                )
+              }
+              className={`px-4 py-2 rounded text-xs ${
+                filter.toLowerCase() === status.toLowerCase()
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {status}
+            </button>
+          ))}
         </div>
 
         <input

@@ -304,7 +304,7 @@ export default function Orders() {
                     <button
                       onClick={() => handleViewDetails(order)}
                       className={`bg-blue-500 text-white px-3 py-1 rounded text-xs ${
-                        order.status === "Pending" ? "ml-2" : ""
+                        order.status === "Pending" ? "ml-2" : "ml-2"
                       }`}
                     >
                       View Details
