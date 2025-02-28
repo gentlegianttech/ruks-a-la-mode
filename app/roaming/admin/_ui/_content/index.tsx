@@ -197,7 +197,7 @@ const Content = () => {
                   className="w-28 h-16 object-cover rounded"
                 />
               </td>
-              <td className="px-4 py-2 border text-xs">
+              <td className="px-4 py-2 border text-xs capitalize">
                 <span
                   className={`px-2 py-1 rounded text-white ${
                     banner?.data?.status === "active"
@@ -339,16 +339,22 @@ const Content = () => {
       )}
       {/* PREHEADER */}
       <div>
-        <h2 className="lg:text-2xl text-xs font-bold mb-4 mt-8">Pre Header</h2>
+        <h2 className="lg:text-lg text-xs font-bold mb-4 mt-8">Pre Header</h2>
         <div>
-          <p>Text</p>
           <input
             onChange={(e) => setPreText(e.target.value)}
             value={preText ? preText : ""}
             className="w-full p-2 outline-none border text-xs border-dark bg-transparent"
           />
           <button
-            onClick={() => (preText ? updatePretextMutation.mutate() : null)}
+            onClick={() => {
+              preText
+                ? preText === pretext
+                  ? alert("No changes made to Preheader Text")
+                  : updatePretextMutation.mutate()
+                : null;
+              alert("Saved. Reload to see changes.");
+            }}
             className="bg-blue-500 text-white px-3 py-1 rounded mt-4 text-xs"
           >
             SAVE

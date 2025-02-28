@@ -6,32 +6,55 @@ import CheckoutForm from "./_ui/checkout-form";
 import CheckoutBox from "./_ui/checkout-box";
 import { makePayment } from "@/helpers/api-controller";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { getShippingFee } from "@/helpers/functions";
 
 export default function Page() {
   const context = useAppContext();
   const { cart, currency, exchangeRates } = context;
   const router = useRouter();
 
+  const [shippingFee, setShippingFee] = useState(undefined);
+
+  const [deliveryType, setDeliveryType] = useState("standard");
+
+  const [discount, setDiscount] = useState(0);
+
+  const price = cart?.reduce(
+    (sum, item) => item.item?.price * item.quantity + sum,
+    0
+  );
+
+  const weight = cart?.reduce((sum, item) => item.item.weight + sum, 0);
+
+  const discountPrice = discount > 0 ? price - (discount / 100) * price : price;
+
+  const handleShippingFee = (shippingInfo: any) => {
+    let fee = getShippingFee(
+      {
+        city: shippingInfo?.city,
+        country: shippingInfo?.country,
+        state: shippingInfo?.state,
+      },
+      weight,
+      deliveryType
+    );
+
+    if (fee) {
+      setShippingFee(fee);
+    }
+  };
+
   const handleCheckout = async (shippingInfo: any) => {
+    if (shippingFee === undefined) return;
+
     console.log("buying");
     localStorage.setItem("items", JSON.stringify(cart));
     localStorage.setItem("shippingInfo", JSON.stringify(shippingInfo));
-    // router.push(
-    //   `/shop/confirmation/?email=${shippingInfo?.email}&quantity=${cart?.reduce(
-    //     (sum, item) => item.quantity + sum,
-    //     0
-    //   )}&price=${cart?.reduce(
-    //     (sum, item) => item.item?.price * item.quantity + sum,
-    //     0
-    //   )}`
-    // );
     const response = await makePayment({
       email: shippingInfo?.email,
-      price: cart?.reduce(
-        (sum, item) => item.item?.price * item.quantity + sum,
-        0
-      ),
-      callbackUrl: `https://ruksalamode.com/shop/confirmation/?email=${
+      price: discountPrice + shippingFee,
+      callbackUrl: `http://localhost:3000/shop/confirmation/?email=${
         shippingInfo?.email
       }&quantity=${cart?.reduce((sum, item) => item.quantity + sum, 0)}&price=${
         cart?.reduce((sum, item) => item.item?.price * item.quantity + sum, 0) *
@@ -50,12 +73,23 @@ export default function Page() {
           <h2 className="lg:text-4xl text-xl font-medium tracking-wide">
             Delivery Information
           </h2>
-          <CheckoutForm checkoutCart={handleCheckout} />
+          <CheckoutForm
+            checkoutCart={
+              shippingFee !== undefined ? handleCheckout : handleShippingFee
+            }
+            shippingFee={shippingFee}
+            setShippingFee={setShippingFee}
+            deliveryType={deliveryType}
+            setDeliveryType={(d) => setDeliveryType(d)}
+          />
         </div>
         <CheckoutBox
+          discount={discount}
+          setDiscount={setDiscount}
           cart={cart}
           currency={currency}
           rate={exchangeRates[currency.toLowerCase()]}
+          shippingFee={shippingFee}
         />
       </div>
     </div>

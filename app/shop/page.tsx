@@ -1,15 +1,18 @@
 "use client";
 
 import { useAppContext } from "@/helpers/store";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import CategoryGrid from "./_ui/category-grid";
 import FilterBox from "./_ui/filter-box";
 import { useQuery } from "@tanstack/react-query";
 import { getAllActiveProducts } from "@/helpers/api-controller";
 import { Blocks } from "react-loader-spinner";
 
-export default function Page() {
+function ShopPage() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+
   const router = useRouter();
   const context = useAppContext();
 
@@ -59,6 +62,15 @@ export default function Page() {
       );
     }
 
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter(
+        (product: any) =>
+          product?.data?.name?.toLowerCase().includes(searchLower) || // Match product name
+          product?.data?.category?.toLowerCase().includes(searchLower) // Match category
+      );
+    }
+
     // Sort by price
     if (sortOrder === "low-to-high") {
       filtered = filtered.sort(
@@ -71,7 +83,7 @@ export default function Page() {
     }
 
     return filtered;
-  }, [products, selectedCategory, sortOrder]);
+  }, [products, selectedCategory, sortOrder, search]);
 
   // Function to handle viewing a product
   const viewProduct = (id: string) => {
@@ -104,5 +116,13 @@ export default function Page() {
       {/* Display filtered products */}
       <CategoryGrid items={filteredProducts} viewProduct={viewProduct} />
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <ShopPage />
+    </Suspense>
   );
 }

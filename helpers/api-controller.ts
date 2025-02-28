@@ -2,6 +2,18 @@ import axios from "axios";
 import { ProductProps } from "./types";
 import { signOut } from "firebase/auth";
 
+//discounts
+export async function getDiscount(code: string) {
+  try {
+    const discount = await axios.get(
+      `/api/discounts/get-discount?code=${code}`
+    );
+    return discount.data;
+  } catch (err) {
+    return err;
+  }
+}
+
 //payments
 export async function makePayment(data: any) {
   try {
@@ -25,7 +37,9 @@ export const getExchangeRates = async () => {
 
 export async function verifyTransaction(txref: string) {
   try {
-    const transaction = await axios.get(`/api/verify-payment?txref=${txref}`);
+    const transaction = await axios.get(
+      `/api/payments/verify-payment?txref=${txref}`
+    );
     return transaction.data;
   } catch (error) {
     return error;
@@ -74,6 +88,14 @@ export async function getDeliveries() {
 export async function updateProduct(data: any) {
   try {
     return await axios.put(`/api/products/update-product`, data);
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function updateProductsStock(items: any) {
+  try {
+    return await axios.put(`/api/products/update-products-stock`, items);
   } catch (error) {
     return error;
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import ShoppingBag from "../shop/_ui/shopping-bag";
 import { useAppContext } from "@/helpers/store";
@@ -13,9 +13,22 @@ export default function Header() {
 
   const [open, setopen] = useState(false);
 
+  const [search, setsearch] = useState({
+    isOpen: false,
+    keyword: "",
+  });
+
   const context = useAppContext();
+  const router = useRouter();
 
   const { currencies, currency, setCurrency } = context;
+
+  const handleSearch = () => {
+    search?.keyword !== ""
+      ? router.push(`/shop?search=${search.keyword}`)
+      : null;
+    setsearch({ ...search, isOpen: !search.isOpen });
+  };
   return (
     <>
       {paths.some(
@@ -49,6 +62,7 @@ export default function Header() {
                 strokeWidth={1}
                 stroke="currentColor"
                 className="size-4 lg:size-6 lg:mr-4 mr-2"
+                onClick={() => setsearch({ ...search, isOpen: !search.isOpen })}
               >
                 <path
                   strokeLinecap="round"
@@ -105,6 +119,29 @@ export default function Header() {
               ))}
             </div>
           )}
+          <div
+            className={`bg-lightgrey w-72 absolute right-0 transition-[height] ease-in-out duration-200 z-50 ${
+              search.isOpen ? " h-12 -bottom-12" : "h-0"
+            }`}
+          >
+            <input
+              value={search.keyword}
+              onChange={(e) =>
+                setsearch({ ...search, keyword: e.target.value })
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); // Prevent form submission if inside a form
+                  handleSearch();
+                }
+              }}
+              type="text"
+              placeholder="Search for your favorite products"
+              className={`bg-transparent px-2 py-1 text-xs w-full outline-none ${
+                search.isOpen ? " h-12 border border-dark" : "h-0 hidden"
+              }`}
+            />
+          </div>
         </div>
       )}
     </>

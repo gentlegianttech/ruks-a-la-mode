@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
       category: body.category,
       colors: body.colors || [],
       quantity: body.quantity || 0,
-      materialOptions: body.materialOptions || [],
       components: body.components || [],
       createdAt: new Date().toISOString(),
     };

@@ -11,13 +11,13 @@ export default function ContactCard() {
   return (
     <div className="lg:w-[45%] w-full bg-lightgrey lg:p-14 rounded-[40px] lg:mt-0 mt-12">
       <Tab label="Location">
-        <p className="lg:w-3/5 lg:text-2xl text-sm font-light">
+        <p className="lg:w-3/5 lg:text-sm text-sm font-light text-dark">
           Penthouse, Wing C, Deo Gracia Plaza, Utako, Abuja.
         </p>
       </Tab>
       <Tab label="Working Hours">
         <div>
-          <p className="lg:w-1/2 lg:text-2xl text-sm font-light">
+          <p className="lg:w-1/2 lg:text-sm text-sm font-light text-dark">
             Monday To Friday 11:00 AM to 5:00 PM
           </p>
           <p className="mt-1 opacity-60">
@@ -27,7 +27,7 @@ export default function ContactCard() {
       </Tab>
       <Tab label="Contact us">
         <div>
-          <p className="lg:w-1/2 lg:text-2xl text-sm font-light">
+          <p className="lg:w-1/2 lg:text-sm text-sm font-light text-dark">
             +234 901 210 1539
           </p>
           <p className="mt-1 opacity-60">ruksalamode@gmail.com</p>
@@ -59,7 +59,7 @@ const Tab = ({
   children: React.ReactNode;
 }) => (
   <div className="w-full mb-6">
-    <p className="uppercase text-sm opacity-60">{label}</p>
+    <p className="uppercase text-xl">{label}</p>
     <div className="border-b my-2 border-dark/20" />
     {children}
   </div>

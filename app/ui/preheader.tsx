@@ -9,7 +9,7 @@ export default async function Preheader() {
       {text ? (
         <div className="w-full py-1 bg-[#bb3a00] flex items-center justify-center">
           <div className="items-center flex flex-col justify-center">
-            <p className="md:text-xs text-[10px] text-center font-semibold leading-loose tracking-wider">
+            <p className="md:text-xs text-[10px] text-lightgrey text-center font-semibold leading-loose tracking-wider">
               {text?.preText}
             </p>
           </div>

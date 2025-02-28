@@ -1,10 +1,14 @@
 "use client";
 
-import { createOrder, verifyTransaction } from "@/helpers/api-controller";
+import {
+  createOrder,
+  updateProductsStock,
+  verifyTransaction,
+} from "@/helpers/api-controller";
 import emailjs from "@emailjs/browser";
 import { useMutation } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { Blocks } from "react-loader-spinner";
 
@@ -27,7 +31,9 @@ function Confirmation() {
   const quantity = searchParams.get("quantity");
   const price = searchParams.get("price");
 
-  const [isMessageSending, setIsMessageSending] = useState(false);
+  const router = useRouter();
+
+  const [isMessageSending, setIsMessageSending] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
 
   const today = DateTime.now().toLocaleString(DateTime.DATETIME_SHORT);
@@ -48,14 +54,19 @@ function Confirmation() {
     .join("");
 
   const templateParams = {
-    user_name: shippingInfo?.firstname + "" + shippingInfo?.surname,
+    user_name: shippingInfo?.firstname + " " + shippingInfo?.surname,
     order_id: "12345",
     order_date: today,
     order_total: price,
-    shipping_name: shippingInfo?.firstname + "" + shippingInfo?.surname,
+    shipping_name: shippingInfo?.firstname + " " + shippingInfo?.surname,
     shipping_address:
-      shippingInfo?.address + "" + shippingInfo?.city + shippingInfo?.country,
+      shippingInfo?.address +
+      " " +
+      shippingInfo?.city +
+      " " +
+      shippingInfo?.country,
     order_items: orderItemsHTML,
+    to_mail: shippingInfo?.email,
   };
 
   const sendEmail = async () => {
@@ -74,7 +85,7 @@ function Confirmation() {
     await emailjs
       .send(
         process.env.NEXT_PUBLIC_EMAIL_JS_SERVICE_ID ?? "",
-        process.env.NEXT_PUBLIC_EMAIL_JS_TEMPLATE_ID ?? "",
+        process.env.NEXT_PUBLIC_EMAIL_JS_ORDER_TEMPLATE_ID ?? "",
         templateParams,
         {
           publicKey: process.env.EMAIL_JS_PUBLIC_KEY,
@@ -91,12 +102,23 @@ function Confirmation() {
       );
   };
 
+  // const updateStocksMutation = useMutation({
+  //   mutationFn: (items: any) => updateProductsStock(items)
+  // })
+
   const createOrderMutation = useMutation({
     mutationFn: (order: any) => createOrder(order),
-    onSuccess: async () => await sendEmail(),
+    onSuccess: (data: any) => {
+      if (data?.data?.message === "doppelganger") {
+        router.replace("/");
+      } else {
+        sendEmail();
+      }
+    },
   });
 
   const verifyPayment = async () => {
+    setIsVerifying(true);
     console.log(items);
     if (!reference || !email || !quantity || !price) {
       return alert("Incomplete verification parameters");
@@ -120,6 +142,7 @@ function Confirmation() {
         });
       }
     }
+    setIsVerifying(false);
   };
 
   // Retrieve items from localStorage

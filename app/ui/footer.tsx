@@ -10,7 +10,7 @@ export default function Footer() {
   const socials = [
     { url: "https://www.instagram.com/ruksalamode", network: "instagram" },
     { url: "https://www.x.com/ruksalamode", network: "twitter" },
-    { url: "https://www.tiktok/ruksalamode", network: "tiktok" },
+    { url: "https://www.tiktok.com/@ruksalamode", network: "tiktok" },
     { url: "http://wa.me/2349012101539", network: "whatsapp" },
   ];
 
@@ -69,7 +69,13 @@ export default function Footer() {
                   {menu.map((m) => (
                     <Link
                       key={m}
-                      href={m === "faqs" ? "/contact-us#faqs" : `/${m}`}
+                      href={
+                        m === "faqs"
+                          ? "/contact-us#faqs"
+                          : m === "home"
+                          ? "/"
+                          : `/${m}`
+                      }
                     >
                       <p className="capitalize mb-3 opacity-90 lg:text-base text-sm">
                         {m.replace("-", " ")}
@@ -98,7 +104,7 @@ export default function Footer() {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-9 h-9"
+                    className="size-5"
                   >
                     <path
                       strokeLinecap="round"
@@ -118,9 +124,9 @@ export default function Footer() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={1.5}
+                    strokeWidth={1}
                     stroke="currentColor"
-                    className="w-9 h-9"
+                    className="size-5"
                   >
                     <path
                       strokeLinecap="round"
@@ -139,7 +145,7 @@ export default function Footer() {
             </div>
             <div className="mt-8">
               <p className="opacity-90 lg:text-base text-xs">
-                Copyright © Onnit Tech {now.year}
+                Copyright © RUKSALAMODE {now.year}
               </p>
             </div>
           </div>

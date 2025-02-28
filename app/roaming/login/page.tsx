@@ -41,25 +41,36 @@ export default function Page() {
     signInWithEmailAndPassword(auth, email, password);
     setLoading(false);
   };
+
+  const [hidden, sethidden] = useState(false);
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
+      <p className="text-3xl font-bold mb-20">RUKS Á LA MODE</p>
       <p className="text-2xl font-semibold mb-12">LOGIN TO CONTINUE</p>
       <input
         placeholder="Email"
-        className="px-3 py-1.5 text-[#0e0e0e]"
+        className="px-3 py-1.5 text-[#0e0e0e] lg:w-60 w-44 bg-transparent border border-dark"
         value={loginInfo.email}
         onChange={(e) => setLoginInfo({ ...loginInfo, email: e.target.value })}
         type="email"
       />
-      <input
-        className="mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12"
-        placeholder="Password"
-        value={loginInfo.password}
-        onChange={(e) =>
-          setLoginInfo({ ...loginInfo, password: e.target.value })
-        }
-        type="password"
-      />
+      <div className="flex mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12 items-center justify-center space-x-2 lg:w-60 w-44 bg-transparent border border-dark">
+        <input
+          className="bg-transparent"
+          placeholder="Password"
+          value={loginInfo.password}
+          onChange={(e) =>
+            setLoginInfo({ ...loginInfo, password: e.target.value })
+          }
+          type={hidden ? "password" : "text"}
+        />
+        <p
+          onClick={() => sethidden(!hidden)}
+          className="lg:text-xs text-[10px]"
+        >
+          {hidden ? "SHOW" : "HIDE"}
+        </p>
+      </div>
       <Button
         loading={loading}
         label="LOGIN"

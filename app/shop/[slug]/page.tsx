@@ -62,7 +62,7 @@ export default function Page(props: { params: Params }) {
   const more = [
     {
       text: "Size Guide",
-      url: "https://docs.google.com/document/d/1NDZ68Je333K2B1joCYcinJxoIK21xIEKTIsntr5ibKE/edit?usp=drivesdk",
+      url: "https://drive.google.com/file/d/1rz9N8QZTzkUZTjbRqL6xYoi5X2wOh6_z/view?usp=sharing",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -251,6 +251,7 @@ export default function Page(props: { params: Params }) {
             : selectedProduct?.data?.quantity,
           measurement: filteredMeasurement,
           color,
+          weight: selectedProduct?.data?.weight,
         },
         quantity: orderDetails?.quantity,
       };
@@ -275,17 +276,17 @@ export default function Page(props: { params: Params }) {
 
   return (
     <div className={`flex flex-col w-full lg:px-24 px-8  text-black/80  pb-10`}>
-      <div className="flex lg:flex-row  flex-col lg:items-start lg:justify-center items-center lg:space-x-16 w-full lg:mt-10">
+      <div className="flex lg:flex-row  flex-col lg:items-start lg:justify-center items-center lg:space-x-4 w-full lg:mt-10">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           // navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
-          className="h-full lg:w-1/3 w-full flex items-center justify-center"
+          className="h-full lg:w-[600px] w-full flex items-center justify-center"
         >
           {selectedProduct?.data?.images?.map((image: any) => (
             <SwiperSlide key={image}>
-              <div className="lg:h-[600px] w-full h-[380px] relative lg:mt-0 mt-8">
+              <div className="lg:h-[700px] lg:w-[600px] w-full h-[380px] relative lg:mt-0 mt-8">
                 <Image alt="merch" src={image ?? null} fill={true} />
               </div>
             </SwiperSlide>
@@ -306,19 +307,24 @@ export default function Page(props: { params: Params }) {
           <p className="mt-6 tracking-wider lg:text-base font-medium text-sm">
             {selectedProduct?.data?.description}
           </p>
+          {/* COLORS */}
           <div className="mt-4">
             {selectedProduct?.data?.colors.map((color: any, i: number) => (
-              <span
-                key={i}
-                className={`${
-                  color?.name === selectedColor?.name
-                    ? "border border-blue-950"
-                    : ""
-                } inline-block mr-2 w-5 h-5 rounded-full cursor-pointer`}
-                style={{ backgroundColor: color.hexCode }}
-                title={color.name}
-                onClick={() => setSelectedColor(color)}
-              ></span>
+              <div className="flex flex-col items-center" key={color.hexCode}>
+                <span
+                  className={`${
+                    color?.name === selectedColor?.name
+                      ? "border border-blue-950"
+                      : ""
+                  } inline-block mr-2 w-5 h-5 rounded-full cursor-pointer`}
+                  style={{ backgroundColor: color.hexCode }}
+                  title={color.name}
+                  onClick={() => setSelectedColor(color)}
+                ></span>
+                <p className="mt-2 lg:text-[10px] text-[8px] tracking-wide capitalize">
+                  {color?.name}
+                </p>
+              </div>
             ))}
           </div>
           {selectedProduct?.data?.components?.length > 0 && (
@@ -434,7 +440,7 @@ export default function Page(props: { params: Params }) {
               />
             ) : (
               <div
-                className="flex items-center justify-center lg:w-1/2 border lg:mt-0 mt-5 border-dark p-2 cursor-pointer"
+                className="flex items-center justify-center lg:w-1/2 border lg:mt-0 mt-5 bg-dark p-2 cursor-pointer"
                 onClick={addToBag}
               >
                 <svg
@@ -442,7 +448,7 @@ export default function Page(props: { params: Params }) {
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
-                  stroke="#1B1B1B"
+                  stroke="#f5f5f5"
                   className="size-5 mr-3"
                 >
                   <path
@@ -451,7 +457,7 @@ export default function Page(props: { params: Params }) {
                     d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
                   />
                 </svg>
-                <p className="text-xs">Add To Bag</p>
+                <p className="text-xs text-lightgrey">Add To Bag</p>
               </div>
             )}
           </div>

@@ -96,7 +96,7 @@ export default function FilterBox({
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="#1B1B1B"
-              className="lg:size-5 size-4"
+              className="size-4"
             >
               <path
                 strokeLinecap="round"

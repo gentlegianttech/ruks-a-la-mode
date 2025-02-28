@@ -14,33 +14,31 @@ export default function Page() {
   const { cart, setcart, currency, exchangeRates } = context;
 
   const getMeasurementString = (measurement: any) => {
-    console.log(measurement);
-    // if (measurement?.size) {
-    //   return Object?.entries(measurement)
-    //     .filter(([key, value]) => key !== "custom")
-    //     .map(
-    //       ([key, value]) =>
-    //         `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
-    //     )
-    //     .join(", ");
-    // } else {
-    //   return Object?.entries(measurement?.custom)
-    //     .map(
-    //       ([key, value]) =>
-    //         `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
-    //     )
-    //     .join(", ");
-    // }
-    return "";
+    if (measurement?.size) {
+      return Object?.entries(measurement)
+        .filter(([key, value]) => key !== "custom")
+        .map(
+          ([key, value]) =>
+            `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
+        )
+        .join(", ");
+    } else {
+      return Object?.entries(measurement?.custom)
+        .map(
+          ([key, value]) =>
+            `${key.charAt(0).toUpperCase() + key.slice(1)}-${value}`
+        )
+        .join(", ");
+    }
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center w-full px-6">
       {cart?.length > 0 ? (
         <div className="w-full items-center flex flex-col">
-          <div className="w-full lg:w-[89.2%] flex lg:flex-row flex-col items-end lg:justify-between">
-            <p className="mt-12 lg:text-4xl text-2xl font-medium tracking-widest">
-              Shopping Bag
+          <div className="w-full lg:w-[94%] flex lg:flex-row flex-col items-end lg:justify-between mt-12">
+            <p className=" lg:text-4xl text-2xl font-medium tracking-wide">
+              Your Bag
             </p>
             <Link href="/shop" className="text-xs lg:mt-0 mt-2 underline">
               Continue Shopping
@@ -51,13 +49,13 @@ export default function Page() {
               <table className="min-w-full">
                 <thead className="border-b-[0.5px] border-dark/20">
                   <tr className="items-start flex w-full justify-between">
-                    <th className="px-4 py-2 text-left text-xs font-extralight">
+                    <th className="px-4 py-2 text-left text-xs font-extralight w-1/2">
                       Product
                     </th>
-                    <th className="px-4 py-2 text-left ml-16 text-xs font-extralight">
+                    <th className="px-4 py-2 text-left ml-16 text-xs font-extralight w-[30%]">
                       Quantity
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-extralight">
+                    <th className="px-4 py-2 text-left text-xs font-extralight w-1/5">
                       Price
                     </th>
                   </tr>
@@ -68,7 +66,7 @@ export default function Page() {
                       className="border-b items-start flex w-full justify-between"
                       key={c?.item?.id}
                     >
-                      <td className="px-4 my-5 flex lg:flex-row flex-col items-start ">
+                      <td className="px-4 my-5 flex lg:flex-row flex-col items-start w-[46.8%]">
                         <Image
                           width={120}
                           height={280}
@@ -77,18 +75,18 @@ export default function Page() {
                           className=" mr-4"
                         />
                         <div className="flex flex-col items-start lg:space-y-2 space-y-1">
-                          <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
+                          <span className="lg:text-sm font-semibold text-xs lg:mt-0 mt-3 capitalize">
                             {c?.item?.name}
                           </span>
                           <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
-                            {c?.item?.color?.name}
+                            Color - {c?.item?.color?.name}
                           </span>
                           <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
                             {getMeasurementString(c?.item?.measurement)}
                           </span>
                         </div>
                       </td>
-                      <td className="px-4">
+                      <td className="px-4 w-[30%]">
                         <div className="flex items-start">
                           <div className="mt-4 lg:w-40 w-16 p-1 lg:p-2 border-dark/70 border ">
                             <Incrementer
@@ -122,7 +120,7 @@ export default function Page() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-2 font-light text-xs lg:text-sm">
+                      <td className="px-4 mt-3 font-light text-xs lg:text-sm w-1/5">
                         {formatPrice(
                           currency,
                           c.item?.price *

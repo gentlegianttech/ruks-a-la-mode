@@ -1,17 +1,41 @@
+"use client";
+
+import { getDiscount } from "@/helpers/api-controller";
 import { formatPrice } from "@/helpers/functions";
 import { CartItemProps } from "@/helpers/types";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function CheckoutBox({
   cart,
   currency,
   rate,
+  discount,
+  setDiscount,
+  shippingFee,
 }: {
   cart: any[];
   currency: string;
   rate: number;
+  discount: number;
+  setDiscount: (value: number) => void;
+  shippingFee: number | undefined;
 }) {
-  const shippingFee = 6000 * rate;
+  const [code, setcode] = useState("");
+
+  const handleSetDiscount = (data: any) => {
+    setDiscount(data?.discount);
+    alert(`${data?.discount}% Discount added`);
+  };
+
+  const getDiscountMutation = useMutation({
+    mutationFn: () => getDiscount(code),
+    onSuccess: (data) =>
+      data?.hasOwnProperty("discount")
+        ? handleSetDiscount(data)
+        : alert(data?.message),
+  });
 
   return (
     <div className="p-3 border border-dark lg:w-[46%] w-full lg:mb-0 mb-16">
@@ -45,6 +69,9 @@ export default function CheckoutBox({
                   <p className="font-extralight tracking-wide text-[9px]">
                     {formattedMeasurementString}
                   </p>
+                  <p className="font-extralight tracking-wide text-[9px]">
+                    Color - {c?.item?.color?.name}
+                  </p>
                 </div>
               </div>
               <p className="lg:text-base text-sm lg:mt-0 mt-4">
@@ -53,19 +80,34 @@ export default function CheckoutBox({
             </div>
           );
         })}
-        <div className="w-full flex items-center justify-between mt-8">
-          <input
-            className="w-3/4 border border-dark bg-transparent text-xs outline-none p-1 lg:h-11 h-9"
-            type="text"
-            placeholder="Coupon or Discount Code"
-            id="discountCode"
-            name="discountCode"
-          />
-          <div className="p-2 lg:h-11 h-9 bg-dark border border-dark w-28 flex items-center justify-center cursor-pointer hover:opacity-80">
-            <p className="text-[#F5f5f5] uppercase text-xs">Apply</p>
+        {discount > 0 ? (
+          <p className="font-medium text-xs tracking-wider text-green-500">
+            {discount}% discount added
+          </p>
+        ) : (
+          <div className="w-full flex items-center justify-between mt-8">
+            <input
+              className="w-3/4 border border-dark bg-transparent text-xs outline-none p-1 lg:h-11 h-9"
+              type="text"
+              placeholder="Coupon or Discount Code"
+              id="discountCode"
+              name="discountCode"
+              value={code}
+              onChange={(e) => setcode(e.target.value)}
+            />
+            <div
+              onClick={() => getDiscountMutation.mutate()}
+              className="p-2 lg:h-11 h-9 bg-dark border border-dark w-28 flex items-center justify-center cursor-pointer hover:opacity-80"
+            >
+              <p className="text-[#F5f5f5] uppercase text-xs">Apply</p>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center justify-between w-full mt-8">
+        )}
+        <div
+          className={`flex items-center justify-between w-full ${
+            discount > 0 ? "mt-4" : "mt-8"
+          }`}
+        >
           <p className="font-medium tracking-wide lg:text-base text-xs">
             Subtotal
           </p>
@@ -84,7 +126,7 @@ export default function CheckoutBox({
             Shipping Fee
           </p>
           <p className="font-light tracking-wide lg:text-base text-xs">
-            {formatPrice(currency, shippingFee)}
+            {formatPrice(currency, shippingFee ?? 0 * rate)}
           </p>
         </div>
         <div className="flex items-center justify-between w-full mt-3">
@@ -92,15 +134,23 @@ export default function CheckoutBox({
             Total
           </p>
           <p className="font-medium tracking-wide lg:text-lg text-sm">
-            {formatPrice(
-              currency,
-              cart?.reduce(
-                (sum, item) => item.item.price * item.quantity + sum,
-                0
-              ) *
-                rate +
-                shippingFee
-            )}
+            {shippingFee
+              ? formatPrice(
+                  currency,
+                  cart?.reduce(
+                    (sum, item) => item.item.price * item.quantity + sum,
+                    0
+                  ) *
+                    rate +
+                    shippingFee
+                )
+              : formatPrice(
+                  currency,
+                  cart?.reduce(
+                    (sum, item) => item.item.price * item.quantity + sum,
+                    0
+                  ) * rate
+                )}
           </p>
         </div>
       </div>

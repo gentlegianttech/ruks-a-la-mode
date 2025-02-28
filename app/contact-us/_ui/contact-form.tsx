@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/app/ui/button";
 import { useState } from "react";
 
 export default function ContactForm() {
@@ -11,7 +10,7 @@ export default function ContactForm() {
   });
   return (
     <div className="lg:w-1/2 w-full">
-      <p className="lg:text-5xl text-2xl">Contact</p>
+      <p className="lg:text-5xl text-2xl">Contact Us</p>
       <p className="mt-3 opacity-90 lg:text-base text-sm text-dark">
         Send a message and our team will get back to you within 24 hrs
       </p>
@@ -39,8 +38,8 @@ export default function ContactForm() {
           }
         />
       </div>
-      <Button
-        label="Send Message"
+      <div
+        className="bg-dark py-2 px-3 w-fit cursor-pointer hover:bg-lightgrey"
         onClick={() => {
           if (!messager.email || !messager.name || !messager.email) return;
 
@@ -51,7 +50,9 @@ export default function ContactForm() {
           window.open(mailtoLink, "_blank");
           setMessager({ name: "", email: "", message: "" });
         }}
-      />
+      >
+        <p className="text-lightgrey hover:text-dark">Send Message</p>
+      </div>
     </div>
   );
 }
