@@ -70,11 +70,11 @@ export default function Footer() {
                     <Link
                       key={m}
                       href={
-                        m === "faqs"
+                        m?.toLowerCase() === "faqs"
                           ? "/contact-us#faqs"
-                          : m === "home"
+                          : m.toLowerCase() === "home"
                           ? "/"
-                          : `/${m}`
+                          : `/${m.toLowerCase()}`
                       }
                     >
                       <p className="mb-3 opacity-90 lg:text-base text-sm">

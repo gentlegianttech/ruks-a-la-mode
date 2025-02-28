@@ -3,6 +3,7 @@
 import { useState } from "react";
 import CountryDropdown from "./country-dropdown";
 import AbjCityDropdown from "./abj-city-dropdown";
+import Link from "next/link";
 
 const CheckoutForm = ({
   checkoutCart,
@@ -248,7 +249,21 @@ const CheckoutForm = ({
             ))}
           </div>
         </div>
-        {shippingFee !== undefined ? <p>Shipping Fee: {shippingFee}</p> : <></>}
+        {shippingFee !== undefined ? (
+          <div>
+            <p>Shipping Fee: {shippingFee}</p>
+            <Link
+              className="mt-4"
+              href="https://docs.google.com/document/d/1PmALWFEbB8emQyMLKd2EFfUbeFz0ngPDzGPXuncMJiY/edit?usp=drivesdk"
+            >
+              <p className="mt-4 text-blue-600">
+                By Clicking Checkout, You Agree To Our Terms and Policy
+              </p>
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
         <div
           onClick={() => {
             if (
@@ -266,7 +281,7 @@ const CheckoutForm = ({
             }
             checkoutCart(shippingInfo);
           }}
-          className={`mt-2 lg:w-[49%] w-full p-3 bg-black/85 flex items-center font-medium justify-center hover:opacity-70 ${"cursor-pointer"}`}
+          className={`lg:w-[49%] w-full p-3 bg-black/85 flex items-center font-medium justify-center hover:opacity-70 ${"cursor-pointer"}`}
         >
           <p className="text-[#f5f5f5] lg:text-sm text-xs uppercase">
             {shippingFee === undefined ? "Get Shipping Fee" : "Check out"}

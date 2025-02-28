@@ -36,9 +36,10 @@ export default function Page(props: { params: Params }) {
     exchangeRates,
   } = context;
 
-  const sizes = [6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+  const sizes = ["Select Size", 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
 
   const lengths = [
+    "Select Length",
     "Petite",
     "Petite+",
     "Average",
@@ -141,14 +142,16 @@ export default function Page(props: { params: Params }) {
   });
 
   const [selectedColor, setSelectedColor] = useState({
-    name: "",
-    hexColor: "",
+    name: selectedProduct?.data?.colors[0]?.name,
+    hexColor: selectedProduct?.data?.colors[0]?.hexColor,
   });
 
   const [orderDetails, setOrderDetails] = useState({
     quantity: 1,
   });
-  const itemIndex = context?.cart?.findIndex((c) => c.item.id === slug);
+  const itemIndex = context?.cart?.findIndex(
+    (c) => c.item.name === selectedProduct?.data?.name
+  );
 
   const isProductInCart = itemIndex !== -1 ? true : false;
 
@@ -206,7 +209,11 @@ export default function Page(props: { params: Params }) {
     if (selectedProduct) {
       const { size, custom, length } = measurement;
 
-      if (!size && !custom && !length) {
+      if (
+        !size &&
+        !length &&
+        !Object?.entries(custom)?.some(([_, value]) => value !== "")
+      ) {
         return alert("Incomplete Measurement Parameters");
       }
 
@@ -263,7 +270,12 @@ export default function Page(props: { params: Params }) {
         itemData.item["selectedMaterial"] = selectedMaterial;
         itemData.item["name"] += ` (${selectedMaterial?.name})`;
       }
+      if (selectedProduct?.data?.colors?.length > 1) {
+        itemData.item["name"] += ` (${selectedColor?.name})`;
+      }
       context?.setcart([...context?.cart, itemData]);
+
+      alert("Cart Updated");
     }
   };
 
@@ -284,16 +296,16 @@ export default function Page(props: { params: Params }) {
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           className="h-full lg:w-[600px] w-full flex items-center justify-center"
         >
-          {selectedProduct?.data?.images?.map((image: any) => (
-            <SwiperSlide key={image}>
-              <div className="lg:h-[700px] lg:w-[600px] w-full h-[380px] relative lg:mt-0 mt-8">
+          {selectedProduct?.data?.images?.map((image: any, i: number) => (
+            <SwiperSlide key={i}>
+              <div className="lg:h-[700px] lg:w-[570px] w-full h-[400px] relative lg:mt-0 mt-8">
                 <Image alt="merch" src={image ?? null} fill={true} />
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
         <div className="flex flex-col lg:items-start items-center lg:w-2/5 w-full lg:mt-0 mt-10">
-          <p className="lg:text-4xl text-2xl font-medium tracking-wider text-center">
+          <p className="lg:text-4xl text-2xl font-medium tracking-wider lg:text-left text-center">
             {selectedProduct?.data?.name}
           </p>
           <p className={`mt-4 lg:text-lg font-medium tracking-wide`}>
@@ -305,28 +317,33 @@ export default function Page(props: { params: Params }) {
             )}
           </p>
           <p className="mt-6 tracking-wider lg:text-base font-medium text-sm">
-            {selectedProduct?.data?.description}
+            {selectedProduct?.data?.description
+              .split("- ")
+              .map((item: any) => item.trim()) // Remove extra spaces
+              .filter((item: any) => item)
+              .map((item: any, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
           </p>
           {/* COLORS */}
-          <div className="mt-4 flex items-center justify-start space-x-3">
+          <p className="mt-4 mb-2">Color: {selectedColor?.name}</p>
+          <div className=" flex items-center justify-start space-x-1">
             {selectedProduct?.data?.colors.map((color: any, i: number) => (
               <div
-                className="flex flex-col items-center h-16"
-                key={color.hexCode}
+                className={`${
+                  color?.name === selectedColor?.name
+                    ? "border border-blue-950"
+                    : ""
+                } flex items-center justify-center w-6 h-6 rounded-full cursor-pointer p-0.5`}
+                key={i}
               >
                 <span
-                  className={`${
-                    color?.name === selectedColor?.name
-                      ? "border border-blue-950"
-                      : ""
-                  } inline-block w-5 h-5 rounded-full cursor-pointer`}
+                  key={i}
+                  className={` inline-block w-full h-full rounded-full`}
                   style={{ backgroundColor: color.hexCode }}
                   title={color.name}
                   onClick={() => setSelectedColor(color)}
                 ></span>
-                <p className="mt-2 lg:text-[10px] text-[8px] text-center w-16 tracking-wide capitalize">
-                  {color?.name}
-                </p>
               </div>
             ))}
           </div>

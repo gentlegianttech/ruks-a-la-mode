@@ -64,7 +64,7 @@ export default function Page() {
                   {cart?.map((c, i) => (
                     <tr
                       className="border-b items-start flex w-full justify-between"
-                      key={c?.item?.id}
+                      key={c?.item?.name}
                     >
                       <td className="px-4 my-5 flex lg:flex-row flex-col items-start w-[46.8%]">
                         <Image
@@ -96,7 +96,7 @@ export default function Page() {
                                   if (c.quantity === 1) {
                                     setcart(
                                       cart?.filter(
-                                        (ci) => c.item.id !== ci.item.id
+                                        (ci) => c.item.name !== ci.item.name
                                       )
                                     );
                                     return;

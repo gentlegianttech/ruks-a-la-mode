@@ -11,26 +11,28 @@ export default function ContactCard() {
   return (
     <div className="lg:w-[45%] w-full bg-lightgrey lg:p-14 rounded-[40px] lg:mt-0 mt-12">
       <Tab label="Location">
-        <p className="lg:w-3/5 lg:text-sm text-sm font-light text-dark">
+        <p className="lg:w-3/5 lg:text-sm text-sm text-dark">
           Penthouse, Wing C, Deo Gracia Plaza, Utako, Abuja.
         </p>
       </Tab>
       <Tab label="Working Hours">
         <div>
-          <p className="lg:text-sm text-sm font-light text-dark">
+          <p className="lg:text-sm text-sm text-dark">
             Monday To Friday 11:00 AM to 5:00 PM
           </p>
-          <p className="lg:text-sm text-sm mt-1 opacity-60">
+          <p className="lg:text-sm text-sm mt-1">
             Our Support Team is available 9am - 9pm, everyday but Sunday.
           </p>
         </div>
       </Tab>
       <Tab label="Contact us">
         <div>
-          <p className="lg:w-1/2 lg:text-sm text-sm font-light text-dark">
+          <p className="lg:w-1/2 lg:text-sm text-sm text-dark">
             +234 901 210 1539
           </p>
-          <p className="mt-1 opacity-60">support@ruksalamode.com</p>
+          <p className="mt-1 lg:text-sm text-sm text-dark">
+            support@ruksalamode.com
+          </p>
         </div>
       </Tab>
 
