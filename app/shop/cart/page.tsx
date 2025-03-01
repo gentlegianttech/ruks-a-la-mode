@@ -36,7 +36,7 @@ export default function Page() {
     <div className="flex min-h-screen flex-col items-center w-full px-6">
       {cart?.length > 0 ? (
         <div className="w-full items-center flex flex-col">
-          <div className="w-full lg:w-[94%] flex lg:flex-row flex-col items-end lg:justify-between mt-12">
+          <div className="w-full lg:w-[94%] flex items-end lg:justify-between mt-12">
             <p className=" lg:text-4xl text-2xl font-medium tracking-wide">
               Your Bag
             </p>

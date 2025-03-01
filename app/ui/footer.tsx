@@ -143,7 +143,7 @@ export default function Footer() {
             </div>
             <div className="mt-8">
               <p className="opacity-90 lg:text-base text-xs">
-                Copyright © RUKSALAMODE {now.year}
+                Copyright © RUKS Á LA MODE {now.year}
               </p>
             </div>
           </div>
