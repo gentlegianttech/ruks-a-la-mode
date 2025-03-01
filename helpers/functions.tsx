@@ -55,6 +55,7 @@ function getRegionByCountry(country: any) {
 
 export function getShippingFee(address: any, weight: number, type?: any) {
   const { state, country, city } = address;
+  console.log(state, country, city, type, weight);
 
   if (country?.toLowerCase() === "nigeria") {
     if (state?.toLowerCase() === "abuja") {

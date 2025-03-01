@@ -49,14 +49,14 @@ export default function Page() {
       <p className="text-lg font-semibold mb-12">LOGIN TO CONTINUE</p>
       <input
         placeholder="Email"
-        className="px-3 py-1.5 text-[#0e0e0e] lg:w-60 w-60 bg-transparent border border-dark outline-none"
+        className="px-3 py-1.5 text-[#0e0e0e] lg:w-72 w-72 bg-transparent border border-dark outline-none"
         value={loginInfo.email}
         onChange={(e) => setLoginInfo({ ...loginInfo, email: e.target.value })}
         type="email"
       />
-      <div className="flex mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12 items-center justify-center space-x-2 lg:w-60 w-60 bg-transparent border border-dark">
+      <div className="flex mt-8 lg:px-3 px-1.5 py-1 lg:py-1.5 text-[#0e0e0e] mb-12 items-center justify-center space-x-2 lg:w-72 w-72 bg-transparent border border-dark">
         <input
-          className="bg-transparent outline-none"
+          className="bg-transparent outline-none lg:text-xs text-[10px]"
           placeholder="Password"
           value={loginInfo.password}
           onChange={(e) =>

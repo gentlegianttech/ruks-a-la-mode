@@ -7,7 +7,7 @@ import { ProductProps } from "@/helpers/types";
 export default function ExtraInfoAccordion({ product }: { product: any }) {
   return (
     <div className="p-4 bg-gray-50">
-      <h3 className="font-bold text-sm">Extra Info</h3>
+      <h3 className="font-bold text-sm mb-2">Extra Info</h3>
       <p className="text-xs mb-3">Quantity: {product?.quantity}</p>
       {product?.colors.map((color: any, i: number) => (
         <div
