@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
+import { useQuery } from "@tanstack/react-query";
+import { getTopSellers } from "@/helpers/api-controller";
 
 // Register Chart.js components
 ChartJS.register(
@@ -40,27 +42,43 @@ const Analytics = () => {
     ],
   };
 
-  const productPerformanceData = {
-    labels: ["Product A", "Product B", "Product C"],
-    datasets: [
-      {
-        label: "Units Sold",
-        data: [300, 500, 400],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-        ],
-      },
-    ],
-  };
+  const [productPerformanceData, setProductPerformanceData] =
+    useState<any>(undefined);
+
+  const {
+    data: topSellersData,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["topSellers"],
+    queryFn: () => getTopSellers(),
+  });
+
+  const topSellers = topSellersData?.topSellers;
+
+  useEffect(() => {
+    setProductPerformanceData({
+      labels: topSellers?.map((t: any) => t?.name),
+      datasets: [
+        {
+          label: "Units Sold",
+          data: topSellers?.map((t: any) => t?.sold),
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+          ],
+        },
+      ],
+    });
+  }, [topSellers]);
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Reports & Analytics</h2>
 
       {/* Date Range Filter */}
-      <div className="mb-4 flex gap-4">
+      {/* <div className="mb-4 flex gap-4">
         <div>
           <label className="block text-gray-700">Start Date</label>
           <input
@@ -83,18 +101,18 @@ const Analytics = () => {
             className="border px-4 py-2 rounded w-full"
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Sales Overview */}
-      <div className="mb-8 lg:w-2/3 mt-16">
+      {/* <div className="mb-8 lg:w-2/3 mt-16">
         <h3 className="text-xl font-bold mb-4">Sales Overview</h3>
         <Bar data={salesData} />
-      </div>
+      </div> */}
 
       {/* Product Performance */}
       <div className="mb-8 lg:w-2/3">
         <h3 className="text-xl font-bold mb-4">Product Performance</h3>
-        <Pie data={productPerformanceData} />
+        {productPerformanceData ? <Pie data={productPerformanceData} /> : <></>}
       </div>
 
       {/* Traffic Analytics Placeholder */}

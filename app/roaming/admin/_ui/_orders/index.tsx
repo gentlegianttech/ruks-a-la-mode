@@ -199,7 +199,7 @@ export default function Orders() {
         </div>
 
         {/* Search Bar */}
-        <div className="flex items-center">
+        <div className="flex items-center mt-5 lg:mt-0">
           <label className="mr-2 font-medium lg:text-sm text-xs">Search:</label>
           <input
             type="text"
@@ -282,33 +282,36 @@ export default function Orders() {
                       {order?.data?.status}
                     </span>
                   </td>
-                  <td>
-                    {order?.data?.status === "producing" && (
-                      <>
+                  <td className="">
+                    <div className="ml-2 flex lg:flex-row flex-col lg:space-y-0 space-y-1 lg:space-x-2 space-x-0">
+                      {order?.data?.status === "producing" && (
                         <button
-                          className="bg-green-500 text-white px-2 py-1 rounded mr-2 text-xs"
+                          className="bg-green-500 text-white px-2 py-1 rounded lg:text-xs text-[10px]"
                           onClick={() => handleStatusChange(order.id, "ready")}
                         >
                           Ready
                         </button>
+                      )}
+                      {order?.data?.status === "producing" && (
                         <button
-                          className="bg-red-500 text-white px-2 py-1 rounded text-xs mr-2"
+                          className="bg-red-500 text-white px-2 py-1 rounded lg:text-xs text-[10px]"
                           onClick={() =>
                             handleStatusChange(order.id, "canceled")
                           }
                         >
                           Cancel
                         </button>
-                      </>
-                    )}
-                    <button
-                      onClick={() => handleViewDetails(order)}
-                      className={`bg-blue-500 text-white px-3 py-1 rounded text-xs ${
-                        order.status === "Pending" ? "ml-2" : "ml-2"
-                      }`}
-                    >
-                      View Details
-                    </button>
+                      )}
+
+                      <button
+                        onClick={() => handleViewDetails(order)}
+                        className={`bg-blue-500 text-white px-2 py-1 rounded lg:text-xs text-[10px] ${
+                          order.status === "ready" ? "" : ""
+                        }`}
+                      >
+                        View
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

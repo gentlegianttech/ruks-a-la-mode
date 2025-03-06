@@ -42,26 +42,28 @@ export default function ProductTable({
               </td>
               <td className="p-2 text-xs uppercase">{product.category}</td>
               <td className="p-2">
-                <button
-                  onClick={() =>
-                    setExpandedRow(
-                      expandedRow === product.id ? null : product.id
-                    )
-                  }
-                  className="text-blue-500 text-xs hover:underline"
-                >
-                  {expandedRow === product.id ? "Hide" : "View"}
-                </button>
-                <button
-                  onClick={() => onEdit(product)}
-                  className="text-yellow-500 text-xs hover:underline mx-2"
-                >
-                  Edit
-                </button>
-                <DeleteProductModal
-                  productId={product.id}
-                  onDelete={onDelete}
-                />
+                <div className="flex lg:flex-row flex-col items-center justify-center lg:space-y-0 space-y-1 space-x-0 lg:space-x-2">
+                  <button
+                    onClick={() =>
+                      setExpandedRow(
+                        expandedRow === product.id ? null : product.id
+                      )
+                    }
+                    className="text-blue-500 text-xs hover:underline"
+                  >
+                    {expandedRow === product.id ? "Hide" : "View"}
+                  </button>
+                  <button
+                    onClick={() => onEdit(product)}
+                    className="text-yellow-500 text-xs hover:underline "
+                  >
+                    Edit
+                  </button>
+                  <DeleteProductModal
+                    productId={product.id}
+                    onDelete={onDelete}
+                  />
+                </div>
               </td>
             </tr>
             {expandedRow === product.id && (

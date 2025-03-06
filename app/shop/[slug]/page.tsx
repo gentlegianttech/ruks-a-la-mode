@@ -298,7 +298,7 @@ export default function Page(props: { params: Params }) {
         >
           {selectedProduct?.data?.images?.map((image: any, i: number) => (
             <SwiperSlide key={i}>
-              <div className="lg:h-[700px] lg:w-[570px] w-full h-[400px] relative lg:mt-0 mt-8">
+              <div className="lg:h-[700px] lg:w-[570px] w-full h-[420px] relative lg:mt-0 mt-8">
                 <Image alt="merch" src={image ?? null} fill={true} />
               </div>
             </SwiperSlide>

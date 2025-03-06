@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       console.log(commodity);
       batch.update(productRef, {
         quantity: firebase.firestore.FieldValue.increment(-commodity?.quantity),
+        sold: firebase.firestore.FieldValue.increment(commodity?.quantity),
       });
     });
 

@@ -33,10 +33,10 @@ export default function Page() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center w-full px-6">
+    <div className="flex lg:min-h-screen flex-col items-center w-full px-6">
       {cart?.length > 0 ? (
         <div className="w-full items-center flex flex-col">
-          <div className="w-full lg:w-[94%] flex items-end lg:justify-between mt-12">
+          <div className="w-full lg:w-[94%] flex items-center lg:items-end justify-between mt-4 lg:mt-12">
             <p className=" lg:text-4xl text-2xl font-medium tracking-wide">
               Your Bag
             </p>
@@ -49,13 +49,13 @@ export default function Page() {
               <table className="min-w-full">
                 <thead className="border-b-[0.5px] border-dark/20">
                   <tr className="items-start flex w-full justify-between">
-                    <th className="px-4 py-2 text-left text-xs font-extralight w-1/2">
+                    <th className="px-4 py-2 text-left text-xs font-extralight lg:w-1/2">
                       Product
                     </th>
-                    <th className="px-4 py-2 text-left ml-16 text-xs font-extralight w-[30%]">
+                    <th className="px-4 py-2 text-left ml-16 text-xs lg:block hidden font-extralight w-[30%]">
                       Quantity
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-extralight w-1/5">
+                    <th className="px-4 py-2 text-left text-xs font-extralight lg:w-1/5">
                       Price
                     </th>
                   </tr>
@@ -82,11 +82,43 @@ export default function Page() {
                             Color - {c?.item?.color?.name}
                           </span>
                           <span className="lg:text-sm font-light text-xs lg:mt-0 mt-3 capitalize">
-                            {getMeasurementString(c?.item?.measurement)}
+                            {c?.item?.measurement
+                              ? getMeasurementString(c?.item?.measurement)
+                              : ""}
                           </span>
                         </div>
+                        <div className="mt-4 lg:w-40 w-16 p-1 lg:p-2 border-dark/70 border lg:hidden block ">
+                          <Incrementer
+                            leftClick={() => {
+                              const modifiedCart = [...cart];
+                              if (c.quantity > 0) {
+                                if (c.quantity === 1) {
+                                  setcart(
+                                    cart?.filter(
+                                      (ci) => c.item.name !== ci.item.name
+                                    )
+                                  );
+                                  return;
+                                }
+                                modifiedCart[i].quantity -= 1;
+                              }
+                              setcart(modifiedCart);
+                            }}
+                            rightClick={() => {
+                              const modifiedCart = [...cart];
+                              console.log();
+                              if (
+                                c?.item?.stock &&
+                                c?.item?.stock > c?.quantity
+                              )
+                                modifiedCart[i].quantity += 1;
+                              setcart(modifiedCart);
+                            }}
+                            value={c?.quantity}
+                          />
+                        </div>
                       </td>
-                      <td className="px-4 w-[30%]">
+                      <td className="px-4 lg:w-[30%] lg:block hidden">
                         <div className="flex items-start">
                           <div className="mt-4 lg:w-40 w-16 p-1 lg:p-2 border-dark/70 border ">
                             <Incrementer
@@ -120,7 +152,7 @@ export default function Page() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 mt-3 font-light text-xs lg:text-sm w-1/5">
+                      <td className="px-4 mt-3 font-light text-xs lg:text-sm lg:w-1/5">
                         {formatPrice(
                           currency,
                           c.item?.price *

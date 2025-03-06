@@ -172,8 +172,7 @@ function Confirmation() {
     return (
       <div className="flex flex-col items-center space-y-5">
         <p className={`text-center`}>
-          PLEASE STAY ON THIS PAGE AS WE CONFIRM YOUR TICKET & ADD YOU TO THE
-          GUESTLIST
+          PLEASE STAY ON THIS PAGE AS WE CONFIRM YOUR ORDER
         </p>{" "}
         <Blocks />{" "}
       </div>

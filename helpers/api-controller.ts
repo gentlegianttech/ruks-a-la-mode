@@ -14,6 +14,32 @@ export async function getDiscount(code: string) {
   }
 }
 
+export async function getDiscounts() {
+  try {
+    const discounts = await axios.get(`/api/discounts/get-discounts`);
+    return discounts.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+export async function createDiscount(discount: any) {
+  try {
+    return await axios.post(`/api/discounts/add-discount`, discount);
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function deleteDiscount(code: any) {
+  try {
+    return await axios.delete(`/api/discounts/delete-discount?code=${code}`);
+  } catch (error) {
+    return error;
+  }
+}
+
 //payments
 export async function makePayment(data: any) {
   try {
@@ -188,5 +214,16 @@ export async function updatePretext(text: string) {
     return await axios.post(`/api/content/update-pretext`, { text });
   } catch (error) {
     return error;
+  }
+}
+
+//analytics
+export async function getTopSellers() {
+  try {
+    const topSellers = await axios.get(`/api/analytics/get-top-sellers`);
+    return topSellers.data;
+  } catch (err) {
+    console.log(err);
+    return err;
   }
 }

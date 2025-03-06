@@ -30,6 +30,8 @@ const CheckoutForm = ({
     phonenumber: "",
   });
 
+  const types = ["standard", "express", "freight"];
+
   return (
     <>
       <form className="mt-8 space-y-6">
@@ -222,31 +224,57 @@ const CheckoutForm = ({
             </div>
           </div>
           <div className="flex gap-4">
-            {["standard", "express", "freight"].map((option) => (
+            {shippingInfo.state?.trim().toLowerCase() !== "abuja" ? (
+              types.map((option) => (
+                <label
+                  key={option}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="radio"
+                    name="shipping"
+                    value={option}
+                    checked={deliveryType === option}
+                    onChange={() => setDeliveryType(option)}
+                    className="hidden"
+                  />
+                  <div
+                    className={`w-5 h-5 rounded-full border-2 border-gray-500 flex items-center justify-center ${
+                      deliveryType === option ? "border-blue-500" : ""
+                    }`}
+                  >
+                    {deliveryType === option && (
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    )}
+                  </div>
+                  <span className="capitalize">{option}</span>
+                </label>
+              ))
+            ) : (
               <label
-                key={option}
+                key={"standard"}
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <input
                   type="radio"
                   name="shipping"
-                  value={option}
-                  checked={deliveryType === option}
-                  onChange={() => setDeliveryType(option)}
+                  value={"standard"}
+                  checked={deliveryType === "standard"}
+                  onChange={() => setDeliveryType("standard")}
                   className="hidden"
                 />
                 <div
                   className={`w-5 h-5 rounded-full border-2 border-gray-500 flex items-center justify-center ${
-                    deliveryType === option ? "border-blue-500" : ""
+                    deliveryType === "standard" ? "border-blue-500" : ""
                   }`}
                 >
-                  {deliveryType === option && (
+                  {deliveryType === "standard" && (
                     <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                   )}
                 </div>
-                <span className="capitalize">{option}</span>
+                <span className="capitalize">{"standard"}</span>
               </label>
-            ))}
+            )}
           </div>
         </div>
         {shippingFee !== undefined ? (

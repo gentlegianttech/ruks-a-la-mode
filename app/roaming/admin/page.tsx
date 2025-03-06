@@ -23,6 +23,8 @@ import { useAppContext } from "@/helpers/store";
 import { useRouter } from "next/navigation";
 import { LuLogOut } from "react-icons/lu";
 import { auth, logout } from "@/helpers/utils/auth";
+import { FaSquarePollVertical } from "react-icons/fa6";
+import DiscountCodes from "./_ui/_discount-codes";
 
 export default function Page() {
   const [activeView, setActiveView] = useState("orders");
@@ -39,9 +41,10 @@ export default function Page() {
     { key: "products", label: "Products", icon: <FaTshirt /> },
     // { key: "payments", label: "Payments", icon: <FaMoneyBill /> },
     { key: "deliveries", label: "Deliveries", icon: <FaTruck /> },
-    // { key: "administrators", label: "Administrators", icon: <FaCogs /> },
+    { key: "discount-codes", label: "Discount Codes", icon: <FaTruck /> },
+    { key: "administrators", label: "Administrators", icon: <FaCogs /> },
     { key: "content", label: "Content", icon: <FaImages /> },
-    // { key: "analytics", label: "Analytics", icon: <FaSquarePollVertical /> },
+    { key: "analytics", label: "Analytics", icon: <FaSquarePollVertical /> },
   ];
 
   const renderView = () => {
@@ -54,12 +57,14 @@ export default function Page() {
       //   return <Payments />;
       case "deliveries":
         return <Deliveries />;
-      // case "administrators":
-      //   return <Administrators />;
+      case "discount-codes":
+        return <DiscountCodes />;
+      case "administrators":
+        return <Administrators />;
       case "content":
         return <Content />;
-      // case "analytics":
-      //   return <Analytics />;
+      case "analytics":
+        return <Analytics />;
       default:
         return <div>Select a view</div>;
     }

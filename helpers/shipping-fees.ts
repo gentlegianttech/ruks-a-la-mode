@@ -298,6 +298,7 @@ const countryGroups = {
     "Zambia",
     "Zimbabwe",
   ],
+  UK: ["Ireland", "United Kingdom", "UK", "London"],
   EUROPE: [
     "Albania",
     "Andorra",
@@ -320,7 +321,6 @@ const countryGroups = {
     "Greenland",
     "Hungary",
     "Iceland",
-    "Ireland",
     "Italy",
     "Jersey",
     "Kazakhstan",
@@ -346,7 +346,6 @@ const countryGroups = {
     "Sweden",
     "Switzerland",
     "Ukraine",
-    "United Kingdom",
   ],
   US_CAN: ["United States", "Canada"],
   ASIA: [
