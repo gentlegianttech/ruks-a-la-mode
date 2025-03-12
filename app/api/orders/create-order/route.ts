@@ -29,9 +29,10 @@ export async function POST(req: NextRequest) {
       txref: body?.txref,
       items: body?.items,
       price: body?.price,
+      discount: body?.discount,
       shippingInfo: body?.shippingInfo,
       createdAt: body?.createdAt,
-      status: "producing",
+      status: "pending",
     };
 
     const batch = db.batch();

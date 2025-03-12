@@ -21,10 +21,10 @@ export default function PartSelector({
   return (
     <div className="mt-6 w-full">
       <p className="mb-2 font-semibold">Select Component</p>
-      <div className="flex lg:flex-row flex-col gap-3">
+      <div className="grid lg:grid-cols-4 gap-2 grid-cols-2">
         <label
           key={"Full Set"}
-          className={`p-2 border rounded-md uppercase text-xs cursor-pointer ${
+          className={`px-3 py-1.5 border rounded-md uppercase text-[9px] cursor-pointer flex items-center text-center justify-center ${
             selectedPart === "" ? "bg-black text-white" : "bg-white"
           }`}
         >
@@ -42,8 +42,8 @@ export default function PartSelector({
         </label>
         {components?.map((component) => (
           <label
-            key={component?.id}
-            className={`p-2 border rounded-md uppercase text-xs cursor-pointer ${
+            key={component?.name}
+            className={`px-3 py-1.5 border rounded-md uppercase text-[9px] cursor-pointer flex items-center text-center justify-center ${
               selectedPart === component?.name
                 ? "bg-black text-white"
                 : "bg-white"

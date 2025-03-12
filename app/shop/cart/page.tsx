@@ -34,7 +34,7 @@ export default function Page() {
 
   return (
     <div className="flex lg:min-h-screen flex-col items-center w-full px-6">
-      {cart?.length > 0 ? (
+      {cart?.items?.length > 0 ? (
         <div className="w-full items-center flex flex-col">
           <div className="w-full lg:w-[94%] flex items-center lg:items-end justify-between mt-4 lg:mt-12">
             <p className=" lg:text-4xl text-2xl font-medium tracking-wide">
@@ -61,7 +61,7 @@ export default function Page() {
                   </tr>
                 </thead>
                 <tbody className="">
-                  {cart?.map((c, i) => (
+                  {cart?.items?.map((c: any, i: number) => (
                     <tr
                       className="border-b items-start flex w-full justify-between"
                       key={c?.item?.name}
@@ -90,28 +90,29 @@ export default function Page() {
                         <div className="mt-4 lg:w-40 w-16 p-1 lg:p-2 border-dark/70 border lg:hidden block ">
                           <Incrementer
                             leftClick={() => {
-                              const modifiedCart = [...cart];
+                              const modifiedCart = { ...cart };
                               if (c.quantity > 0) {
                                 if (c.quantity === 1) {
-                                  setcart(
-                                    cart?.filter(
-                                      (ci) => c.item.name !== ci.item.name
-                                    )
-                                  );
+                                  setcart({
+                                    ...cart,
+                                    items: cart?.items?.filter(
+                                      (ci: any) => c.item.name !== ci.item.name
+                                    ),
+                                  });
                                   return;
                                 }
-                                modifiedCart[i].quantity -= 1;
+                                modifiedCart.items[i].quantity -= 1;
                               }
                               setcart(modifiedCart);
                             }}
                             rightClick={() => {
-                              const modifiedCart = [...cart];
+                              const modifiedCart = { ...cart };
                               console.log();
                               if (
                                 c?.item?.stock &&
                                 c?.item?.stock > c?.quantity
                               )
-                                modifiedCart[i].quantity += 1;
+                                modifiedCart.items[i].quantity += 1;
                               setcart(modifiedCart);
                             }}
                             value={c?.quantity}
@@ -123,28 +124,30 @@ export default function Page() {
                           <div className="mt-4 lg:w-40 w-16 p-1 lg:p-2 border-dark/70 border ">
                             <Incrementer
                               leftClick={() => {
-                                const modifiedCart = [...cart];
+                                const modifiedCart = { ...cart };
                                 if (c.quantity > 0) {
                                   if (c.quantity === 1) {
-                                    setcart(
-                                      cart?.filter(
-                                        (ci) => c.item.name !== ci.item.name
-                                      )
-                                    );
+                                    setcart({
+                                      ...cart,
+                                      items: cart?.items?.filter(
+                                        (ci: any) =>
+                                          c.item.name !== ci.item.name
+                                      ),
+                                    });
                                     return;
                                   }
-                                  modifiedCart[i].quantity -= 1;
+                                  modifiedCart.items[i].quantity -= 1;
                                 }
                                 setcart(modifiedCart);
                               }}
                               rightClick={() => {
-                                const modifiedCart = [...cart];
+                                const modifiedCart = { ...cart };
                                 console.log();
                                 if (
                                   c?.item?.stock &&
                                   c?.item?.stock > c?.quantity
                                 )
-                                  modifiedCart[i].quantity += 1;
+                                  modifiedCart.items[i].quantity += 1;
                                 setcart(modifiedCart);
                               }}
                               value={c?.quantity}
@@ -175,8 +178,9 @@ export default function Page() {
                 <p className="font-light text-dark lg:text-xs text-[10px]">
                   {formatPrice(
                     currency,
-                    cart?.reduce(
-                      (sum, item) => item.item?.price * item.quantity + sum,
+                    cart?.items?.reduce(
+                      (sum: any, item: any) =>
+                        item.item?.price * item.quantity + sum,
                       0
                     ) * exchangeRates[currency.toLowerCase()]
                   )}

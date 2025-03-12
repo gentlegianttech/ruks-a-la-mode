@@ -149,11 +149,13 @@ export default function Page(props: { params: Params }) {
   const [orderDetails, setOrderDetails] = useState({
     quantity: 1,
   });
-  const itemIndex = context?.cart?.findIndex(
-    (c) => c.item.name === selectedProduct?.data?.name
+  const itemIndex = cart?.items?.findIndex(
+    (c: any) => c.item.name === selectedProduct?.data?.name
   );
+  console.log(itemIndex);
 
-  const isProductInCart = itemIndex !== -1 ? true : false;
+  const isProductInCart =
+    itemIndex !== -1 ? (itemIndex === undefined ? false : true) : false;
 
   const viewProduct = (id: string) => {
     router.push(`/shop/${id}`);
@@ -163,14 +165,14 @@ export default function Page(props: { params: Params }) {
   const handleLeftClick = () => {
     if (!isProductInCart) return;
 
-    const newCart = [...cart];
-    const productInCart = newCart[itemIndex];
+    const newCart = { ...cart };
+    const productInCart = newCart?.items[itemIndex];
 
     if (productInCart.quantity > 1) {
       productInCart.quantity -= 1;
     } else {
       // Remove product from the cart when quantity is 0
-      newCart.splice(itemIndex, 1);
+      newCart?.items?.splice(itemIndex, 1);
     }
 
     setcart(newCart);
@@ -180,8 +182,8 @@ export default function Page(props: { params: Params }) {
   const handleRightClick = () => {
     if (!isProductInCart) return;
 
-    const newCart = [...cart];
-    newCart[itemIndex].quantity += 1;
+    const newCart = { ...cart };
+    newCart.items[itemIndex].quantity += 1;
 
     setcart(newCart);
   };
@@ -207,6 +209,7 @@ export default function Page(props: { params: Params }) {
 
   const addToBag = () => {
     if (selectedProduct) {
+      console.log("adding");
       const { size, custom, length } = measurement;
 
       if (
@@ -273,7 +276,7 @@ export default function Page(props: { params: Params }) {
       if (selectedProduct?.data?.colors?.length > 1) {
         itemData.item["name"] += ` (${selectedColor?.name})`;
       }
-      context?.setcart([...context?.cart, itemData]);
+      setcart({ ...cart, items: [...cart?.items, itemData] });
 
       alert("Cart Updated");
     }
@@ -327,7 +330,7 @@ export default function Page(props: { params: Params }) {
           </p>
           {/* COLORS */}
           <p className="mt-4 mb-2">Color: {selectedColor?.name}</p>
-          <div className=" flex items-center justify-start space-x-1">
+          <div className="grid grid-cols-10 gap-1.5">
             {selectedProduct?.data?.colors.map((color: any, i: number) => (
               <div
                 className={`${
@@ -456,7 +459,7 @@ export default function Page(props: { params: Params }) {
               <Incrementer
                 leftClick={handleLeftClick}
                 rightClick={handleRightClick}
-                value={cart[itemIndex].quantity}
+                value={cart?.items ? cart?.items[itemIndex].quantity : 0}
               />
             ) : (
               <div
@@ -532,12 +535,16 @@ const CustomMeasurement = ({
           <input
             className="bg-transparent lg:text-sm text-xs border-dark border mr-3 px-3 outline-none"
             value={measurement[m]}
-            onChange={(e) =>
-              setMeasurement({
-                ...measurement,
-                custom: { ...measurement?.custom, [m]: e.target.value },
-              })
-            }
+            onChange={(e) => {
+              const inputValue = e.target.value;
+              // Allow decimals (e.g., 0.4, 12.75)
+              if (/^\d*\.?\d*$/.test(inputValue)) {
+                setMeasurement({
+                  ...measurement,
+                  custom: { ...measurement?.custom, [m]: inputValue },
+                });
+              }
+            }}
           />
           <p className="text-xs">in</p>
         </div>

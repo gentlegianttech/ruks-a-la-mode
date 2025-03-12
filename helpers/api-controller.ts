@@ -99,6 +99,14 @@ export async function updateOrder(data: any) {
   }
 }
 
+export async function addTailor(data: any) {
+  try {
+    return await axios.put(`/api/orders/add-tailor`, data);
+  } catch (error) {
+    return error;
+  }
+}
+
 //deliveries
 export async function getDeliveries() {
   try {

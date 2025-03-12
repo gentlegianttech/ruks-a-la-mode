@@ -1,16 +1,18 @@
 "use client";
 import { useState } from "react";
-import { FaSquarePollVertical } from "react-icons/fa6";
+import { FaExclamationTriangle } from "react-icons/fa";
 import Link from "next/link";
 
 const Sidebar = ({
   setActiveView,
   activeView,
   menuItems,
+  logout,
 }: {
   setActiveView: (view: string) => void;
   activeView: string;
   menuItems: any[];
+  logout: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,6 +38,17 @@ const Sidebar = ({
               </button>
             </li>
           ))}
+          <li key="logout">
+            <button
+              onClick={() => logout()}
+              className={`w-full text-left flex items-center px-4 py-2 text-xs text-red-600 `}
+            >
+              <span className="mr-2">
+                <FaExclamationTriangle />
+              </span>
+              Logout
+            </button>
+          </li>
         </ul>
       </nav>
     </div>

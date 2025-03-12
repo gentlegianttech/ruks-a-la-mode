@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import OrderDetails from "./order-details";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getAllOrders, updateOrder } from "@/helpers/api-controller";
+import { addTailor, getAllOrders, updateOrder } from "@/helpers/api-controller";
 import { Audio } from "react-loader-spinner";
+import AddTailorModal from "./add-tailor";
 
 type Order = {
   id: string;
@@ -13,99 +14,7 @@ type Order = {
 };
 
 export default function Orders() {
-  // const [orders, setOrders] = useState<Order[]>([
-  //   {
-  //     id: "ORD001",
-  //     email: "JaneDoe@gmail.com",
-  //     createdAt: "2025-01-15",
-  //     status: "Pending",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD002",
-  //     email: "JohnSmith@gmail.com",
-  //     createdAt: "2025-01-16",
-  //     status: "Delivered",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD003",
-  //     email: "AliceJohnson@mailer.com",
-  //     createdAt: "2025-01-17",
-  //     status: "Canceled",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD004",
-  //     email: "DunyDoe@gmail.com",
-  //     createdAt: "2025-01-15",
-  //     status: "Pending",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD005",
-  //     email: "VinnySmith@gmail.com",
-  //     createdAt: "2025-01-16",
-  //     status: "Delivered",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD006",
-  //     email: "ColinOlhnson@mailer.com",
-  //     createdAt: "2025-01-17",
-  //     status: "Canceled",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD007",
-  //     email: "JinnyUkz@gmail.com",
-  //     createdAt: "2025-01-15",
-  //     status: "Pending",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD008",
-  //     email: "LokiDwin@gmail.com",
-  //     createdAt: "2025-01-16",
-  //     status: "Delivered",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  //   {
-  //     id: "ORD009",
-  //     email: "PoliceJohnson@mailer.com",
-  //     createdAt: "2025-01-17",
-  //     status: "Canceled",
-  //     items: [
-  //       { productName: "Floral Dress", quantity: 1, price: 49.99 },
-  //       { productName: "Leather Jacket", quantity: 1, price: 80 },
-  //     ],
-  //   },
-  // ]);
-
+  const [tailorInfo, setTailorInfo] = useState({ name: "", phone: "", id: "" });
   const {
     data: allOrders,
     isLoading,
@@ -121,7 +30,12 @@ export default function Orders() {
     onSuccess: () => refetchOrders(),
   });
 
-  const [filter, setFilter] = useState("All");
+  const addTailorMutation = useMutation({
+    mutationFn: (data: any) => addTailor(data),
+    onSuccess: () => handleStatusChange(tailorInfo?.id, "producing"),
+  });
+
+  const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -135,7 +49,9 @@ export default function Orders() {
 
   const filteredOrders = orders
     ?.filter((order: any) =>
-      filter === "All" ? true : order?.data?.status === filter
+      filter.toLowerCase() === "all"
+        ? true
+        : order?.data?.status?.toLowercase() === filter?.toLowerCase()
     )
     ?.filter(
       (order: any) =>
@@ -169,9 +85,15 @@ export default function Orders() {
     // );
   };
 
+  const handleAddTailor = () => {
+    addTailorMutation.mutate(tailorInfo);
+  };
+
   const handleClearSearch = () => {
     setSearchQuery("");
   };
+
+  const [addngTailor, setAddingTailor] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -189,10 +111,11 @@ export default function Orders() {
           <select
             className="border rounded px-2 py-1 lg:text-sm text-xs"
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            onChange={(e) => setFilter(e.target.value?.toLowerCase())}
           >
             <option value="All">All</option>
             <option value="Pending">Pending</option>
+            <option value="Pending">Producing</option>
             <option value="Delivered">Delivered</option>
             <option value="Canceled">Canceled</option>
           </select>
@@ -239,6 +162,9 @@ export default function Orders() {
                 <th className="px-4 py-2 border lg:text-sm text-xs">Date</th>
                 <th className="px-4 py-2 border lg:text-sm text-xs">Total</th>
                 <th className="px-4 py-2 border lg:text-sm text-xs">Status</th>
+                <th className="px-4 py-2 border lg:text-sm text-xs">
+                  Discount
+                </th>
                 <th className="px-4 py-2 border lg:text-sm text-xs">Actions</th>
               </tr>
             </thead>
@@ -262,10 +188,7 @@ export default function Orders() {
                     {order?.data?.createdAt}
                   </td>
                   <td className="px-4 py-2 text-xs border">
-                    {order?.data?.items?.reduce(
-                      (sum: any, item: any) => sum + item?.item?.price,
-                      0
-                    )}
+                    {order?.data?.price}
                   </td>
                   <td className="px-4 py-2 text-xs border">
                     <span
@@ -274,7 +197,7 @@ export default function Orders() {
                           ? "text-yellow-500"
                           : order?.data?.status === "ready"
                           ? "text-green-500"
-                          : order?.data?.status === "completed"
+                          : order?.data?.status === "delivered"
                           ? "text-blue-500"
                           : "text-red-500"
                       }`}
@@ -282,8 +205,22 @@ export default function Orders() {
                       {order?.data?.status}
                     </span>
                   </td>
+                  <td className="px-4 py-2 text-xs border">
+                    {order?.data?.discount}
+                  </td>
                   <td className="">
                     <div className="ml-2 flex lg:flex-row flex-col lg:space-y-0 space-y-1 lg:space-x-2 space-x-0">
+                      {order?.data?.status === "pending" && (
+                        <button
+                          className="bg-green-500 text-white px-2 py-1 rounded lg:text-xs text-[10px]"
+                          onClick={() => {
+                            setTailorInfo({ ...tailorInfo, id: order?.id });
+                            setAddingTailor(true);
+                          }}
+                        >
+                          Produce
+                        </button>
+                      )}
                       {order?.data?.status === "producing" && (
                         <button
                           className="bg-green-500 text-white px-2 py-1 rounded lg:text-xs text-[10px]"
@@ -292,16 +229,17 @@ export default function Orders() {
                           Ready
                         </button>
                       )}
-                      {order?.data?.status === "producing" && (
-                        <button
-                          className="bg-red-500 text-white px-2 py-1 rounded lg:text-xs text-[10px]"
-                          onClick={() =>
-                            handleStatusChange(order.id, "canceled")
-                          }
-                        >
-                          Cancel
-                        </button>
-                      )}
+                      {order?.data?.status === "producing" ||
+                        (order?.data?.status === "pending" && (
+                          <button
+                            className="bg-red-500 text-white px-2 py-1 rounded lg:text-xs text-[10px]"
+                            onClick={() =>
+                              handleStatusChange(order.id, "canceled")
+                            }
+                          >
+                            Cancel
+                          </button>
+                        ))}
 
                       <button
                         onClick={() => handleViewDetails(order)}
@@ -355,6 +293,13 @@ export default function Orders() {
           )}
         </div>
       )}
+      <AddTailorModal
+        isOpen={addngTailor}
+        onClose={() => setAddingTailor(false)}
+        onSubmit={handleAddTailor}
+        tailorInfo={tailorInfo}
+        setTailorInfo={setTailorInfo}
+      />
     </div>
   );
 }

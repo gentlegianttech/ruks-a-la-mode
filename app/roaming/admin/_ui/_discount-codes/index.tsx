@@ -6,15 +6,19 @@ import {
   deleteDiscount,
   getDiscounts,
 } from "@/helpers/api-controller";
+import { DateTime } from "luxon";
 
 interface DiscountInfo {
   code: string;
   rate: number | string;
   count: number | string;
+  duration: number | string;
 }
 
 export default function DiscountCodes() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const now = DateTime.now();
 
   const {
     data: discountsData,
@@ -42,6 +46,7 @@ export default function DiscountCodes() {
     code: "",
     rate: "",
     count: "",
+    duration: "",
   });
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -72,7 +77,7 @@ export default function DiscountCodes() {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => setIsModalOpen(!isModalOpen)}
-          className={`px-4 py-2 rounded bg-blue-500 text-white`}
+          className={`px-4 py-2 rounded text-sm bg-blue-500 text-white`}
         >
           Add Discount
         </button>
@@ -82,23 +87,38 @@ export default function DiscountCodes() {
       <table className="min-w-full table-auto bg-white shadow rounded">
         <thead className="bg-gray-200">
           <tr>
-            <th className="px-4 py-2 border">Code</th>
-            <th className="px-4 py-2 border">Rate</th>
-            <th className="px-4 py-2 border">Count</th>
-            <th className="px-4 py-2 border">Actions</th>
+            <th className="px-4 py-2 border text-sm">Code</th>
+            <th className="px-4 py-2 border text-sm">Rate</th>
+            <th className="px-4 py-2 border text-sm">Count</th>
+            <th className="px-4 py-2 border text-sm">Duration</th>
+            <th className="px-4 py-2 border text-sm">Status</th>
+            <th className="px-4 py-2 border text-sm">Actions</th>
           </tr>
         </thead>
         <tbody>
           {displayedDiscounts?.map((discount: any) => (
             <tr key={discount?.id}>
-              <td className="px-4 py-2 border text-center">{discount?.id}</td>
-              <td className="px-4 py-2 border text-center">
+              <td className="px-4 py-2 border text-center text-xs">
+                {discount?.id}
+              </td>
+              <td className="px-4 py-2 border text-center text-xs">
                 {discount?.data?.rate}
               </td>
-              <td className="px-4 py-2 border text-center">
+              <td className="px-4 py-2 border text-center text-xs">
                 {discount?.data?.count}
               </td>
-              <td className="px-4 py-2 border text-center">
+              <td className="px-4 py-2 border text-center text-xs">
+                {discount?.data?.duration}
+              </td>
+              <td className="px-4 py-2 border text-center text-xs">
+                {now <
+                DateTime.fromISO(discount?.data?.createdAt).plus({
+                  hours: discount?.data?.duration,
+                })
+                  ? "Active"
+                  : "Inactive"}
+              </td>
+              <td className="px-4 py-2 border text-center text-xs">
                 <button
                   className="bg-red-500 text-white px-2 py-1 rounded text-xs mr-2"
                   onClick={() => handleDeleteDiscount(discount?.id)}

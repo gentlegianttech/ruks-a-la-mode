@@ -9,7 +9,7 @@ export default function CategoryGrid({
   viewProduct,
 }: CategoryGridProps) {
   const context = useAppContext();
-  const { setSelectedProduct, setcart } = context;
+  const { setSelectedProduct } = context;
   return (
     <div className="lg:w-[94%] grid lg:grid-cols-4 grid-cols-2 lg:gap-6 gap-5 mt-8">
       {items?.map((m) => (

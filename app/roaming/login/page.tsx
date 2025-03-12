@@ -6,6 +6,7 @@ import { auth } from "@/helpers/utils/auth";
 import { useAppContext } from "@/helpers/store";
 import { useRouter } from "next/navigation";
 import Button from "@/app/ui/button";
+import { Radio } from "react-loader-spinner";
 
 export default function Page() {
   const [loginInfo, setLoginInfo] = useState({
@@ -38,8 +39,11 @@ export default function Page() {
     if (!loginInfo.email || !loginInfo.password)
       return alert("Incomplete Login");
     const { email, password } = loginInfo;
-    signInWithEmailAndPassword(auth, email, password);
-    setLoading(false);
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        router.push("/roaming/admin");
+      })
+      .finally(() => setLoading(false));
   };
 
   const [hidden, sethidden] = useState(false);
@@ -49,12 +53,12 @@ export default function Page() {
       <p className="text-lg font-semibold mb-12">LOGIN TO CONTINUE</p>
       <input
         placeholder="Email"
-        className="px-3 py-1.5 text-[#0e0e0e] lg:w-72 w-72 text-xs bg-transparent border border-dark outline-none"
+        className="px-3 py-1.5 text-[#0e0e0e] lg:w-72 w-72 text-xs bg-transparent border border-dark outline-none rounded-md"
         value={loginInfo.email}
         onChange={(e) => setLoginInfo({ ...loginInfo, email: e.target.value })}
         type="email"
       />
-      <div className="flex mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12 items-center justify-center space-x-2 lg:w-72 w-72 bg-transparent border border-dark">
+      <div className="flex mt-8 px-3 py-1.5 text-[#0e0e0e] mb-12 items-center rounded-md justify-center space-x-2 lg:w-72 w-72 bg-transparent border border-dark">
         <input
           className="bg-transparent outline-none text-xs w-full"
           placeholder="Password"
@@ -71,15 +75,18 @@ export default function Page() {
           {hidden ? "SHOW" : "HIDE"}
         </p>
       </div>
-      <Button
-        loading={loading}
-        label="LOGIN"
+      <div
         onClick={() => {
-          setLoading(true);
           handleSignIn();
-          setLoading(false);
         }}
-      />
+        className={`mt-2 lg:w-72 w-40 p-3 bg-black/85 rounded-md flex items-center font-medium justify-center hover:opacity-70 ${"cursor-pointer"}`}
+      >
+        {loading ? (
+          <Radio />
+        ) : (
+          <p className="text-[#f5f5f5] lg:text-sm text-xs uppercase">LOGIN</p>
+        )}
+      </div>
     </div>
   );
 }

@@ -225,31 +225,82 @@ const CheckoutForm = ({
           </div>
           <div className="flex gap-4">
             {shippingInfo.state?.trim().toLowerCase() !== "abuja" ? (
-              types.map((option) => (
-                <label
-                  key={option}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <input
-                    type="radio"
-                    name="shipping"
-                    value={option}
-                    checked={deliveryType === option}
-                    onChange={() => setDeliveryType(option)}
-                    className="hidden"
-                  />
-                  <div
-                    className={`w-5 h-5 rounded-full border-2 border-gray-500 flex items-center justify-center ${
-                      deliveryType === option ? "border-blue-500" : ""
-                    }`}
+              shippingInfo?.country?.toLowerCase() === "nigeria" ? (
+                types.map((option) => (
+                  <label
+                    key={option}
+                    className="flex items-center gap-2 cursor-pointer"
                   >
-                    {deliveryType === option && (
-                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                    )}
-                  </div>
-                  <span className="capitalize">{option}</span>
-                </label>
-              ))
+                    <input
+                      type="radio"
+                      name="shipping"
+                      value={option}
+                      checked={deliveryType === option}
+                      onChange={() => setDeliveryType(option)}
+                      className="hidden"
+                    />
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 border-gray-500 flex items-center justify-center ${
+                        deliveryType === option ? "border-blue-500" : ""
+                      }`}
+                    >
+                      {deliveryType === option && (
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      )}
+                    </div>
+                    <span className="capitalize">{option}</span>
+                  </label>
+                ))
+              ) : (
+                <div className="flex gap-4">
+                  <label
+                    key={"standard"}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="shipping"
+                      value={"standard"}
+                      checked={deliveryType === "standard"}
+                      onChange={() => setDeliveryType("standard")}
+                      className="hidden"
+                    />
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 border-gray-500 flex items-center justify-center ${
+                        deliveryType === "standard" ? "border-blue-500" : ""
+                      }`}
+                    >
+                      {deliveryType === "standard" && (
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      )}
+                    </div>
+                    <span className="capitalize">{"standard"}</span>
+                  </label>
+                  <label
+                    key={"express"}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="shipping"
+                      value={"express"}
+                      checked={deliveryType === "express"}
+                      onChange={() => setDeliveryType("express")}
+                      className="hidden"
+                    />
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 border-gray-500 flex items-center justify-center ${
+                        deliveryType === "express" ? "border-blue-500" : ""
+                      }`}
+                    >
+                      {deliveryType === "express" && (
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      )}
+                    </div>
+                    <span className="capitalize">{"express"}</span>
+                  </label>
+                </div>
+              )
             ) : (
               <label
                 key={"standard"}

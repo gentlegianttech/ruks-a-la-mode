@@ -1,6 +1,6 @@
 export interface SharedState {
-  cart: any[];
-  setcart: (value: any[]) => void;
+  cart: { items: any[]; discount: string };
+  setcart: (value: any) => void;
   all_products: any[];
   set_all_products: (value: any[]) => void;
   selectedProduct: any;

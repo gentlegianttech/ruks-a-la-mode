@@ -11,7 +11,7 @@ import { getShippingFee } from "@/helpers/functions";
 
 export default function Page() {
   const context = useAppContext();
-  const { cart, currency, exchangeRates } = context;
+  const { cart, currency, exchangeRates, setcart } = context;
   const router = useRouter();
 
   const [shippingFee, setShippingFee] = useState(undefined);
@@ -20,12 +20,12 @@ export default function Page() {
 
   const [discount, setDiscount] = useState(0);
 
-  const price = cart?.reduce(
+  const price = cart?.items?.reduce(
     (sum, item) => item.item?.price * item.quantity + sum,
     0
   );
 
-  const weight = cart?.reduce((sum, item) => item.item.weight + sum, 0);
+  const weight = cart?.items?.reduce((sum, item) => item.item.weight + sum, 0);
 
   const discountPrice = discount > 0 ? price - (discount / 100) * price : price;
 
@@ -49,17 +49,17 @@ export default function Page() {
     if (shippingFee === undefined) return;
 
     console.log("buying");
-    localStorage.setItem("items", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
     localStorage.setItem("shippingInfo", JSON.stringify(shippingInfo));
     const response = await makePayment({
       email: shippingInfo?.email,
       price: discountPrice + shippingFee,
       callbackUrl: `https://ruksalamode.com/shop/confirmation/?email=${
         shippingInfo?.email
-      }&quantity=${cart?.reduce((sum, item) => item.quantity + sum, 0)}&price=${
-        cart?.reduce((sum, item) => item.item?.price * item.quantity + sum, 0) *
-        exchangeRates[currency.toLowerCase()]
-      }&currency=${currency}`,
+      }&quantity=${cart?.items?.reduce(
+        (sum, item) => item.quantity + sum,
+        0
+      )}&price=${discountPrice + shippingFee}&currency=${currency}`,
       currency,
     });
     if (response["status"]) {
@@ -87,6 +87,7 @@ export default function Page() {
           discount={discount}
           setDiscount={setDiscount}
           cart={cart}
+          setcart={setcart}
           currency={currency}
           rate={exchangeRates[currency.toLowerCase()]}
           shippingFee={shippingFee}

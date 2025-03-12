@@ -12,7 +12,7 @@ export default function SimilarProducts({
   viewProduct,
 }: CategoryGridProps) {
   const context = useAppContext();
-  const { setSelectedProduct, setcart } = context;
+  const { setSelectedProduct } = context;
 
   return (
     <>

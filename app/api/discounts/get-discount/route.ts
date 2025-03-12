@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/helpers/utils/db";
+import { DateTime } from "luxon";
 
 export async function GET(req: NextRequest) {
   try {
@@ -9,6 +10,8 @@ export async function GET(req: NextRequest) {
     const discountRef = db.collection("discount-codes").doc(code ?? "");
 
     const doc = await discountRef.get();
+
+    const now = DateTime.now();
 
     if (!doc.exists) {
       return NextResponse.json({
@@ -22,6 +25,18 @@ export async function GET(req: NextRequest) {
         message: "discount not applicable",
       });
     }
+    if (
+      now >
+      DateTime.fromISO(doc?.data()?.createdAt).plus({
+        hours: doc?.data()?.duration,
+      })
+    ) {
+      return NextResponse.json({
+        success: true,
+        message: "discount has expired",
+      });
+    }
+
     const rate = doc.data()?.rate;
 
     return NextResponse.json({

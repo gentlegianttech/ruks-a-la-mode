@@ -153,7 +153,7 @@ const Deliveries = () => {
     <div>
       <h2 className="text-xl font-bold mb-4">Delivery Management</h2>
       {/* Filters and Search */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex lg:flex-row flex-col items-start lg:items-center lg:justify-between mb-4">
         <div className="flex gap-2">
           {["Ready", "Transit", "Delivered", "Canceled"].map((status) => (
             <button
@@ -179,7 +179,7 @@ const Deliveries = () => {
           placeholder="Search by ID or Customer"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="border px-4 py-2 rounded w-1/3 text-xs"
+          className="border px-4 py-2 rounded lg:w-1/3 text-xs lg:mt-0 mt-4"
         />
       </div>
       {/* Deliveries Table */}
@@ -220,10 +220,7 @@ const Deliveries = () => {
                     if (delivery?.data?.status === "ready") {
                       setDeliveryInfo({
                         id: delivery?.id,
-                        status:
-                          delivery?.data?.status === "ready"
-                            ? "transit"
-                            : "completed",
+                        status: "transit",
                         shippingInfo: delivery?.data?.shippingInfo,
                         items: delivery?.data?.items,
                         deliveryDate: "",
@@ -231,6 +228,7 @@ const Deliveries = () => {
                       });
                       setIsModalOpen(true);
                     } else {
+                      updateStatus(delivery?.id, "delivered");
                     }
                   }}
                   className="bg-blue-500 text-white px-3 py-1 rounded"

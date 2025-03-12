@@ -10,6 +10,7 @@ interface DiscountModalProps {
     code: string;
     rate: number | string;
     count: number | string;
+    duration: number | string;
   };
   setDiscountInfo: (value: any) => void;
 }
@@ -76,6 +77,24 @@ export default function AddDiscountModal({
                 const inputValue = e.target.value;
                 if (/^\d*$/.test(inputValue)) {
                   setDiscountInfo({ ...discountInfo, count: inputValue });
+                }
+              }}
+              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">
+              Duration (Hrs)
+            </label>
+            <input
+              type="text"
+              value={discountInfo?.duration}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (/^\d*$/.test(inputValue)) {
+                  setDiscountInfo({ ...discountInfo, duration: inputValue });
                 }
               }}
               className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"

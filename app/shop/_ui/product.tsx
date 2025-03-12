@@ -46,16 +46,6 @@ export default function Product({
           )}
         </p>
       </div>
-      {/* <div className="mt-4">
-        {product?.data?.colors.map((color: any, i: number) => (
-          <span
-            key={i}
-            className="inline-block -2 w-5 h-5 rounded-full"
-            style={{ backgroundColor: color.hexCode }}
-            title={color.name}
-          ></span>
-        ))}
-      </div> */}
     </div>
   );
 }

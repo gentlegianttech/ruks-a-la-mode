@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
 
     // Prepare discount data
     const newDiscount = {
-      code: body.code,
-      count: body.count || "",
+      count: body.count,
       rate: body.rate,
+      duration: body.duration,
       createdAt: new Date().toISOString(),
     };
 

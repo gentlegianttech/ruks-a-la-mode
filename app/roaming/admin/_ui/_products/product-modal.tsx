@@ -477,7 +477,11 @@ export default function ProductModal({
                     onChange={(e) => {
                       const inputValue = e.target.value;
                       if (/^\d*$/.test(inputValue)) {
-                        handleComponentChange(index, "price", inputValue);
+                        handleComponentChange(
+                          index,
+                          "price",
+                          parseFloat(inputValue)
+                        );
                       }
                     }}
                     className="p-2 border text-xs rounded w-full"
@@ -489,7 +493,11 @@ export default function ProductModal({
                     onChange={(e) => {
                       const inputValue = e.target.value;
                       if (/^\d*\.?\d*$/.test(inputValue)) {
-                        handleComponentChange(index, "weight", inputValue);
+                        handleComponentChange(
+                          index,
+                          "weight",
+                          parseFloat(inputValue)
+                        );
                       }
                     }}
                     className="p-2 border text-xs rounded w-full"

@@ -74,7 +74,7 @@ const AbjCityDropdown: React.FC<AbjCityDropdownProps> = ({
         name="abjCity"
         value={abjCity}
         onChange={handleChange}
-        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-transparent shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-transparent capitalize shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       >
         {abuja_list.map((abjCity) => (
           <option key={abjCity} value={abjCity}>

@@ -38,12 +38,13 @@ function Confirmation() {
 
   const today = DateTime.now().toLocaleString(DateTime.DATETIME_SHORT);
 
-  const [items, setItems] = useState<any[]>();
+  const [cart, setCart] = useState<any>({ items: [], discount: "" });
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>();
+  const [discount, setdiscount] = useState("");
 
-  const orderItemsHTML = items
+  const orderItemsHTML = cart?.items
     ?.map(
-      (item) => `
+      (item: any) => `
     <tr>
       <td>${item.item?.name}</td>
       <td>${item.quantity}</td>
@@ -119,7 +120,7 @@ function Confirmation() {
 
   const verifyPayment = async () => {
     setIsVerifying(true);
-    console.log(items);
+    console.log(cart);
     if (!reference || !email || !quantity || !price) {
       return alert("Incomplete verification parameters");
     }
@@ -134,11 +135,12 @@ function Confirmation() {
         shippingInfo?.phonenumber
       ) {
         createOrderMutation.mutate({
-          items,
+          items: cart?.items,
           shippingInfo,
           createdAt: today,
           txref: reference,
-          price,
+          price: parseInt(price),
+          discount: cart?.discount,
         });
       }
     }
@@ -148,10 +150,10 @@ function Confirmation() {
   // Retrieve items from localStorage
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedItems = localStorage.getItem("items");
-      if (storedItems) {
-        console.log(JSON.parse(storedItems));
-        setItems(JSON.parse(storedItems));
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        console.log(JSON.parse(storedCart));
+        setCart(JSON.parse(storedCart));
       }
       const storedInfo = localStorage.getItem("shippingInfo");
       if (storedInfo) {
@@ -163,10 +165,11 @@ function Confirmation() {
 
   // Verify payment and update orders
   useEffect(() => {
-    if (items) {
+    if (cart?.items) {
+      (";n");
       verifyPayment();
     }
-  }, [reference, email, quantity, price, items, shippingInfo]);
+  }, [reference, email, quantity, price, cart?.items, shippingInfo]);
 
   if (createOrderMutation.isPending || isMessageSending || isVerifying) {
     return (

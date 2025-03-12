@@ -123,6 +123,7 @@ export default function Page() {
         activeView={activeView}
         setActiveView={setActiveView}
         menuItems={menuItems}
+        logout={logout}
       />
       <MainArea>{renderView()}</MainArea>
     </div>

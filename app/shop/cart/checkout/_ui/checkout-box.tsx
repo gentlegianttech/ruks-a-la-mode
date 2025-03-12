@@ -9,13 +9,15 @@ import { useState } from "react";
 
 export default function CheckoutBox({
   cart,
+  setcart,
   currency,
   rate,
   discount,
   setDiscount,
   shippingFee,
 }: {
-  cart: any[];
+  cart: { items: any[]; discount: string };
+  setcart: (value: any) => void;
   currency: string;
   rate: number;
   discount: number;
@@ -25,6 +27,7 @@ export default function CheckoutBox({
   const [code, setcode] = useState("");
 
   const handleSetDiscount = (data: any) => {
+    setcart({ ...cart, discount: code });
     setDiscount(data?.discount);
     alert(`${data?.discount}% Discount added`);
   };
@@ -40,7 +43,7 @@ export default function CheckoutBox({
   return (
     <div className="p-3 border border-dark lg:w-[46%] w-full lg:mb-0 mb-16">
       <div className="w-full lg:p-8 p-2">
-        {cart?.map((c) => {
+        {cart?.items?.map((c) => {
           const formattedMeasurementString = Object.entries(
             c?.item?.measurement
           )
@@ -96,7 +99,7 @@ export default function CheckoutBox({
               onChange={(e) => setcode(e.target.value)}
             />
             <div
-              onClick={() => getDiscountMutation.mutate()}
+              onClick={() => (code ? getDiscountMutation.mutate() : null)}
               className="p-2 lg:h-11 h-9 bg-dark border border-dark w-28 flex items-center justify-center cursor-pointer hover:opacity-80"
             >
               <p className="text-[#F5f5f5] uppercase text-xs">Apply</p>
@@ -114,7 +117,7 @@ export default function CheckoutBox({
           <p className="font-light tracking-wide lg:text-base text-xs">
             {formatPrice(
               currency,
-              cart?.reduce(
+              cart?.items?.reduce(
                 (sum, item) => item.item.price * item.quantity + sum,
                 0
               ) * rate
@@ -137,7 +140,7 @@ export default function CheckoutBox({
             {shippingFee
               ? formatPrice(
                   currency,
-                  cart?.reduce(
+                  cart?.items?.reduce(
                     (sum, item) => item.item.price * item.quantity + sum,
                     0
                   ) *
@@ -146,7 +149,7 @@ export default function CheckoutBox({
                 )
               : formatPrice(
                   currency,
-                  cart?.reduce(
+                  cart?.items?.reduce(
                     (sum, item) => item.item.price * item.quantity + sum,
                     0
                   ) * rate
