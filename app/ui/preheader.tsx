@@ -1,5 +1,7 @@
 export default async function Preheader() {
-  const data = await fetch("https://ruksalamode.com/api/content/get-pretext");
+  const data = await fetch("https://ruksalamode.com/api/content/get-pretext", {
+    cache: "no-store",
+  });
   const text = await data.json();
 
   return (
