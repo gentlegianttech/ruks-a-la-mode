@@ -8,11 +8,13 @@ const Sidebar = ({
   activeView,
   menuItems,
   logout,
+  role,
 }: {
   setActiveView: (view: string) => void;
   activeView: string;
   menuItems: any[];
   logout: () => void;
+  role: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,19 +27,23 @@ const Sidebar = ({
       </div>
       <nav className="mt-4">
         <ul className="space-y-2">
-          {menuItems?.map((item) => (
-            <li key={item.key}>
-              <button
-                onClick={() => setActiveView(item.key)}
-                className={`w-full text-left flex items-center px-4 py-2 text-xs ${
-                  activeView === item.key ? "bg-gray-900" : "hover:bg-gray-700"
-                }`}
-              >
-                <span className="mr-2">{item.icon}</span>
-                {item.label}
-              </button>
-            </li>
-          ))}
+          {menuItems
+            ?.filter((m: any) => m?.roles?.includes(role))
+            .map((item) => (
+              <li key={item.key}>
+                <button
+                  onClick={() => setActiveView(item.key)}
+                  className={`w-full text-left flex items-center px-4 py-2 text-xs ${
+                    activeView === item.key
+                      ? "bg-gray-900"
+                      : "hover:bg-gray-700"
+                  }`}
+                >
+                  <span className="mr-2">{item.icon}</span>
+                  {item.label}
+                </button>
+              </li>
+            ))}
           <li key="logout">
             <button
               onClick={() => logout()}

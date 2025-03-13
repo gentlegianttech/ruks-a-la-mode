@@ -179,6 +179,23 @@ export async function deleteProduct(id: any) {
 }
 
 //admins
+export async function getAdmins() {
+  try {
+    const admins = await axios.get(`/api/admins/get-admins`);
+    return admins.data;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+export async function updateLastSeen(admin: string) {
+  try {
+    return await axios.post(`/api/admins/update-login`, { admin });
+  } catch (error) {
+    return error;
+  }
+}
 
 //content
 export async function createBanner(data: any) {

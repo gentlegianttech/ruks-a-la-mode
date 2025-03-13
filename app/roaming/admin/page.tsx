@@ -25,26 +25,77 @@ import { LuLogOut } from "react-icons/lu";
 import { auth, logout } from "@/helpers/utils/auth";
 import { FaSquarePollVertical } from "react-icons/fa6";
 import DiscountCodes from "./_ui/_discount-codes";
+import { onAuthStateChanged } from "firebase/auth";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getAdmins, updateLastSeen } from "@/helpers/api-controller";
 
 export default function Page() {
-  const [activeView, setActiveView] = useState("orders");
+  const [activeView, setActiveView] = useState("");
 
   const [open, setopen] = useState(false);
 
   const router = useRouter();
   const context = useAppContext();
 
+  const {
+    data: adminsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["admins"],
+    queryFn: () => getAdmins(),
+  });
+
+  const admins = adminsData?.admins;
+
   const { user, setuser } = context;
 
+  const [role, setrole] = useState("");
+
+  const lastSeenMutation = useMutation({
+    mutationFn: (email: string) => updateLastSeen(email),
+  });
+
   const menuItems = [
-    { key: "orders", label: "Orders", icon: <FaShoppingCart /> },
-    { key: "products", label: "Products", icon: <FaTshirt /> },
+    {
+      key: "orders",
+      label: "Orders",
+      icon: <FaShoppingCart />,
+      roles: ["super", "production"],
+    },
+    {
+      key: "products",
+      label: "Products",
+      icon: <FaTshirt />,
+      roles: ["super"],
+    },
     // { key: "payments", label: "Payments", icon: <FaMoneyBill /> },
-    { key: "deliveries", label: "Deliveries", icon: <FaTruck /> },
-    { key: "discount-codes", label: "Discount Codes", icon: <FaTruck /> },
-    { key: "administrators", label: "Administrators", icon: <FaCogs /> },
-    { key: "content", label: "Content", icon: <FaImages /> },
-    { key: "analytics", label: "Analytics", icon: <FaSquarePollVertical /> },
+    {
+      key: "deliveries",
+      label: "Deliveries",
+      icon: <FaTruck />,
+      roles: ["super", "deliveries"],
+    },
+    {
+      key: "discount-codes",
+      label: "Discount Codes",
+      icon: <FaTruck />,
+      roles: ["super"],
+    },
+    {
+      key: "administrators",
+      label: "Administrators",
+      icon: <FaCogs />,
+      roles: ["super"],
+    },
+    { key: "content", label: "Content", icon: <FaImages />, roles: ["super"] },
+    {
+      key: "analytics",
+      label: "Analytics",
+      icon: <FaSquarePollVertical />,
+      roles: ["super"],
+    },
   ];
 
   const renderView = () => {
@@ -73,6 +124,10 @@ export default function Page() {
   useEffect(() => {
     if (!user) {
       router.push("/roaming/login");
+    } else {
+      let current = admins?.find((a: any) => a?.id === user?.email);
+      setrole(current?.data?.role);
+      lastSeenMutation.mutate(user?.email);
     }
   }, [user]);
 
@@ -96,17 +151,19 @@ export default function Page() {
         </svg>
         {open && (
           <div className="flex flex-col items-center space-y-2 mt-2">
-            {menuItems?.map((m) => (
-              <div
-                key={m?.label}
-                onClick={() => {
-                  setActiveView(m.key);
-                  setopen(false);
-                }}
-              >
-                <p className="uppercase font-bold text-gray-900">{m.label}</p>
-              </div>
-            ))}
+            {menuItems
+              ?.filter((m: any) => m?.roles?.includes(role))
+              .map((m) => (
+                <div
+                  key={m?.label}
+                  onClick={() => {
+                    setActiveView(m.key);
+                    setopen(false);
+                  }}
+                >
+                  <p className="uppercase font-bold text-gray-900">{m.label}</p>
+                </div>
+              ))}
             <div
               onClick={() => {
                 logout();
@@ -123,7 +180,12 @@ export default function Page() {
         activeView={activeView}
         setActiveView={setActiveView}
         menuItems={menuItems}
-        logout={logout}
+        logout={() => {
+          setrole("");
+          logout();
+          setuser(undefined);
+        }}
+        role={role}
       />
       <MainArea>{renderView()}</MainArea>
     </div>

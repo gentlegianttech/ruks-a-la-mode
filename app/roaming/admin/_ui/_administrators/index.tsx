@@ -1,3 +1,5 @@
+import { getAdmins } from "@/helpers/api-controller";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface AdminUser {
@@ -8,43 +10,58 @@ interface AdminUser {
 }
 
 const Administrators = () => {
-  const [admins, setAdmins] = useState<AdminUser[]>([
-    {
-      id: "A001",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      role: "Super Admin",
-    },
-    {
-      id: "A002",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      role: "Manager",
-    },
-    {
-      id: "A003",
-      name: "Bob Johnson",
-      email: "bob.johnson@example.com",
-      role: "Support",
-    },
-  ]);
+  // const [admins, setAdmins] = useState<AdminUser[]>([
+  //   {
+  //     id: "A001",
+  //     name: "John Doe",
+  //     email: "john.doe@example.com",
+  //     role: "Super Admin",
+  //   },
+  //   {
+  //     id: "A002",
+  //     name: "Jane Smith",
+  //     email: "jane.smith@example.com",
+  //     role: "Manager",
+  //   },
+  //   {
+  //     id: "A003",
+  //     name: "Bob Johnson",
+  //     email: "bob.johnson@example.com",
+  //     role: "Support",
+  //   },
+  // ]);
+
+  const {
+    data: adminsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["admins"],
+    queryFn: () => getAdmins(),
+  });
+
+  const admins = adminsData?.admins;
+
   const [filter, setFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
 
   // Filtered and searched admins
-  const filteredAdmins = admins.filter((admin) => {
-    const matchesFilter = filter === "All" || admin.role === filter;
-    const matchesSearch =
-      admin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      admin.email.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredAdmins = admins?.filter((admin: any) => {
+    const matchesFilter =
+      filter.toLowerCase() === "all" ||
+      admin?.data?.role.toLowerCase() === filter.toLowerCase();
+    const matchesSearch = admin?.id
+      ?.toLowerCase()
+      ?.includes(searchQuery?.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   // Pagination logic
-  const totalPages = Math.ceil(filteredAdmins.length / itemsPerPage);
-  const displayedAdmins = filteredAdmins.slice(
+  const totalPages = Math.ceil(filteredAdmins?.length / itemsPerPage);
+  const displayedAdmins = filteredAdmins?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -56,12 +73,12 @@ const Administrators = () => {
       {/* Filters and Search */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-2">
-          {["All", "Super Admin", "Manager", "Support"].map((role) => (
+          {["All", "Super", "Deliveries", "Production"].map((role) => (
             <button
               key={role}
               onClick={() => setFilter(role)}
               className={`px-4 py-2 rounded ${
-                filter === role
+                filter.toLowerCase() === role?.toLowerCase()
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
@@ -84,19 +101,21 @@ const Administrators = () => {
       <table className="min-w-full table-auto bg-white shadow rounded">
         <thead className="bg-gray-200">
           <tr>
-            <th className="px-4 py-2 border">ID</th>
-            <th className="px-4 py-2 border">Name</th>
             <th className="px-4 py-2 border">Email</th>
             <th className="px-4 py-2 border">Role</th>
+            <th className="px-4 py-2 border">Last Seen</th>
           </tr>
         </thead>
         <tbody>
-          {displayedAdmins.map((admin) => (
-            <tr key={admin.id}>
-              <td className="px-4 py-2 border">{admin.id}</td>
-              <td className="px-4 py-2 border">{admin.name}</td>
-              <td className="px-4 py-2 border">{admin.email}</td>
-              <td className="px-4 py-2 border">{admin.role}</td>
+          {displayedAdmins?.map((admin: any) => (
+            <tr key={admin?.id}>
+              <td className="px-4 py-2 border">{admin?.id}</td>
+              <td className="px-4 py-2 border capitalize">
+                {admin?.data?.role}
+              </td>
+              <td className="px-4 py-2 border capitalize">
+                {admin?.data?.lastLogin}
+              </td>
             </tr>
           ))}
         </tbody>
