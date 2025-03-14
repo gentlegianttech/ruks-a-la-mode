@@ -301,7 +301,7 @@ export default function Page(props: { params: Params }) {
         >
           {selectedProduct?.data?.images?.map((image: any, i: number) => (
             <SwiperSlide key={i}>
-              <div className="lg:h-[700px] lg:w-[570px] w-full h-[420px] relative lg:mt-0 mt-8">
+              <div className="lg:h-[700px] lg:w-[570px] w-full h-[440px] relative lg:mt-0 mt-8">
                 <Image alt="merch" src={image ?? null} fill={true} />
               </div>
             </SwiperSlide>
@@ -330,25 +330,27 @@ export default function Page(props: { params: Params }) {
           </p>
           {/* COLORS */}
           <p className="mt-4 mb-2">Color: {selectedColor?.name}</p>
-          <div className="grid grid-cols-10 gap-1.5">
-            {selectedProduct?.data?.colors.map((color: any, i: number) => (
-              <div
-                className={`${
-                  color?.name === selectedColor?.name
-                    ? "border border-blue-950"
-                    : ""
-                } flex items-center justify-center w-6 h-6 rounded-full cursor-pointer p-0.5`}
-                key={i}
-              >
-                <span
+          <div className="flex w-full items-center justify-center">
+            <div className="grid grid-cols-10 gap-1.5">
+              {selectedProduct?.data?.colors.map((color: any, i: number) => (
+                <div
+                  className={`${
+                    color?.name === selectedColor?.name
+                      ? "border border-blue-950"
+                      : ""
+                  } flex items-center justify-center w-6 h-6 rounded-full cursor-pointer p-0.5`}
                   key={i}
-                  className={` inline-block w-full h-full rounded-full`}
-                  style={{ backgroundColor: color.hexCode }}
-                  title={color.name}
-                  onClick={() => setSelectedColor(color)}
-                ></span>
-              </div>
-            ))}
+                >
+                  <span
+                    key={i}
+                    className={` inline-block w-full h-full rounded-full`}
+                    style={{ backgroundColor: color.hexCode }}
+                    title={color.name}
+                    onClick={() => setSelectedColor(color)}
+                  ></span>
+                </div>
+              ))}
+            </div>
           </div>
           {selectedProduct?.data?.components?.length > 0 && (
             <PartSelector
