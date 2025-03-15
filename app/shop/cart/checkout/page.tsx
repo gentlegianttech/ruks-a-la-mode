@@ -99,10 +99,9 @@ export default function Page() {
           />
         </div>
         <CheckoutBox
+          price={discountPrice}
           discount={discount}
           setDiscount={setDiscount}
-          cart={cart}
-          setcart={setcart}
           currency={currency}
           rate={exchangeRates[currency.toLowerCase()]}
           shippingFee={shippingFee}

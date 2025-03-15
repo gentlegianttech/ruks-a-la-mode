@@ -1,4 +1,3 @@
-import Image from "next/image";
 import HomeBanners from "./ui/home-banners";
 import BestSeller from "./ui/best-seller";
 import AboutUs from "./ui/about-us";

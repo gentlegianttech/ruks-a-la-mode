@@ -43,6 +43,7 @@ export default function Page() {
       .then(() => {
         router.push("/roaming/admin");
       })
+      .catch((reason) => alert(reason.message))
       .finally(() => setLoading(false));
   };
 

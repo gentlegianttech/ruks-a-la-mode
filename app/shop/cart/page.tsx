@@ -79,13 +79,18 @@ export default function Page() {
                       key={c?.item?.name}
                     >
                       <td className="px-4 my-5 flex lg:flex-row flex-col items-start w-[46.8%]">
-                        <Image
-                          width={120}
-                          height={280}
-                          src={c?.item?.image}
-                          alt="Product Image"
-                          className=" mr-4"
-                        />
+                        {c?.item?.image ? (
+                          <Image
+                            priority
+                            width={120}
+                            height={280}
+                            src={c?.item?.image}
+                            alt="Product Image"
+                            className=" mr-4"
+                          />
+                        ) : (
+                          <></>
+                        )}
                         <div className="flex flex-col items-start lg:space-y-2 space-y-1">
                           <span className="lg:text-sm font-semibold text-xs lg:mt-0 mt-3 capitalize">
                             {c?.item?.name}
@@ -111,11 +116,25 @@ export default function Page() {
                                       (ci: any) => c.item.name !== ci.item.name
                                     ),
                                   });
+                                  localStorage.setItem(
+                                    "cart",
+                                    JSON.stringify({
+                                      ...cart,
+                                      items: cart?.items?.filter(
+                                        (ci: any) =>
+                                          c.item.name !== ci.item.name
+                                      ),
+                                    })
+                                  );
                                   return;
                                 }
                                 modifiedCart.items[i].quantity -= 1;
                               }
                               setcart(modifiedCart);
+                              localStorage.setItem(
+                                "cart",
+                                JSON.stringify(modifiedCart)
+                              );
                             }}
                             rightClick={() => {
                               const modifiedCart = { ...cart };
@@ -126,6 +145,10 @@ export default function Page() {
                               )
                                 modifiedCart.items[i].quantity += 1;
                               setcart(modifiedCart);
+                              localStorage.setItem(
+                                "cart",
+                                JSON.stringify(modifiedCart)
+                              );
                             }}
                             value={c?.quantity}
                           />
@@ -146,6 +169,16 @@ export default function Page() {
                                           c.item.name !== ci.item.name
                                       ),
                                     });
+                                    localStorage.setItem(
+                                      "cart",
+                                      JSON.stringify({
+                                        ...cart,
+                                        items: cart?.items?.filter(
+                                          (ci: any) =>
+                                            c.item.name !== ci.item.name
+                                        ),
+                                      })
+                                    );
                                     return;
                                   }
                                   modifiedCart.items[i].quantity -= 1;

@@ -25,13 +25,18 @@ export default function Product({
     >
       <div onClick={viewProduct} className="w-fit">
         <div className="relative lg:h-96 w-32 h-40 lg:w-80">
-          <Image
-            fill={true}
-            src={product?.data?.images[0]}
-            alt={product?.data?.name}
-            className="object-cover"
-            sizes="33vw"
-          />
+          {product?.data?.images[0] ? (
+            <Image
+              priority
+              fill={true}
+              src={product?.data?.images[0]}
+              alt={product?.data?.name}
+              className="object-cover"
+              sizes="33vw"
+            />
+          ) : (
+            <></>
+          )}
           {/* <div className=" absolute lg:top-1 lg:left-1 top-2 left-2 py-2 px-4 flex items-center justify-center rounded-full bg-white shadow-dark/20 shadow-md">
             <p className="text-xs uppercase opacity-60">NEW</p>
           </div> */}

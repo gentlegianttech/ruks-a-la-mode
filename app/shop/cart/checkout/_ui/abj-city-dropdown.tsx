@@ -77,7 +77,7 @@ const AbjCityDropdown: React.FC<AbjCityDropdownProps> = ({
         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-transparent capitalize shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       >
         {abuja_list.map((abjCity) => (
-          <option key={abjCity} value={abjCity}>
+          <option key={abjCity} value={abjCity} className="capitalize">
             {abjCity}
           </option>
         ))}

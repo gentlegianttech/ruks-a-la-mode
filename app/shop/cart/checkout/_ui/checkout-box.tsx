@@ -2,29 +2,32 @@
 
 import { getDiscount } from "@/helpers/api-controller";
 import { formatPrice } from "@/helpers/functions";
+import { useAppContext } from "@/helpers/store";
 import { CartItemProps } from "@/helpers/types";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CheckoutBox({
-  cart,
-  setcart,
   currency,
   rate,
   discount,
   setDiscount,
   shippingFee,
+  price,
 }: {
-  cart: { items: any[]; discount: string };
-  setcart: (value: any) => void;
   currency: string;
   rate: number;
   discount: number;
   setDiscount: (value: number) => void;
   shippingFee: number | undefined;
+  price: number;
 }) {
   const [code, setcode] = useState("");
+
+  const context = useAppContext();
+
+  const { cart, setcart } = context;
 
   const handleSetDiscount = (data: any) => {
     setcart({ ...cart, discount: code });
@@ -40,6 +43,16 @@ export default function CheckoutBox({
         : alert(data?.message),
   });
 
+  // Retrieve items from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        console.log(JSON.parse(storedCart));
+        setcart(JSON.parse(storedCart));
+      }
+    }
+  }, []);
   return (
     <div className="p-3 border border-dark lg:w-[46%] w-full lg:mb-0 mb-16">
       <div className="w-full lg:p-8 p-2">
@@ -58,13 +71,18 @@ export default function CheckoutBox({
               key={c?.item?.id}
             >
               <div className="flex items-center w-full justify-start">
-                <Image
-                  width={100}
-                  height={150}
-                  src={c?.item.image}
-                  alt="Product Image"
-                  className=" mr-4"
-                />
+                {c?.item.image ? (
+                  <Image
+                    priority
+                    width={100}
+                    height={150}
+                    src={c?.item.image}
+                    alt="Product Image"
+                    className=" mr-4"
+                  />
+                ) : (
+                  <></>
+                )}
                 <div>
                   <p className="tracking-wide lg:text-base text-sm font-medium lg:font-bold uppercase">
                     {c?.item?.name}
@@ -138,22 +156,8 @@ export default function CheckoutBox({
           </p>
           <p className="font-medium tracking-wide lg:text-lg text-sm">
             {shippingFee
-              ? formatPrice(
-                  currency,
-                  cart?.items?.reduce(
-                    (sum, item) => item.item.price * item.quantity + sum,
-                    0
-                  ) *
-                    rate +
-                    shippingFee
-                )
-              : formatPrice(
-                  currency,
-                  cart?.items?.reduce(
-                    (sum, item) => item.item.price * item.quantity + sum,
-                    0
-                  ) * rate
-                )}
+              ? formatPrice(currency, price * rate + shippingFee)
+              : formatPrice(currency, price * rate)}
           </p>
         </div>
       </div>
