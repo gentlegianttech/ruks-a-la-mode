@@ -8,7 +8,10 @@ export default function ExtraInfoAccordion({ product }: { product: any }) {
   return (
     <div className="p-4 bg-gray-50">
       <h3 className="font-bold text-sm mb-2">Extra Info</h3>
-      <p className="text-xs mb-3">Quantity: {product?.quantity}</p>
+      <p className="text-xs mb-3">
+        Quantity:{" "}
+        {product?.colors?.reduce((sum: any, c: any) => sum + c?.stock, 0)}
+      </p>
       <div className="grid grid-cols-5 gap-1 w-fit">
         {product?.colors.map((color: any, i: number) => (
           <div

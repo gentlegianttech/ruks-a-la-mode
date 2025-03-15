@@ -5,26 +5,30 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Validate required fields (modify as needed)
+    // Validate required fields
     if (!body.items || !body.shippingInfo) {
       return NextResponse.json(
         { success: false, message: "Missing required fields" },
         { status: 400 }
       );
     }
-    const orderRef = db.collection("orders").doc();
 
+    // Check for duplicate transactions
     const verifyRef = db.collection("orders").where("txref", "==", body?.txref);
-
     const snap = await verifyRef.get();
 
     if (!snap.empty) {
       return NextResponse.json(
-        { success: true, message: "doppelganger" },
+        { success: true, message: "Duplicate transaction" },
         { status: 201 }
       );
     }
-    // Prepare product data
+
+    // Create a new order reference
+    const orderRef = db.collection("orders").doc();
+    const batch = db.batch();
+
+    // Prepare order data
     const newOrder = {
       txref: body?.txref,
       items: body?.items,
@@ -35,24 +39,44 @@ export async function POST(req: NextRequest) {
       status: "pending",
     };
 
-    const batch = db.batch();
-
+    // Add new order to the batch
     batch.set(orderRef, newOrder);
-    // Reduce stock for each purchased product
-    body?.items?.forEach((commodity: any, index: number) => {
-      const productRef = db.collection("products").doc(commodity?.item?.id);
-      console.log(commodity);
-      batch.update(productRef, {
-        quantity: firebase.firestore.FieldValue.increment(-commodity?.quantity),
-        sold: firebase.firestore.FieldValue.increment(commodity?.quantity),
+
+    // Reduce stock for each purchased product and update 'sold'
+    for (const commodity of body?.items) {
+      const { id, color } = commodity?.item;
+      const productRef = db.collection("products").doc(id);
+
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        return NextResponse.json(
+          { success: false, message: `Product with ID ${id} not found` },
+          { status: 404 }
+        );
+      }
+
+      const product = productSnap.data();
+
+      // Find and update the specific color's stock
+      const updatedColors = product?.colors.map((c: any) => {
+        if (c.name === color.name) {
+          return {
+            ...c,
+            stock: Math.max(c.stock - commodity.quantity, 0), // Ensure stock doesn't go below 0
+          };
+        }
+        return c;
       });
-    });
 
-    // Commit the batch operation (order creation + stock reduction)
+      // Add product update to the batch
+      batch.update(productRef, {
+        colors: updatedColors,
+        sold: firebase.firestore.FieldValue.increment(commodity.quantity),
+      });
+    }
+
+    // Commit the batch (order + stock updates)
     await batch.commit();
-
-    // // Add to Firestore
-    // const docRef = await db.collection("orders").add(newOrder);
 
     return NextResponse.json(
       { success: true, message: "Order created" },

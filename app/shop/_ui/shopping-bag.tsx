@@ -3,12 +3,24 @@
 import { usePathname } from "next/navigation";
 import { useAppContext } from "@/helpers/store";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function ShoppingBag() {
   const context = useAppContext();
   const pathname = usePathname();
 
-  const { cart } = context;
+  const { cart, setcart } = context;
+
+  // Retrieve items from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        console.log(JSON.parse(storedCart));
+        setcart(JSON.parse(storedCart));
+      }
+    }
+  }, []);
   return (
     <Link href="/shop/cart">
       {pathname === "/merch/cart" ? (

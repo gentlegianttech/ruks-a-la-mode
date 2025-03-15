@@ -6,6 +6,7 @@ import Incrementer from "@/app/ui/incrementer";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/helpers/functions";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Page() {
   const context = useAppContext();
@@ -31,6 +32,17 @@ export default function Page() {
         .join(", ");
     }
   };
+
+  // Retrieve items from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        console.log(JSON.parse(storedCart));
+        setcart(JSON.parse(storedCart));
+      }
+    }
+  }, []);
 
   return (
     <div className="flex lg:min-h-screen flex-col items-center w-full px-6">
@@ -139,6 +151,10 @@ export default function Page() {
                                   modifiedCart.items[i].quantity -= 1;
                                 }
                                 setcart(modifiedCart);
+                                localStorage.setItem(
+                                  "cart",
+                                  JSON.stringify(modifiedCart)
+                                );
                               }}
                               rightClick={() => {
                                 const modifiedCart = { ...cart };
@@ -149,6 +165,10 @@ export default function Page() {
                                 )
                                   modifiedCart.items[i].quantity += 1;
                                 setcart(modifiedCart);
+                                localStorage.setItem(
+                                  "cart",
+                                  JSON.stringify(modifiedCart)
+                                );
                               }}
                               value={c?.quantity}
                             />

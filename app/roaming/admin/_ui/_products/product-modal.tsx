@@ -26,7 +26,6 @@ export default function ProductModal({
     images: [],
     category: "",
     colors: [],
-    quantity: "",
     components: [],
     weight: "",
   });
@@ -109,6 +108,16 @@ export default function ProductModal({
           updatedFields["weight"] = parseFloat(updatedFields?.weight);
         }
         onSave({ ...updatedFields, id: formData?.id }); // Send only updated fields
+        setFormData({
+          name: "",
+          description: "",
+          price: "",
+          images: [],
+          category: "",
+          colors: [],
+          components: [],
+          weight: "",
+        });
       }
     } else {
       let imageUrls = [];
@@ -121,7 +130,6 @@ export default function ProductModal({
 
       let product = { ...formData };
       product.price = parseInt(product.price);
-      product.quantity = parseInt(product.quantity);
       product.weight = parseFloat(product.weight);
       product.images = imageUrls;
       if (product?.components) {
@@ -129,6 +137,16 @@ export default function ProductModal({
         components?.forEach((c) => (c.weight = parseFloat(c.weight)));
       }
       onSave(product);
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        images: [],
+        category: "",
+        colors: [],
+        components: [],
+        weight: "",
+      });
     }
     setLoading(false);
     onClose();
@@ -138,11 +156,15 @@ export default function ProductModal({
   const handleAddColor = () => {
     setFormData({
       ...formData,
-      colors: [...formData.colors, { name: "", hexCode: "" }], // Ensure it matches ColorProps
+      colors: [...formData.colors, { name: "", hexCode: "", stock: "" }], // Ensure it matches ColorProps
     });
   };
 
-  const handleColorChange = (index: number, key: string, value: string) => {
+  const handleColorChange = (
+    index: number,
+    key: string,
+    value: string | number
+  ) => {
     const updatedColors = [...formData.colors];
     updatedColors[index] = { ...updatedColors[index], [key]: value };
     setFormData({ ...formData, colors: updatedColors });
@@ -297,7 +319,7 @@ export default function ProductModal({
               className="w-full p-2 text-xs border rounded"
               required
             />
-            <input
+            {/* <input
               type="text"
               value={formData.quantity}
               onChange={(e) => {
@@ -309,7 +331,7 @@ export default function ProductModal({
               placeholder="Quantity"
               className="w-full p-2 text-xs border rounded"
               required
-            />
+            /> */}
 
             {/* Images Input */}
             <div>
@@ -376,6 +398,22 @@ export default function ProductModal({
                     onChange={(e) =>
                       handleColorChange(index, "hexCode", e.target.value)
                     }
+                    className="p-2 border text-xs rounded w-full"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Stock"
+                    value={color.stock}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (/^\d*$/.test(inputValue)) {
+                        handleColorChange(
+                          index,
+                          "stock",
+                          parseFloat(inputValue)
+                        );
+                      }
+                    }}
                     className="p-2 border text-xs rounded w-full"
                   />
                   <button

@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get("id");
 
-    const productRef = db.collection("product").doc(id ?? "");
+    const productRef = db.collection("products").doc(id ?? "");
 
     const doc = await productRef.get();
 

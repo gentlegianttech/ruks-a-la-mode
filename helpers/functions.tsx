@@ -2,8 +2,10 @@ import { ProductProps } from "@/helpers/types";
 import {
   abujaDeliveryFees,
   countryGroups,
-  internationalDeliveryFees,
+  expressInternationalDeliveryFees,
   nigeriaDeliveryFees,
+  scalingFactors,
+  standardInternationalDeliveryFees,
 } from "./shipping-fees";
 
 const abuja_cities: any = {
@@ -53,9 +55,30 @@ function getRegionByCountry(country: any) {
   return "Unknown Region";
 }
 
-export function getShippingFee(address: any, weight: number, type?: any) {
+function getScalingFactor(quantity: number) {
+  let sf = scalingFactors?.find(
+    (s) => quantity >= s.min && s.max >= quantity
+  )?.sf;
+
+  return sf ? sf : alert("Too many items to ship.");
+}
+
+export function getShippingFee(address: any, weights: any[], type?: any) {
   const { state, country, city } = address;
-  console.log(state, country, city, type, weight);
+  console.log(state, country, city, type, weights);
+
+  let cartWeight = weights?.reduce(
+    (sum: number, item: any) => item?.quantity * item?.weight + sum,
+    0
+  );
+  let baseWeight = 1;
+  let sf = getScalingFactor(
+    weights?.reduce((sum: number, item: any) => item?.quantity + sum, 0)
+  );
+
+  let weight = sf ? (baseWeight + cartWeight) * sf : cartWeight;
+
+  console.log(cartWeight, weight);
 
   if (country?.toLowerCase() === "nigeria") {
     if (state?.toLowerCase() === "abuja") {
@@ -72,14 +95,59 @@ export function getShippingFee(address: any, weight: number, type?: any) {
     return fee ? fee[type] : alert("Overweight");
   }
 
+  if (type === "standard") {
+    if (
+      ["united kingdom", "united states", "canada", "france"].includes(
+        country.toLowerCase()
+      )
+    ) {
+      let region;
+      switch (country.trim().toLowerCase()) {
+        case "united kingdom":
+          region = "UK";
+          break;
+        case "united states":
+          region = "US";
+          break;
+        case "canada":
+          region = "CAN";
+          break;
+        case "france":
+          region = "FRA";
+          break;
+        default:
+          region = "US";
+          break;
+      }
+
+      let fee: any = standardInternationalDeliveryFees?.find(
+        (i: any) => weight >= i.min && weight < i.max
+      );
+      console.log(region, country?.toLowerCase());
+      return fee ? fee[region] : alert("Overweight");
+    } else {
+      let region = getRegionByCountry(country);
+
+      if (region === "UNKNOWN") {
+        return alert("We don't deliver to this location yet.");
+      }
+
+      let fee: any = expressInternationalDeliveryFees?.find(
+        (i: any) => weight >= i.min && weight < i.max
+      );
+
+      return fee ? fee[region] : alert("Overweight");
+    }
+  }
+
   let region = getRegionByCountry(country);
 
   if (region === "UNKNOWN") {
     return alert("We don't deliver to this location yet.");
   }
 
-  let fee: any = internationalDeliveryFees?.find(
-    (i) => weight >= i.min && weight < i.max
+  let fee: any = expressInternationalDeliveryFees?.find(
+    (i: any) => weight >= i.min && weight < i.max
   );
 
   return fee ? fee[region] : alert("Overweight");

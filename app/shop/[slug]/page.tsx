@@ -18,6 +18,9 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useQuery } from "@tanstack/react-query";
+import { getProduct } from "@/helpers/api-controller";
+import { Blocks } from "react-loader-spinner";
 
 type Params = Promise<{ slug: string }>;
 
@@ -27,14 +30,18 @@ export default function Page(props: { params: Params }) {
   const { slug } = params;
   const router = useRouter();
   const context = useAppContext();
+  const { cart, setcart, all_products, currency, exchangeRates } = context;
+
   const {
-    selectedProduct,
-    cart,
-    setcart,
-    all_products,
-    currency,
-    exchangeRates,
-  } = context;
+    data: productData,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["product"],
+    queryFn: () => getProduct(slug),
+  });
+
+  const product = productData?.product;
 
   const sizes = ["Select Size", 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
 
@@ -142,15 +149,16 @@ export default function Page(props: { params: Params }) {
   });
 
   const [selectedColor, setSelectedColor] = useState({
-    name: selectedProduct?.data?.colors[0]?.name,
-    hexColor: selectedProduct?.data?.colors[0]?.hexColor,
+    name: product?.data?.colors[0]?.name,
+    hexColor: product?.data?.colors[0]?.hexColor,
+    stock: product?.data?.colors[0]?.stock,
   });
 
   const [orderDetails, setOrderDetails] = useState({
     quantity: 1,
   });
   const itemIndex = cart?.items?.findIndex(
-    (c: any) => c.item.name === selectedProduct?.data?.name
+    (c: any) => c.item.name === product?.data?.name
   );
   console.log(itemIndex);
 
@@ -183,7 +191,9 @@ export default function Page(props: { params: Params }) {
     if (!isProductInCart) return;
 
     const newCart = { ...cart };
-    newCart.items[itemIndex].quantity += 1;
+
+    if (newCart?.items[itemIndex].quantity < selectedColor?.stock)
+      newCart.items[itemIndex].quantity += 1;
 
     setcart(newCart);
   };
@@ -204,11 +214,11 @@ export default function Page(props: { params: Params }) {
     }
 
     // Fallback to product base price
-    return selectedProduct?.data?.price ?? 0;
+    return product?.data?.price ?? 0;
   };
 
   const addToBag = () => {
-    if (selectedProduct) {
+    if (product) {
       console.log("adding");
       const { size, custom, length } = measurement;
 
@@ -238,9 +248,9 @@ export default function Page(props: { params: Params }) {
         );
       }
 
-      let color = { ...selectedProduct?.data?.colors[0] };
+      let color = { ...product?.data?.colors[0] };
 
-      if (selectedProduct?.data?.colors?.length > 1) {
+      if (product?.data?.colors?.length > 1) {
         if (selectedColor?.name === "") return alert("Please choose a color");
 
         color = { ...selectedColor };
@@ -248,20 +258,16 @@ export default function Page(props: { params: Params }) {
 
       const itemData: any = {
         item: {
-          name: selectedProduct?.data?.name,
+          name: product?.data?.name,
           price: getPrice(),
-          id: selectedProduct?.id,
-          image: selectedProduct?.data?.images[0],
-          stock: selectedPart?.name
-            ? selectedPart?.material
-              ? selectedPart?.material?.stock
-              : selectedPart?.stock
-            : selectedMaterial?.name
-            ? selectedMaterial?.stock
-            : selectedProduct?.data?.quantity,
+          id: product?.id,
+          image: product?.data?.images[0],
+          stock:
+            product?.data?.colors?.find((c: any) => c?.name === color?.name)
+              ?.stock ?? 10,
           measurement: filteredMeasurement,
           color,
-          weight: selectedProduct?.data?.weight,
+          weight: product?.data?.weight,
         },
         quantity: orderDetails?.quantity,
       };
@@ -273,21 +279,27 @@ export default function Page(props: { params: Params }) {
         itemData.item["selectedMaterial"] = selectedMaterial;
         itemData.item["name"] += ` (${selectedMaterial?.name})`;
       }
-      if (selectedProduct?.data?.colors?.length > 1) {
+      if (product?.data?.colors?.length > 1) {
         itemData.item["name"] += ` (${selectedColor?.name})`;
       }
       setcart({ ...cart, items: [...cart?.items, itemData] });
+
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({ ...cart, items: [...cart?.items, itemData] })
+      );
 
       alert("Cart Updated");
     }
   };
 
-  useEffect(() => {
-    if (!selectedProduct) router.push("/shop");
-  }, []);
-  // if (isLoading) {
-  //   return <Blocks />;
-  // }
+  if (isLoading) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <Blocks />
+      </div>
+    );
+  }
 
   return (
     <div className={`flex flex-col w-full lg:px-24 px-8  text-black/80 `}>
@@ -299,9 +311,9 @@ export default function Page(props: { params: Params }) {
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           className="h-full lg:w-[600px] w-full flex items-center justify-center"
         >
-          {selectedProduct?.data?.images?.map((image: any, i: number) => (
+          {product?.data?.images?.map((image: any, i: number) => (
             <SwiperSlide key={i}>
-              <div className="lg:h-[700px] lg:w-[570px] w-full h-[440px] relative lg:mt-0 mt-8">
+              <div className="lg:h-[715px] lg:w-[570px] w-full h-[440px] relative lg:mt-0 mt-8">
                 <Image alt="merch" src={image ?? null} fill={true} />
               </div>
             </SwiperSlide>
@@ -309,7 +321,7 @@ export default function Page(props: { params: Params }) {
         </Swiper>
         <div className="flex flex-col lg:items-start items-center lg:w-2/5 w-full lg:mt-0 mt-10">
           <p className="lg:text-4xl text-2xl font-medium tracking-wider lg:text-left text-center">
-            {selectedProduct?.data?.name}
+            {product?.data?.name}
           </p>
           <p className={`mt-4 lg:text-lg font-medium tracking-wide`}>
             {formatPrice(
@@ -320,7 +332,7 @@ export default function Page(props: { params: Params }) {
             )}
           </p>
           <p className="mt-6 tracking-wider lg:text-base font-medium text-sm">
-            {selectedProduct?.data?.description
+            {product?.data?.description
               .split("- ")
               .map((item: any) => item.trim()) // Remove extra spaces
               .filter((item: any) => item)
@@ -332,7 +344,7 @@ export default function Page(props: { params: Params }) {
           <p className="mt-4 mb-2">Color: {selectedColor?.name}</p>
           <div className="flex w-full items-center justify-center">
             <div className="grid grid-cols-10 gap-1.5">
-              {selectedProduct?.data?.colors.map((color: any, i: number) => (
+              {product?.data?.colors.map((color: any, i: number) => (
                 <div
                   className={`${
                     color?.name === selectedColor?.name
@@ -352,16 +364,16 @@ export default function Page(props: { params: Params }) {
               ))}
             </div>
           </div>
-          {selectedProduct?.data?.components?.length > 0 && (
+          {product?.data?.components?.length > 0 && (
             <PartSelector
-              components={selectedProduct?.data?.components}
+              components={product?.data?.components}
               onSelectPart={(selected: any) => setSelectedPart(selected)}
               selectedPart={selectedPart?.name}
             />
           )}
-          {selectedProduct?.data?.materialOptions?.length > 0 && (
+          {product?.data?.materialOptions?.length > 0 && (
             <MaterialSelector
-              materials={selectedProduct?.data?.materialOptions}
+              materials={product?.data?.materialOptions}
               onSelectPart={(selected) => setSelectedMaterial(selected)}
               selectedPart={selectedMaterial?.name}
             />
@@ -444,9 +456,8 @@ export default function Page(props: { params: Params }) {
                       setOrderDetails({
                         ...orderDetails,
                         quantity:
-                          selectedProduct?.data?.quantity &&
-                          orderDetails.quantity <
-                            selectedProduct?.data?.quantity
+                          selectedColor?.stock &&
+                          orderDetails.quantity < selectedColor?.stock
                             ? orderDetails.quantity + 1
                             : orderDetails.quantity,
                       })
@@ -500,10 +511,8 @@ export default function Page(props: { params: Params }) {
       </div>
       <SimilarProducts
         items={all_products
-          ?.filter(
-            (p: any) => p?.data?.category === selectedProduct?.data?.category
-          )
-          .filter((p: any) => p.id !== selectedProduct?.id)
+          ?.filter((p: any) => p?.data?.category === product?.data?.category)
+          .filter((p: any) => p.id !== product?.id)
           .slice(0, 4)}
         viewProduct={viewProduct}
       />
