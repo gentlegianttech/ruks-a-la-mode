@@ -45,7 +45,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex lg:min-h-screen flex-col items-center w-full px-6">
+    <div className="flex flex-col items-center w-full px-6">
       {cart?.items?.length > 0 ? (
         <div className="w-full items-center flex flex-col">
           <div className="w-full lg:w-[94%] flex items-center lg:items-end justify-between mt-4 lg:mt-12">
