@@ -154,11 +154,16 @@ function Confirmation() {
       if (storedCart) {
         console.log(JSON.parse(storedCart));
         setCart(JSON.parse(storedCart));
+        localStorage.setItem(
+          "cart",
+          JSON.stringify({ items: [], discount: "" })
+        );
       }
       const storedInfo = localStorage.getItem("shippingInfo");
       if (storedInfo) {
         console.log(JSON.parse(storedInfo));
         setShippingInfo(JSON.parse(storedInfo));
+        localStorage.setItem("shippingInfo", JSON.stringify({}));
       }
     }
   }, []);
@@ -182,12 +187,12 @@ function Confirmation() {
     );
   }
   return (
-    <div className="flex flex-col items-center">
-      <p className={` text-center lg:text-6xl text-4xl mt-28`}>
+    <div className="flex flex-col items-center lg:pb-16">
+      <p className={` text-center lg:text-6xl text-3xl mt-28`}>
         WE'LL BE IN TOUCH!
       </p>
-      <p className={` text-center text-2xl font-bold mt-8 lg:w-2/3`}>
-        Product Details & Shipping Info Have Been Forwarded to {email}
+      <p className={` text-center text-lg font-semibold mt-8 lg:w-2/3`}>
+        Product Details & Shipping Information Have Been Forwarded to {email}
       </p>
     </div>
   );

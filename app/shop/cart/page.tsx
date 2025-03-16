@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { formatPrice } from "@/helpers/functions";
 import Link from "next/link";
 import { useEffect } from "react";
+import { FaX } from "react-icons/fa6";
+import { AiFillDelete } from "react-icons/ai";
 
 export default function Page() {
   const context = useAppContext();
@@ -70,6 +72,7 @@ export default function Page() {
                     <th className="px-4 py-2 text-left text-xs font-extralight lg:w-1/5">
                       Price
                     </th>
+                    <th className="px-4 py-2 text-left text-xs font-extralight lg:w-1/12"></th>
                   </tr>
                 </thead>
                 <tbody className="">
@@ -215,6 +218,29 @@ export default function Page() {
                             exchangeRates[currency.toLowerCase()] *
                             c.quantity
                         )}
+                      </td>
+                      <td className="px-4 mt-3 font-light text-xs lg:text-sm lg:w-1/12">
+                        <AiFillDelete
+                          size={25}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setcart({
+                              ...cart,
+                              items: cart?.items?.filter(
+                                (ci: any) => c.item.name !== ci.item.name
+                              ),
+                            });
+                            localStorage.setItem(
+                              "cart",
+                              JSON.stringify({
+                                ...cart,
+                                items: cart?.items?.filter(
+                                  (ci: any) => c.item.name !== ci.item.name
+                                ),
+                              })
+                            );
+                          }}
+                        />
                       </td>
                     </tr>
                   ))}
